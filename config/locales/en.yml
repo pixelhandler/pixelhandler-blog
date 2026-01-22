@@ -1,0 +1,93 @@
+en:
+  date:
+    formats:
+      long: "%B %d, %Y"
+
+  blog:
+    site:
+      title: "pixelhandler.dev"
+      description: "Software engineering blog by Billy Heaton. Articles about Ruby on Rails, JavaScript, Ember.js, and web development best practices."
+      keywords: "ruby on rails, javascript, ember.js, web development, software engineering, api design"
+
+    nav:
+      home: "Home"
+      posts: "Posts"
+      tags: "Tags"
+      about: "About"
+      menu: "Menu"
+
+    theme:
+      toggle: "Toggle dark/light mode"
+
+    posts:
+      index_title: "All Posts"
+      all_posts: "All Posts"
+      no_posts: "No posts found."
+      not_found: "Post not found."
+      reading_time:
+        one: "%{count} min read"
+        other: "%{count} min read"
+      related: "Related Posts"
+
+    tags:
+      index_title: "All Tags"
+      all_tags: "All Tags"
+      popular: "Popular Tags"
+      no_tags: "No tags found."
+      not_found: "Tag not found."
+      view_all: "View all tags"
+      more: "more"
+      show_title: "Posts tagged '%{tag}'"
+      posts_tagged: "Posts tagged '%{tag}'"
+      post_count:
+        one: "%{count} post"
+        other: "%{count} posts"
+      total_count:
+        one: "%{count} tag total"
+        other: "%{count} tags total"
+
+    authors:
+      not_found: "Author not found."
+      about: "About the Author"
+      posts_by: "Posts by %{name}"
+
+    search:
+      placeholder: "Search posts..."
+      clear: "Clear search"
+      results_title: "Search: %{query}"
+      results_for: "Search results for '%{query}'"
+      no_results: "No posts match your search."
+      result_count:
+        one: "%{count} post found"
+        other: "%{count} posts found"
+
+    sidebar:
+      toggle: "Toggle sidebar"
+
+    pagination:
+      label: "Page navigation"
+      previous: "Previous page"
+      next: "Next page"
+      showing: "Showing %{start}-%{end} of %{total} posts"
+
+    feed:
+      title: "pixelhandler.dev RSS Feed"
+      subscribe: "Subscribe via RSS"
+
+    footer:
+      about_title: "About"
+      about_text: "Personal blog covering software engineering, Ruby on Rails, JavaScript, and web development best practices."
+      links_title: "Quick Links"
+      connect_title: "Connect"
+      rights: "All rights reserved."
+
+    about:
+      title: "About"
+      meta_description: "Learn about Billy Heaton, a software engineer specializing in Ruby on Rails, Ember.js, and modern web development."
+      heading: "Billy Heaton"
+      tagline: "Senior Product Engineer"
+      bio_title: "About Me"
+      bio_text: "I'm a software engineer with a passion for building elegant, maintainable web applications. I specialize in Ruby on Rails and JavaScript frameworks, with a particular focus on API design and developer experience."
+      skills_title: "Technical Skills"
+      contact_title: "Get in Touch"
+      contact_text_html: "Feel free to reach out via <a href=\"https://github.com/pixelhandler\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[var(--link-color)] hover:text-[var(--link-hover)]\">GitHub</a> or <a href=\"https://x.com/pixelhandler\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-[var(--link-color)] hover:text-[var(--link-hover)]\">X</a>. I'm always happy to discuss software engineering, open source, or potential collaborations."

@@ -1,0 +1,52 @@
+/* Dark theme - activated by data-theme="dark" attribute on html element */
+[data-theme="dark"] {
+  /* Background colors */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --bg-muted: #4b5563;
+
+  /* Text colors */
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-inverse: #111827;
+
+  /* Border colors */
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+
+  /* Accent colors - using design tokens */
+  --accent-primary: #ffb400;        /* gold-500 for primary buttons */
+  --accent-primary-hover: #e69c00;  /* gold-600 for primary button hover */
+  --accent-primary-text: #111827;   /* neutral-900 for button text on gold bg (WCAG AA) */
+  --accent-success: #34d399;
+  --accent-warning: #fbbf24;
+  --accent-danger: #f87171;
+
+  /* Link colors */
+  --link-color: #ffc020;            /* gold-400 */
+  --link-hover: #ffd04d;            /* gold-300 */
+
+  /* Code colors */
+  --code-bg: #1f2937;
+  --code-border: #374151;
+  --code-text: #e1e4e8;
+
+  /* Syntax highlighting - GitHub-inspired dark theme */
+  --code-comment: #8b949e;
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-number: #79c0ff;
+  --code-name: #e1e4e8;
+  --code-class: #d2a8ff;
+  --code-function: #d2a8ff;
+  --code-operator: #ff7b72;
+  --code-punctuation: #e1e4e8;
+  --code-tag: #7ee787;
+  --code-attribute: #d2a8ff;
+  --code-builtin: #79c0ff;
+  --code-regex: #a5d6ff;
+  --code-symbol: #ffa657;
+  --code-error: #f85149;
+}

@@ -1,0 +1,70 @@
+<footer class="border-t border-[var(--border-primary)] bg-[var(--bg-secondary)] mt-auto">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <%# About %>
+      <div>
+        <h3 class="font-semibold text-[var(--text-primary)] mb-3"><%= t('blog.footer.about_title') %></h3>
+        <p class="text-sm text-[var(--text-muted)]">
+          <%= t('blog.footer.about_text') %>
+        </p>
+      </div>
+
+      <%# Links %>
+      <div>
+        <h3 class="font-semibold text-[var(--text-primary)] mb-3"><%= t('blog.footer.links_title') %></h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="<%= posts_path %>" class="text-[var(--text-muted)] hover:text-gold-500 transition-colors">
+              <%= t('blog.nav.posts') %>
+            </a>
+          </li>
+          <li>
+            <a href="<%= tags_path %>" class="text-[var(--text-muted)] hover:text-gold-500 transition-colors">
+              <%= t('blog.nav.tags') %>
+            </a>
+          </li>
+          <li>
+            <a href="<%= about_path %>" class="text-[var(--text-muted)] hover:text-gold-500 transition-colors">
+              <%= t('blog.nav.about') %>
+            </a>
+          </li>
+          <li>
+            <a href="<%= feed_path(format: :xml) %>" class="text-[var(--text-muted)] hover:text-gold-500 transition-colors">
+              <%= t('blog.feed.subscribe') %>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <%# Social %>
+      <div>
+        <h3 class="font-semibold text-[var(--text-primary)] mb-3"><%= t('blog.footer.connect_title') %></h3>
+        <div class="flex items-center gap-4">
+          <a href="https://github.com/pixelhandler"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="text-[var(--text-muted)] hover:text-gold-500 transition-colors"
+             aria-label="GitHub">
+            <span class="icon-[tabler--brand-github] size-6"></span>
+          </a>
+          <a href="https://x.com/pixelhandler"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="text-[var(--text-muted)] hover:text-gold-500 transition-colors"
+             aria-label="X">
+            <span class="icon-[tabler--brand-x] size-6"></span>
+          </a>
+          <a href="<%= feed_path(format: :xml) %>"
+             class="text-[var(--text-muted)] hover:text-gold-500 transition-colors"
+             aria-label="RSS Feed">
+            <span class="icon-[tabler--rss] size-6"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-8 border-t border-[var(--border-primary)] text-center text-sm text-[var(--text-muted)]">
+      <p>&copy; <%= Date.current.year %> pixelhandler.dev. <%= t('blog.footer.rights') %></p>
+    </div>
+  </div>
+</footer>

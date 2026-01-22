@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@iconify-json/tabler": "^1.2.26",
+    "@iconify/tailwind4": "^1.2.1",
+    "@tailwindcss/typography": "^0.5.19"
+  }
+}

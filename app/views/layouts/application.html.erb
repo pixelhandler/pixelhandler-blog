@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="font-sans" data-theme="light">
+  <head>
+    <title><%= content_for(:title) || t('blog.site.title') %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="<%= t('blog.site.title') %>">
+
+    <%# SEO Meta tags %>
+    <meta name="description" content="<%= content_for(:meta_description) || t('blog.site.description') %>">
+    <meta name="keywords" content="<%= content_for(:meta_keywords) || t('blog.site.keywords') %>">
+    <meta name="author" content="Billy Heaton">
+
+    <%# Open Graph %>
+    <meta property="og:title" content="<%= content_for(:og_title) || content_for(:title) || t('blog.site.title') %>">
+    <meta property="og:description" content="<%= content_for(:meta_description) || t('blog.site.description') %>">
+    <meta property="og:type" content="<%= content_for(:og_type) || 'website' %>">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta property="og:site_name" content="<%= t('blog.site.title') %>">
+    <% if content_for?(:og_image) %>
+      <meta property="og:image" content="<%= content_for(:og_image) %>">
+    <% end %>
+
+    <%# Twitter Card %>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@pixelhandler">
+    <meta name="twitter:creator" content="@pixelhandler">
+
+    <%# RSS Feed %>
+    <link rel="alternate" type="application/rss+xml" title="<%= t('blog.feed.title') %>" href="<%= feed_url(format: :xml) %>">
+
+    <%# Canonical URL %>
+    <link rel="canonical" href="<%= request.original_url %>">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <%# Prevent flash of wrong theme %>
+    <script>
+      (function() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+
+  <body class="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <%= render 'shared/header' %>
+
+    <main class="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <% if flash[:notice] %>
+        <div class="mb-6 p-4 rounded-lg bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+
+      <% if flash[:alert] %>
+        <div class="mb-6 p-4 rounded-lg bg-danger-100 text-danger-800 dark:bg-danger-900 dark:text-danger-200">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+
+    <%= render 'shared/footer' %>
+
+    <%# JSON-LD Structured Data %>
+    <%= yield :structured_data %>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "@iconify/tailwind4";
+
+/*
+ * Explicitly include directories where icon classes are used.
+ * Tailwind CSS v4 needs to scan these files to detect icon classes.
+ */
+@source "app/components/**/*.{erb,html}";
+@source "app/views/**/*.{erb,html}";
+
+/*
+ * Exclude directories from Tailwind's automatic content scanning.
+ */
+@source not "**/.bundle/**";
+@source not "**/node_modules/**";
+@source not "**/vendor/**";
+
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* Font Family */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-primary: var(--bg-primary);
+
+  /* Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Neutral Scale (Warm Slate) - 950 to 50 */
+  --color-neutral-950: #0d1117;
+  --color-neutral-900: #151b22;
+  --color-neutral-800: #1e2730;
+  --color-neutral-700: #2c3845;
+  --color-neutral-600: #475569;
+  --color-neutral-500: #64748b;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-50: #f8fafc;
+
+  /* Gold Scale (Primary Actions) - 50 to 900 */
+  --color-gold-50: #fff9eb;
+  --color-gold-100: #ffefc5;
+  --color-gold-200: #ffe08a;
+  --color-gold-300: #ffd04d;
+  --color-gold-400: #ffc020;
+  --color-gold-500: #ffb400;
+  --color-gold-600: #e69c00;
+  --color-gold-700: #bf7c00;
+  --color-gold-800: #995c00;
+  --color-gold-900: #734000;
+
+  /* Aqua Scale (Secondary Actions) - 50 to 900 */
+  --color-aqua-50: #e8fbff;
+  --color-aqua-100: #c2f5ff;
+  --color-aqua-200: #8deeff;
+  --color-aqua-300: #58e7ff;
+  --color-aqua-400: #2adfff;
+  --color-aqua-500: #00d7ff;
+  --color-aqua-600: #00b8e6;
+  --color-aqua-700: #0093bf;
+  --color-aqua-800: #006e99;
+  --color-aqua-900: #004d73;
+}
+
+@layer base {
+  /* Inter font */
+  @font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50ujIw2boKoduKmMEVuLyfAZlhj43X.woff2") format("woff2");
+  }
+
+  /* JetBrains Mono for code */
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff2") format("woff2");
+  }
+}
+
+@import "./themes/light.css" layer(theme);
+@import "./themes/dark.css" layer(theme);
+
+@import "./components/base.css" layer(components);
+@import "./components/prose.css" layer(components);

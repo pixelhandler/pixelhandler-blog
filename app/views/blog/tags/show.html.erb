@@ -1,0 +1,31 @@
+<% content_for :title, t('blog.tags.show_title', tag: @tag.name) %>
+
+<%= render Blog::LayoutComponent.new do |c| %>
+  <% c.with_sidebar do %>
+    <%= render Blog::SidebarComponent.new(tags: @tags) %>
+  <% end %>
+
+  <div>
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-[var(--text-primary)] mb-2">
+        <%= t('blog.tags.posts_tagged', tag: @tag.name) %>
+      </h1>
+      <p class="text-[var(--text-muted)]">
+        <%= t('blog.tags.post_count', count: @posts.size) %>
+      </p>
+    </div>
+
+    <% if @posts.any? %>
+      <div class="space-y-6">
+        <% @posts.each do |post| %>
+          <%= render Blog::PostCardComponent.new(post: post) %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <span class="icon-[tabler--file-text] size-12 text-[var(--text-muted)] mx-auto block mb-4"></span>
+        <p class="text-[var(--text-muted)]"><%= t('blog.posts.no_posts') %></p>
+      </div>
+    <% end %>
+  </div>
+<% end %>

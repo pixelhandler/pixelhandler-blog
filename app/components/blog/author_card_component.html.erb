@@ -1,0 +1,56 @@
+<div class="<%= compact ? 'flex items-center gap-3' : 'card' %>">
+  <% unless compact %>
+    <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-4">
+      <%= t('blog.authors.about') %>
+    </h3>
+  <% end %>
+
+  <div class="<%= compact ? 'flex items-center gap-3' : 'flex items-start gap-4' %>">
+    <img src="<%= gravatar_url %>"
+         alt="<%= author.name %>"
+         class="<%= compact ? 'size-10' : 'size-16' %> rounded-full object-cover"
+         loading="lazy">
+
+    <div class="flex-1">
+      <a href="<%= author_path(author) %>" class="font-semibold text-[var(--text-primary)] hover:text-gold-500 transition-colors">
+        <%= author.name %>
+      </a>
+
+      <% unless compact %>
+        <p class="text-sm text-[var(--text-secondary)] mt-2">
+          <%= author.bio&.truncate(150) %>
+        </p>
+
+        <div class="flex items-center gap-4 mt-3">
+          <% if author.linkedin %>
+            <a href="https://www.linkedin.com/in/<%= author.linkedin %>/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="text-[var(--text-muted)] hover:text-gold-500 transition-colors"
+               aria-label="LinkedIn">
+              <span class="icon-[tabler--brand-linkedin] size-5"></span>
+            </a>
+          <% end %>
+          <% if author.github %>
+            <a href="https://github.com/<%= author.github %>"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="text-[var(--text-muted)] hover:text-gold-500 transition-colors"
+               aria-label="GitHub">
+              <span class="icon-[tabler--brand-github] size-5"></span>
+            </a>
+          <% end %>
+          <% if author.twitter %>
+            <a href="https://x.com/<%= author.twitter %>"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="text-[var(--text-muted)] hover:text-gold-500 transition-colors"
+               aria-label="X">
+              <span class="icon-[tabler--brand-x] size-5"></span>
+            </a>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

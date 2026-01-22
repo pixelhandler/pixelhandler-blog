@@ -1,0 +1,73 @@
+<% content_for :title do %>
+  <%= @search_query.present? ? t('blog.search.results_title', query: @search_query) : t('blog.posts.index_title') %>
+<% end %>
+
+<%= render Blog::LayoutComponent.new do |c| %>
+  <% c.with_sidebar do %>
+    <%= render Blog::SidebarComponent.new(tags: @tags, show_search: false) %>
+  <% end %>
+
+  <div>
+    <%# Page header with search %>
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-[var(--text-primary)] mb-4">
+        <% if @search_query.present? %>
+          <%= t('blog.search.results_for', query: @search_query) %>
+        <% else %>
+          <%= t('blog.posts.all_posts') %>
+        <% end %>
+      </h1>
+
+      <%# Search form - server-side search %>
+      <form action="<%= posts_path %>" method="get" class="max-w-md">
+        <label for="posts-search" class="sr-only"><%= t('blog.search.placeholder') %></label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
+            <span class="icon-[tabler--search] size-4"></span>
+          </span>
+          <input type="text"
+                 id="posts-search"
+                 name="search"
+                 value="<%= @search_query %>"
+                 placeholder="<%= t('blog.search.placeholder') %>"
+                 class="w-full pl-9 pr-10 py-2 rounded-lg border border-[var(--border-primary)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent">
+          <% if @search_query.present? %>
+            <a href="<%= posts_path %>"
+               class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+               aria-label="<%= t('blog.search.clear') %>">
+              <span class="icon-[tabler--x] size-4"></span>
+            </a>
+          <% end %>
+        </div>
+      </form>
+
+      <% if @search_query.present? %>
+        <p class="mt-2 text-sm text-[var(--text-muted)]">
+          <%= t('blog.search.result_count', count: @posts.total_count) %>
+        </p>
+      <% end %>
+    </div>
+
+    <%# Posts list %>
+    <% if @posts.any? %>
+      <div class="space-y-6">
+        <% @posts.each do |post| %>
+          <%= render Blog::PostCardComponent.new(post: post) %>
+        <% end %>
+      </div>
+
+      <%= render Blog::PaginationComponent.new(collection: @posts, search_query: @search_query) %>
+    <% else %>
+      <div class="text-center py-12">
+        <span class="icon-[tabler--file-text] size-12 text-[var(--text-muted)] mx-auto block mb-4"></span>
+        <p class="text-[var(--text-muted)]">
+          <% if @search_query.present? %>
+            <%= t('blog.search.no_results') %>
+          <% else %>
+            <%= t('blog.posts.no_posts') %>
+          <% end %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+<% end %>

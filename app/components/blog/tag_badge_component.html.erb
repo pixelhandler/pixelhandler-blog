@@ -1,0 +1,15 @@
+<% if linked %>
+  <a href="<%= tag_path(slug) %>" class="<%= badge_classes %>">
+    <%= tag %>
+    <% if count %>
+      <span class="text-aqua-600 dark:text-aqua-400">(<%= count %>)</span>
+    <% end %>
+  </a>
+<% else %>
+  <span class="<%= badge_classes %>">
+    <%= tag %>
+    <% if count %>
+      <span class="text-aqua-600 dark:text-aqua-400">(<%= count %>)</span>
+    <% end %>
+  </span>
+<% end %>

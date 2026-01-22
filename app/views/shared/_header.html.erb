@@ -1,0 +1,54 @@
+<header class="border-b border-[var(--border-primary)] bg-[var(--bg-primary)]">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <%# Logo / Site name %>
+      <a href="<%= root_path %>" class="flex items-center gap-2 font-bold text-xl text-[var(--text-primary)] hover:text-gold-500 transition-colors">
+        <span class="icon-[tabler--code] size-6 text-gold-500"></span>
+        pixelhandler.dev
+      </a>
+
+      <%# Navigation %>
+      <nav class="hidden md:flex items-center gap-6">
+        <%= link_to t('blog.nav.home'), root_path, class: "text-[var(--text-secondary)] hover:text-gold-500 transition-colors #{request.path == root_path ? 'text-gold-500' : ''}" %>
+        <%= link_to t('blog.nav.posts'), posts_path, class: "text-[var(--text-secondary)] hover:text-gold-500 transition-colors #{request.path.start_with?('/posts') ? 'text-gold-500' : ''}" %>
+        <%= link_to t('blog.nav.tags'), tags_path, class: "text-[var(--text-secondary)] hover:text-gold-500 transition-colors #{request.path.start_with?('/tag') ? 'text-gold-500' : ''}" %>
+        <%= link_to t('blog.nav.about'), about_path, class: "text-[var(--text-secondary)] hover:text-gold-500 transition-colors #{request.path == about_path ? 'text-gold-500' : ''}" %>
+      </nav>
+
+      <%# Actions %>
+      <div class="flex items-center gap-2">
+        <%# Theme toggle %>
+        <button data-controller="theme"
+                data-action="click->theme#toggle"
+                class="p-2 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
+                aria-label="<%= t('blog.theme.toggle') %>">
+          <span data-theme-target="icon" class="icon-[tabler--moon] size-5"></span>
+        </button>
+
+        <%# RSS Feed %>
+        <a href="<%= feed_path(format: :xml) %>"
+           class="p-2 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors text-[var(--text-secondary)]"
+           aria-label="<%= t('blog.feed.subscribe') %>">
+          <span class="icon-[tabler--rss] size-5"></span>
+        </a>
+
+        <%# Mobile menu button %>
+        <button class="md:hidden p-2 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
+                onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+                aria-label="<%= t('blog.nav.menu') %>">
+          <span class="icon-[tabler--menu-2] size-5"></span>
+        </button>
+      </div>
+    </div>
+
+    <%# Mobile menu %>
+    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+      <div class="flex flex-col gap-2">
+        <%= link_to t('blog.nav.home'), root_path, class: "px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] transition-colors" %>
+        <%= link_to t('blog.nav.posts'), posts_path, class: "px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] transition-colors" %>
+        <%= link_to t('blog.nav.tags'), tags_path, class: "px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] transition-colors" %>
+        <%= link_to t('blog.nav.about'), about_path, class: "px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] transition-colors" %>
+      </div>
+    </nav>
+  </div>
+</header>

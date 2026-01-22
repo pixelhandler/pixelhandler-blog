@@ -1,0 +1,81 @@
+<% content_for :title, @author.name %>
+<% content_for :meta_description, @author.bio&.truncate(160) %>
+
+<%= render Blog::LayoutComponent.new do |c| %>
+  <% c.with_sidebar do %>
+    <%= render Blog::SidebarComponent.new(tags: @tags, show_about: false) %>
+  <% end %>
+
+  <div>
+    <%# Author header %>
+    <div class="card mb-8">
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <img src="https://s.gravatar.com/avatar/201e47df9aaf250e6aa21fd2fbe6b287?s=150&r=g"
+             alt="<%= @author.name %>"
+             class="size-32 rounded-full object-cover">
+
+        <div class="flex-1 text-center sm:text-left">
+          <h1 class="text-3xl font-bold text-[var(--text-primary)] mb-2">
+            <%= @author.name %>
+          </h1>
+
+          <% if @author.bio.present? %>
+            <p class="text-[var(--text-secondary)] mb-4">
+              <%= @author.bio %>
+            </p>
+          <% end %>
+
+          <div class="flex items-center justify-center sm:justify-start gap-4">
+            <% if @author.website %>
+              <a href="<%= @author.website %>"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 class="flex items-center gap-1 text-[var(--text-muted)] hover:text-gold-500 transition-colors">
+                <span class="icon-[tabler--world] size-5"></span>
+                Website
+              </a>
+            <% end %>
+            <% if @author.github %>
+              <a href="https://github.com/<%= @author.github %>"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 class="flex items-center gap-1 text-[var(--text-muted)] hover:text-gold-500 transition-colors">
+                <span class="icon-[tabler--brand-github] size-5"></span>
+                GitHub
+              </a>
+            <% end %>
+            <% if @author.twitter %>
+              <a href="https://x.com/<%= @author.twitter %>"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 class="flex items-center gap-1 text-[var(--text-muted)] hover:text-gold-500 transition-colors">
+                <span class="icon-[tabler--brand-x] size-5"></span>
+                X
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# Author's posts %>
+    <div>
+      <h2 class="text-2xl font-bold text-[var(--text-primary)] mb-6">
+        <%= t('blog.authors.posts_by', name: @author.name) %>
+      </h2>
+
+      <% if @posts.any? %>
+        <div class="space-y-6">
+          <% @posts.each do |post| %>
+            <%= render Blog::PostCardComponent.new(post: post) %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <span class="icon-[tabler--file-text] size-12 text-[var(--text-muted)] mx-auto block mb-4"></span>
+          <p class="text-[var(--text-muted)]"><%= t('blog.posts.no_posts') %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

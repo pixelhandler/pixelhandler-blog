@@ -1,0 +1,35 @@
+<article class="card hover:border-gold-500 transition-colors duration-200"
+         data-search-target="post"
+         data-title="<%= post.title %>"
+         data-tags="<%= post.tags.join(' ') %>">
+  <a href="<%= post_path(post) %>" class="block group">
+    <h2 class="text-xl font-semibold text-[var(--text-primary)] group-hover:text-gold-500 transition-colors mb-2">
+      <%= post.title %>
+    </h2>
+  </a>
+
+  <div class="flex items-center gap-4 text-sm text-[var(--text-muted)] mb-3">
+    <time datetime="<%= post.published_at.iso8601 %>">
+      <%= I18n.l(post.published_at, format: :long) %>
+    </time>
+    <span>&middot;</span>
+    <span><%= t('blog.posts.reading_time', count: post.reading_time) %></span>
+  </div>
+
+  <p class="text-[var(--text-secondary)] mb-4 line-clamp-3">
+    <%= post.excerpt %>
+  </p>
+
+  <% if post.tags.any? %>
+    <div class="flex flex-wrap gap-2">
+      <% post.tags.first(4).each do |tag| %>
+        <%= render Blog::TagBadgeComponent.new(tag: tag) %>
+      <% end %>
+      <% if post.tags.size > 4 %>
+        <span class="text-sm text-[var(--text-muted)]">
+          +<%= post.tags.size - 4 %> <%= t('blog.tags.more') %>
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+</article>

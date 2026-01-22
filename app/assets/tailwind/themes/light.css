@@ -1,0 +1,52 @@
+/* Light theme - default */
+:root {
+  /* Background colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --bg-muted: #e5e7eb;
+
+  /* Text colors */
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --text-inverse: #ffffff;
+
+  /* Border colors */
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+
+  /* Accent colors - using design tokens */
+  --accent-primary: #ffb400;        /* gold-500 for primary buttons */
+  --accent-primary-hover: #e69c00;  /* gold-600 for primary button hover */
+  --accent-primary-text: #111827;   /* neutral-900 for button text on gold bg (WCAG AA) */
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+
+  /* Link colors */
+  --link-color: #bf7c00;            /* gold-700 */
+  --link-hover: #995c00;            /* gold-800 */
+
+  /* Code colors */
+  --code-bg: #f3f4f6;
+  --code-border: #e5e7eb;
+  --code-text: #24292e;
+
+  /* Syntax highlighting - GitHub-inspired light theme */
+  --code-comment: #6a737d;
+  --code-keyword: #d73a49;
+  --code-string: #032f62;
+  --code-number: #005cc5;
+  --code-name: #24292e;
+  --code-class: #6f42c1;
+  --code-function: #6f42c1;
+  --code-operator: #d73a49;
+  --code-punctuation: #24292e;
+  --code-tag: #22863a;
+  --code-attribute: #6f42c1;
+  --code-builtin: #005cc5;
+  --code-regex: #032f62;
+  --code-symbol: #e36209;
+  --code-error: #b31d28;
+}

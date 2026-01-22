@@ -1,0 +1,25 @@
+<div data-controller="sidebar" class="flex flex-col lg:flex-row gap-8">
+  <%# Main content - full width on mobile, flex-1 on desktop %>
+  <main class="flex-1 min-w-0 order-1">
+    <%= content %>
+  </main>
+
+  <% if show_sidebar? %>
+    <%# Sidebar - hidden on mobile by default, visible on desktop %>
+    <aside data-sidebar-target="panel"
+           class="w-full lg:w-72 shrink-0 order-2 hidden lg:block">
+      <div class="lg:sticky lg:top-6 space-y-6">
+        <%= sidebar %>
+      </div>
+    </aside>
+  <% end %>
+</div>
+
+<% if show_sidebar? %>
+  <%# Mobile toggle button %>
+  <button data-action="click->sidebar#toggle"
+          class="lg:hidden fixed bottom-4 right-4 p-3 bg-gold-500 text-neutral-950 rounded-full shadow-lg z-50 hover:bg-gold-600 transition-colors"
+          aria-label="<%= t('blog.sidebar.toggle') %>">
+    <span data-sidebar-target="icon" class="icon-[tabler--layout-sidebar-right] size-5"></span>
+  </button>
+<% end %>
