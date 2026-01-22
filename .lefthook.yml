@@ -1,0 +1,13 @@
+# https://evilmartians.com/chronicles/lefthook-knock-your-teams-code-back-into-shape
+
+pre-commit:
+  parallel: true
+  commands:
+    standard:
+      glob: "*.{rb}"
+      run: bundle exec standardrb {staged_files}
+
+lint:
+  commands:
+    standard:
+      run: bundle exec standardrb

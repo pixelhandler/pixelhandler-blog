@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    command: "./bin/thrust ./bin/rails server -b '0.0.0.0'"
+    container_name: pixelhandler-blog-web
+    environment:
+      - RAILS_ENV=${RAILS_ENV:-production}
+      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    ports:
+      - "3000:80"
