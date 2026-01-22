@@ -8,7 +8,7 @@ module Blog
 
     def show
       @tag = Tag.find_by_slug(params[:slug])
-      return redirect_to tags_path, alert: t('blog.tags.not_found') unless @tag
+      return redirect_to tags_path, alert: t("blog.tags.not_found") unless @tag
 
       @posts = @tag.posts
       @tags = Tag.with_post_counts.first(15)

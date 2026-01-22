@@ -15,7 +15,7 @@ module Blog
     end
 
     def page_url(page)
-      params = { page: page }
+      params = {page: page}
       params[:search] = search_query if search_query.present?
       helpers.send(path_helper, params)
     end

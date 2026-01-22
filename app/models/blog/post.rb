@@ -11,7 +11,7 @@
 #
 module Blog
   class Post
-    POSTS_PATH = Rails.root.join('content/posts')
+    POSTS_PATH = Rails.root.join("content/posts")
 
     # Allowed HTML tags for sanitization (defense-in-depth after Redcarpet's filter_html)
     ALLOWED_TAGS = %w[
@@ -75,7 +75,7 @@ module Blog
       def load_posts
         return [] unless POSTS_PATH.exist?
 
-        Dir.glob(POSTS_PATH.join('*.md')).filter_map do |file_path|
+        Dir.glob(POSTS_PATH.join("*.md")).filter_map do |file_path|
           parse_file(file_path)
         rescue => e
           Rails.logger.error("Failed to parse post: #{file_path} - #{e.message}")
@@ -90,7 +90,7 @@ module Blog
       end
 
       def extract_frontmatter(content)
-        return [{}, content] unless content.start_with?('---')
+        return [{}, content] unless content.start_with?("---")
 
         parts = content.split(/^---\s*$/, 3)
         return [{}, content] if parts.length < 3
@@ -105,10 +105,10 @@ module Blog
 
     def initialize(frontmatter:, markdown:, file_path:)
       @title = frontmatter[:title]
-      @slug = frontmatter[:slug] || File.basename(file_path, '.md').sub(/^\d{4}-\d{2}-\d{2}-/, '')
+      @slug = frontmatter[:slug] || File.basename(file_path, ".md").sub(/^\d{4}-\d{2}-\d{2}-/, "")
       @published_at = parse_date(frontmatter[:published_at])
       @tags = Array(frontmatter[:tags])
-      @author = frontmatter[:author] || 'pixelhandler'
+      @author = frontmatter[:author] || "pixelhandler"
       @meta_description = frontmatter[:meta_description]
       @og_image = frontmatter[:og_image]
       @markdown = markdown
@@ -152,7 +152,7 @@ module Blog
       renderer = RougeRenderer.new(
         filter_html: true,
         hard_wrap: true,
-        link_attributes: {target: '_blank', rel: 'noopener noreferrer'}
+        link_attributes: {target: "_blank", rel: "noopener noreferrer"}
       )
       markdown = Redcarpet::Markdown.new(
         renderer,
@@ -185,7 +185,7 @@ module Blog
         formatter = Rouge::Formatters::HTML.new
 
         highlighted = formatter.format(lexer.lex(code))
-        lang_class = language ? " data-language=\"#{language}\"" : ''
+        lang_class = language ? " data-language=\"#{language}\"" : ""
 
         %(<pre class="highlight"#{lang_class}><code>#{highlighted}</code></pre>)
       end
@@ -193,12 +193,12 @@ module Blog
 
     def extract_excerpt
       first_para = @markdown.split("\n\n").find do |para|
-        para.strip.present? && !para.start_with?('#')
+        para.strip.present? && !para.start_with?("#")
       end
-      return '' unless first_para
+      return "" unless first_para
 
       plain_text = first_para.gsub(/\[([^\]]+)\]\([^)]+\)/, '\1')
-      plain_text = plain_text.gsub(/[*_~`#]/, '')
+      plain_text = plain_text.gsub(/[*_~`#]/, "")
       plain_text.strip.truncate(200)
     end
   end

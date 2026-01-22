@@ -11,7 +11,7 @@ module Blog
     end
 
     def author
-      @author ||= Author.find_by_slug('pixelhandler')
+      @author ||= Author.find_by_slug("pixelhandler")
     end
   end
 end

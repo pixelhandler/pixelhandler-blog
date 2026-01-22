@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 namespace :content do
-  desc 'Migrate posts from pixelhandler.dev API to local markdown files'
+  desc "Migrate posts from pixelhandler.dev API to local markdown files"
   task migrate: :environment do
-    require 'http'
-    require 'fileutils'
-    require 'json'
+    require "http"
+    require "fileutils"
+    require "json"
 
-    API_BASE = 'https://pixelhandler.dev/api/v1'
-    POSTS_DIR = Rails.root.join('content/posts')
-    AUTHORS_DIR = Rails.root.join('content/authors')
+    API_BASE = "https://pixelhandler.dev/api/v1"
+    POSTS_DIR = Rails.root.join("content/posts")
+    AUTHORS_DIR = Rails.root.join("content/authors")
 
     FileUtils.mkdir_p(POSTS_DIR)
     FileUtils.mkdir_p(AUTHORS_DIR)
 
-    puts 'Fetching posts from API...'
+    puts "Fetching posts from API..."
 
     # Fetch all posts with pagination (skip SSL verification for migration)
     ctx = OpenSSL::SSL::SSLContext.new
@@ -38,11 +38,11 @@ namespace :content do
       end
 
       data = JSON.parse(response.body.to_s)
-      posts = data['data'] || []
+      posts = data["data"] || []
       break if posts.empty?
 
       all_posts.concat(posts)
-      included_data.concat(data['included'] || [])
+      included_data.concat(data["included"] || [])
       offset += limit
 
       # Safety limit
@@ -52,35 +52,39 @@ namespace :content do
     # Build a lookup for included tags
     tags_lookup = {}
     included_data.each do |item|
-      if item['type'] == 'tags'
-        tags_lookup[item['id']] = item.dig('attributes', 'name') || item['id']
+      if item["type"] == "tags"
+        tags_lookup[item["id"]] = item.dig("attributes", "name") || item["id"]
       end
     end
 
     puts "Found #{all_posts.size} posts total"
 
     all_posts.each do |post|
-      attrs = post['attributes']
-      slug = attrs['slug']
-      date_str = attrs['date'] || attrs['published_at'] || attrs['created_at']
-      date = Date.parse(date_str.to_s) rescue Date.today
-      filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
+      attrs = post["attributes"]
+      slug = attrs["slug"]
+      date_str = attrs["date"] || attrs["published_at"] || attrs["created_at"]
+      date = begin
+        Date.parse(date_str.to_s)
+      rescue
+        Date.today
+      end
+      filename = "#{date.strftime("%Y-%m-%d")}-#{slug}.md"
 
       # Extract tags from relationships using the lookup
-      tag_refs = post.dig('relationships', 'tags', 'data') || []
-      tags = tag_refs.map { |t| tags_lookup[t['id']] }.compact
+      tag_refs = post.dig("relationships", "tags", "data") || []
+      tags = tag_refs.map { |t| tags_lookup[t["id"]] }.compact
 
       frontmatter = {
-        'title' => attrs['title'],
-        'slug' => slug,
-        'published_at' => date.to_s,
-        'author' => 'pixelhandler',
-        'tags' => tags,
-        'meta_description' => (attrs['excerpt'] || attrs['summary'])&.truncate(160)
+        "title" => attrs["title"],
+        "slug" => slug,
+        "published_at" => date.to_s,
+        "author" => "pixelhandler",
+        "tags" => tags,
+        "meta_description" => (attrs["excerpt"] || attrs["summary"])&.truncate(160)
       }.compact
 
       # Get the body content
-      body = attrs['body'] || attrs['content'] || ''
+      body = attrs["body"] || attrs["content"] || ""
 
       # to_yaml already adds '---' at the beginning
       content = "#{frontmatter.to_yaml}---\n\n#{body}"
@@ -93,19 +97,19 @@ namespace :content do
     puts "\nMigration complete! #{all_posts.size} posts created."
   end
 
-  desc 'List all posts'
+  desc "List all posts"
   task list: :environment do
     posts = Blog::Post.all
     puts "Found #{posts.size} posts:\n\n"
     posts.each do |post|
       puts "  #{post.published_at} - #{post.title}"
       puts "    Slug: #{post.slug}"
-      puts "    Tags: #{post.tags.join(', ')}" if post.tags.any?
-      puts ''
+      puts "    Tags: #{post.tags.join(", ")}" if post.tags.any?
+      puts ""
     end
   end
 
-  desc 'Show post statistics'
+  desc "Show post statistics"
   task stats: :environment do
     posts = Blog::Post.all
     tags = Blog::Tag.with_post_counts
@@ -124,11 +128,11 @@ namespace :content do
   private
 
   def extract_tags(post, tags_lookup)
-    relationships = post['relationships'] || {}
-    tags_data = relationships['tags'] || {}
-    tag_refs = tags_data['data'] || []
+    relationships = post["relationships"] || {}
+    tags_data = relationships["tags"] || {}
+    tag_refs = tags_data["data"] || []
 
-    tag_refs.map { |t| tags_lookup[t['id']] }.compact
+    tag_refs.map { |t| tags_lookup[t["id"]] }.compact
   rescue
     []
   end

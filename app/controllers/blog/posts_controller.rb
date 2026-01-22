@@ -11,7 +11,7 @@ module Blog
 
     def show
       @post = Post.find_by_slug(params[:slug])
-      return redirect_to posts_path, alert: t('blog.posts.not_found') unless @post
+      return redirect_to posts_path, alert: t("blog.posts.not_found") unless @post
 
       @tags = Tag.with_post_counts.first(15)
       @related_posts = find_related_posts(@post).first(3)

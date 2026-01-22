@@ -10,7 +10,7 @@ module Blog
     end
 
     def gravatar_url
-      'https://s.gravatar.com/avatar/201e47df9aaf250e6aa21fd2fbe6b287?s=100&r=g'
+      "https://s.gravatar.com/avatar/201e47df9aaf250e6aa21fd2fbe6b287?s=100&r=g"
     end
   end
 end

@@ -9,7 +9,7 @@
 #
 module Blog
   class Author
-    AUTHORS_PATH = Rails.root.join('content/authors')
+    AUTHORS_PATH = Rails.root.join("content/authors")
 
     class << self
       def all
@@ -30,7 +30,7 @@ module Blog
       def load_authors
         return [] unless AUTHORS_PATH.exist?
 
-        Dir.glob(AUTHORS_PATH.join('*.yml')).filter_map do |file_path|
+        Dir.glob(AUTHORS_PATH.join("*.yml")).filter_map do |file_path|
           parse_file(file_path)
         rescue => e
           Rails.logger.error("Failed to parse author: #{file_path} - #{e.message}")
@@ -39,8 +39,8 @@ module Blog
       end
 
       def parse_file(file_path)
-        content = YAML.safe_load(File.read(file_path), permitted_classes: [Date]) || {}
-        slug = File.basename(file_path, '.yml')
+        content = YAML.safe_load_file(file_path, permitted_classes: [Date]) || {}
+        slug = File.basename(file_path, ".yml")
         new(**content.transform_keys(&:to_sym).merge(slug:))
       end
     end
