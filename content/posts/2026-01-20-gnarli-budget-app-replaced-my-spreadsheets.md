@@ -71,6 +71,7 @@ Here's how each feature maps to the workflow you already know:
 - **Split Transactions** — replaces manual row splitting when one purchase spans multiple categories
 - **Statement-Anchored Balances** — replaces reconciliation formulas that anchor to bank statement closing balances
 - **Complete Data Isolation** — each user's data is completely separated via authorization policies
+- **Multi-User Account Sharing** — replaces emailing spreadsheet copies or sharing credentials; invite family or partners with View Only or Manage access levels
 
 ## How the Workflow Actually Feels
 
@@ -87,6 +88,8 @@ Here's how each feature maps to the workflow you already know:
 **Forecast forward** — set the "upcoming through" date and watch projected balances extend into the future, exactly as if you'd added a "future" column in your sheet.
 
 **Review insights** — jump to the dashboard for a visual sanity check (monthly spending trends, top categories, income vs. expenses), then dive back into the transaction list to adjust any line.
+
+**Share with family** — invite a partner or family member to view or manage specific accounts. They see only what you share, with granular View Only or Manage permissions.
 
 All of this happens without losing the audit trail. Every transaction still lives as a discrete record you can edit, delete, or recategorize at any time.
 

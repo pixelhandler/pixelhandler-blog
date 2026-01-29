@@ -7,12 +7,12 @@ namespace :content do
     require "fileutils"
     require "json"
 
-    API_BASE = "https://pixelhandler.dev/api/v1"
-    POSTS_DIR = Rails.root.join("content/posts")
-    AUTHORS_DIR = Rails.root.join("content/authors")
+    api_base = "https://pixelhandler.dev/api/v1"
+    posts_dir = Rails.root.join("content/posts")
+    authors_dir = Rails.root.join("content/authors")
 
-    FileUtils.mkdir_p(POSTS_DIR)
-    FileUtils.mkdir_p(AUTHORS_DIR)
+    FileUtils.mkdir_p(posts_dir)
+    FileUtils.mkdir_p(authors_dir)
 
     puts "Fetching posts from API..."
 
@@ -28,7 +28,7 @@ namespace :content do
     loop do
       # Use correct JSON:API params with includes
       # Note: Don't use fields[posts] filter as it strips out relationships
-      url = "#{API_BASE}/posts?sort=-date&page%5Blimit%5D=#{limit}&page%5Boffset%5D=#{offset}&include=tags"
+      url = "#{api_base}/posts?sort=-date&page%5Blimit%5D=#{limit}&page%5Boffset%5D=#{offset}&include=tags"
       puts "Fetching posts (offset=#{offset})..."
       response = HTTP.get(url, ssl_context: ctx)
 
@@ -89,7 +89,7 @@ namespace :content do
       # to_yaml already adds '---' at the beginning
       content = "#{frontmatter.to_yaml}---\n\n#{body}"
 
-      file_path = POSTS_DIR.join(filename)
+      file_path = posts_dir.join(filename)
       File.write(file_path, content)
       puts "Created: #{filename}"
     end
