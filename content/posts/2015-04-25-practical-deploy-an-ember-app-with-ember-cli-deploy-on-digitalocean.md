@@ -360,7 +360,7 @@ Create a conf file for your vhost, e.g. `/etc/nginx/conf.d/chat.pixelhandler.com
 This uses a proxy pass to the IP and port that the node.js app runs on. I'm running
 on port 8787.
 
-```css
+```nginx
 server {
   listen 80;
 

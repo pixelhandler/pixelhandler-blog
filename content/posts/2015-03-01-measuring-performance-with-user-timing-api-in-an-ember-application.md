@@ -204,7 +204,7 @@ In addition to collecting measurements for rendering templates I collected metri
 
 *An Example Metric Resource:*
 
-```css
+```json
 {
   adapterType: 'SOCKET',
   blogVersion: '3.3.8.fa3fbaf8',
@@ -254,7 +254,7 @@ The measurements below highlight some gains and losses as a result of the upgrad
 
 Index (home) page in v1.8.1  
 
-```css
+```json
 //Ember v1.8.1
 {
   average: 154.41764912280703,
@@ -267,7 +267,7 @@ Index (home) page in v1.8.1
 
 Index (home) page in v1.10.0  
 
-```css
+```json
 // Ember v1.10.0
 {
   average: 244.7352818181818,
@@ -282,7 +282,7 @@ The most visited (post) page in v1.8.1
 
 /metrics/durations?name=post_view&pathname=mongoose&emberVersion=1.8
 
-```css
+```json
 // Ember v1.8.1
 {
   average: 251.42101618705053,
@@ -297,7 +297,7 @@ The most visited (post) page in v1.10.0
 
 /metrics/durations?name=post_view&pathname=mongoose&emberVersion=1.10
 
-```css
+```json
 // Ember v1.10.0
 {
   average: 232.02967880485514,
@@ -312,7 +312,7 @@ Long list (1,000 metrics) in v1.10.0, in Chrome
 
 /api/metrics/durations?name=metrics_table&emberVersion=1.10&userAgent=Chrome
 
-```css
+```json
 // Ember Version 1.10.0
 {
   average: 690.5488399999999,
@@ -327,7 +327,7 @@ Long list (1,000 metrics) in v1.8.1, in Chrome
 
 /metrics/durations?name=metrics_table&emberVersion=1.8&userAgent=Chrome
 
-```css
+```json
 // Ember Version 1.8.1
 {
   average: 682.4195625,
@@ -344,7 +344,7 @@ Index (home) page in v1.10.0, on Mobile
 
 /metrics/durations?name=index_view&emberVersion=1.10&userAgent=Mobile
 
-```css
+```json
 // Ember Version 1.10.0
 {
   average: 580.4696976744186,
@@ -359,7 +359,7 @@ Index (home) page in v1.8.1, on Mobile
 
 /metrics/durations?name=index_view&emberVersion=1.8&userAgent=Mobile
 
-```css
+```json
 // Ember Version 1.8.1
 {
   average: 515.881875,
@@ -374,7 +374,7 @@ Long list (1,000 metrics) in v1.8.1, on Mobile
 
 /metrics/durations?name=metrics_table&emberVersion=1.8&userAgent=Mobile
 
-```css
+```json
 // Ember Version 1.8.1
 {
   average: 2179.4,
@@ -389,7 +389,7 @@ Long list (1,000 metrics) in v1.10.0, on Mobile
 
 /metrics/durations?name=metrics_table&emberVersion=1.10&userAgent=Mobile
 
-```css
+```json
 // Ember Version 1.10.0
 {
   average: 1617.4285714285713,

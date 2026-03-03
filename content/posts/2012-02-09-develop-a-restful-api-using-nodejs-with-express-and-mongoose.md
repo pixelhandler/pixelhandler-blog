@@ -17,9 +17,9 @@ There a many configurations for setting up a product to sell online, some with n
 
 **Product** attributes include:
 
-```css
-Id,  
-Title,  
+```
+Id,
+Title,
 Description,  
 Images: [ { Kind, URL } ],  
 Categories: [ { Name } ],  
@@ -338,8 +338,8 @@ jQuery.post("/api/products", {
 
 The post response is something like:
 
-```css
-_id: "4f34d8e7f05ebf212b000004"  
+```
+_id: "4f34d8e7f05ebf212b000004"
 description: "All about the details. Of course it's black."  
 modified: "2012-02-10T08:44:23.372Z"  
 style: "12345"  
@@ -638,8 +638,8 @@ jQuery.post("/api/products", {
 
 And from the node console (shell) I get this output:
 
-```css
-POST:  
+```
+POST:
 { title: 'My Awesome T-shirt',  
   description: 'All about the details. Of course it\'s black.',  
   images: [ { kind: 'thumbnail', url: 'images/products/1234/main.jpg' } ],  

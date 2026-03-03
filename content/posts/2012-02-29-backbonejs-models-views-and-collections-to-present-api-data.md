@@ -165,7 +165,7 @@ The collection cannot generate a list of products without a model constructor...
 
 **product_model.js**
 
-```css
+```javascript
 // model
 PX.Product = Backbone.Model.extend({
     defaults: {

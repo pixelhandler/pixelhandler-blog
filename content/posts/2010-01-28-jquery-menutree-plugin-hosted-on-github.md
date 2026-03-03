@@ -54,9 +54,7 @@ meta_description: |-
 $(document).ready(function() {
 
 	$('#myTree').menuTree({
-```css
-	animation: true,
-```
+		animation: true,
 		handler: 'slideToggle',
 		anchor: 'a[href="#"]',
 		trace: true

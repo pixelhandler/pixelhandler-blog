@@ -148,7 +148,7 @@ A Resource (or 'model') can resemble the structure of an object as defined by th
 
 It would be used like so:
 
-```bash
+```javascript
 export default Resource.extend({
   type: 'post',
   service: Ember.inject.service('posts'),
@@ -177,7 +177,7 @@ The resource can have an `isCacheExpired` property so that if the service keeps 
 
 And using the `attributes` hash of the `resource` instance I can compute properties from it for using in my templates that are read-only like so:
 
-```bash
+```javascript
 export default Resource.extend({
   type: 'comment',
   service: Ember.inject.service('comments'),
@@ -197,7 +197,7 @@ export default Resource.extend({
 
 A new resource may be generated in a route model hook like so:
 
-```css
+```javascript
 model() {
   return this.container.lookup('model:posts').create({
     isNew: true,
@@ -320,7 +320,7 @@ That would be a good way for the collaboraters, the fantastic four (adapter, ser
 
 A `PostsService` object may be as simple as this:
 
-```bash
+```javascript
 import Adapter from '../adapters/post';
 import ServiceCache from '../mixins/service-cache';
 
@@ -388,7 +388,7 @@ The interface for a `store` service can be a simple facade for the services crea
 
 An example `route` hook to find all post resources from the `posts` service:
 
-```bash
+```javascript
 import Ember from 'ember';
 
 export default Ember.Route.extend({

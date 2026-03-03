@@ -97,7 +97,7 @@ action `dismissErrorMessage` can be used to clear application error properties.
 
 **app/routes/application.js**
 
-```bash
+```javascript
 import Ember from 'ember';
 
 export default Ember.Route.extend({

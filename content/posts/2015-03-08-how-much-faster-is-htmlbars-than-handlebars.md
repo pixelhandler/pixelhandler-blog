@@ -543,7 +543,7 @@ Below is a look at the calculations for each of the benchmarks that I included i
 
 *HTMLbars shaved of 76 milliseconds, a 46% gain in rendering speed*
 
-```css
+```json
 {
   fast: 32.94,
   geometric_mean: 86.653,
@@ -949,7 +949,7 @@ I only had a couple measurments…
 
 *HTMLBars was 146 milliseconds faster, a 48% gain in rendering speed*
 
-```css
+```json
 {
   fast: 239.835,
   geometric_mean: 302.707,
@@ -977,7 +977,7 @@ I only had a couple measurments…
 
 *HTMLBars was 257 milliseconds faster, a 28% gain in rendering speed*
 
-```css
+```json
 {
   fast: 414.107,
   geometric_mean: 646.06,
@@ -1005,7 +1005,7 @@ I only had a couple measurments…
 
 *Handlebars 1.3 was 17 milliseconds faster, a 2% decrease in rendering speed*
 
-```css
+```json
 {
   fast: 615.905,
   geometric_mean: 829.604,

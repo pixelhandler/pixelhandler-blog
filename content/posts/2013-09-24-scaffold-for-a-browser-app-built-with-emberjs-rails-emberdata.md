@@ -258,7 +258,7 @@ App = Ember.Application.create();
 
 In app/media/javascripts/models/entry.js.coffee
 
-```css
+```coffeescript
 App.Entry = DS.Model.extend
   name: DS.attr('string')
 ```
@@ -293,7 +293,7 @@ App.EntriesRoute = Ember.Route.extend
 
 In app/media/javascripts/store.js.coffee
 
-```css
+```coffeescript
 App.ApplicationAdapter = DS.RESTAdapter.extend
   namespace: 'api/v1'
   #configure: 'plurals', entry: 'entries'

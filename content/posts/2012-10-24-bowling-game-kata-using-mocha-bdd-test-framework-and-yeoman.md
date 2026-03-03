@@ -338,7 +338,7 @@ Add code in app/scripts/Game.js
 
 Add `game: 'Game'` to requirejs config in app/scripts/main.js
 
-```css
+```javascript
  require.config({
    paths: {
      app: 'app',

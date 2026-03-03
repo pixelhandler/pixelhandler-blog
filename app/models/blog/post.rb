@@ -168,7 +168,7 @@ module Blog
       )
       raw_html = markdown.render(text)
 
-      # Defense-in-depth: sanitize with strict allowlist even though Redcarpet filters HTML
+      # Defense-in-depth: sanitize with strict allowlist (filter_html is off to allow inline HTML in posts)
       ActionController::Base.helpers.sanitize(
         raw_html,
         tags: ALLOWED_TAGS,

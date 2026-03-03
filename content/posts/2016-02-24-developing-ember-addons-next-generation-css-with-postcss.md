@@ -84,7 +84,7 @@ This command results in adding dependencies to my package.json. I moved the 'sty
 
 The output was…
 
-```css
+```
 version: 2.3.0
 Installed packages for tooling via npm.
 installing xyz-styles

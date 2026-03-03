@@ -34,84 +34,68 @@ The custom "faux" select box will look like this:
 
 <style type="text/css">
 select.faux-select {
-```css
-display: block;
-filter: alpha(opacity=0);
-opacity: 0;
-position: absolute;
-height: 20px;
-width: 125px;
-margin: 5px
-```
+    display: block;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    position: absolute;
+    height: 20px;
+    width: 125px;
+    margin: 5px
 }
 
 .faux-select {
-```css
-color: black;
-position: relative;
-font: 14px/18px "Andale Mono", AndaleMono, monospace;
-letter-spacing: 1px;
-text-transform: uppercase
-```
+    color: black;
+    position: relative;
+    font: 14px/18px "Andale Mono", AndaleMono, monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase
 }
 
 .faux-select-box {
-```css
-position: absolute;
-min-width: 137px
-```
+    position: absolute;
+    min-width: 137px
 }
 
 .faux-select-selected, .faux-select-graphic {
-```css
-border: 1px solid black;
-height: 30px;
-background: #fdfaed;
-background: -moz-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fdfaed), color-stop(100%, #b5cbeb));
-background: -webkit-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-background: -o-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-background: -ms-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-background: linear-gradient(to bottom, #fdfaed 0%, #b5cbeb 100%);
-filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#fdfaed', endColorstr='#b5cbeb', GradientType=0 )
-```
+    border: 1px solid black;
+    height: 30px;
+    background: #fdfaed;
+    background: -moz-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fdfaed), color-stop(100%, #b5cbeb));
+    background: -webkit-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
+    background: -o-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
+    background: -ms-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
+    background: linear-gradient(to bottom, #fdfaed 0%, #b5cbeb 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#fdfaed', endColorstr='#b5cbeb', GradientType=0 )
 }
 
 .faux-select-selected {
-```css
-border-top-left-radius: 10px;
-border-bottom-left-radius: 10px;
-border-right: none;
-float: left;
-min-width: 117px;
-padding: 5px 10px
-```
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: none;
+    float: left;
+    min-width: 117px;
+    padding: 5px 10px
 }
 
 .faux-select-graphic {
-```css
-float: right;
-border-top-right-radius: 10px;
-border-bottom-right-radius: 10px;
-padding: 5px 7px
-```
+    float: right;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 5px 7px
 }
 </style>
 
 <div class="faux-select">
   <div class="faux-select-box">
-```sql
-<span class="faux-select-selected">Choose One</span>
-<span class="faux-select-graphic">&#x25BE;</span>
-```
+    <span class="faux-select-selected">Choose One</span>
+    <span class="faux-select-graphic">&#x25BE;</span>
   </div>
   <select name="faux-select" class="faux-select">
-```
-<option value="">Choose One</option>
-<option value="1">Ember.js</option>
-<option value="2">Backbone.js</option>
-<option value="3">AngularJS</option>
-```
+    <option value="">Choose One</option>
+    <option value="1">Ember.js</option>
+    <option value="2">Backbone.js</option>
+    <option value="3">AngularJS</option>
   </select>
 </div>
 <br><br>
@@ -166,7 +150,7 @@ Custom Element, see [Web Components].
 
 **templates/components/faux-select**
 
-```sql
+```handlebars
 <script type="text/x-handlebars" id="components/faux-select">
   <h2>Faux Select</h2>
   <select>
@@ -181,7 +165,7 @@ Notice the `{{faux-select}}` addition below:
 
 **templates/index**
 
-```sql
+```handlebars
 <script type="text/x-handlebars" id="index">
   <h1>Components</h1>
   {{faux-select}}
@@ -215,7 +199,7 @@ The component template needs to enumerate over the list of choices:
 
 **templates/components/faux-select**
 
-```sql
+```handlebars
 <script type="text/x-handlebars" id="components/faux-select">
   <h2>Faux Select</h2>
   <select class="faux-select">
@@ -232,7 +216,7 @@ component's choices property.
 
 **templates/index**
 
-```sql
+```handlebars
 <script type="text/x-handlebars" id="index">
   <h1>Components</h1>
   {{faux-select choices=model}}
@@ -269,7 +253,7 @@ One static class name is kept for standard css styling, `faux-select`
 
 **templates/components/faux-select**
 
-```sql
+```handlebars
 <script type="text/x-handlebars" id="components/faux-select">
   <select {{bindAttr name=name class=":faux-select className"}}>
     {{#each choices}}
@@ -284,7 +268,7 @@ the dynamic properties mapped for name and className.
 
 **templates/index**
 
-```sql
+```handlebars
 <script type="text/x-handlebars" id="index">
   <h1>Components</h1>
   <h2>Faux Select</h2>
@@ -300,7 +284,7 @@ result, more style is needed but this css will be the foundation.
 
 **css/style.css**
 
-```sql
+```handlebars
 /* FauxSelectComponent */
 select.faux-select {
     opacity: 0;
@@ -347,7 +331,7 @@ native select element.
 
 **templates/components/faux-select**
 
-```sql
+```handlebars
 <script type="text/x-handlebars" id="components/faux-select">
   <div class="faux-select">
     <div class="faux-select-box">
@@ -379,7 +363,7 @@ Below is a list of required styles for this example of a faux select box.
 
 **css/style.css**
 
-```sql
+```handlebars
 /* FauxSelectComponent */
 select.faux-select {
     display: block;
