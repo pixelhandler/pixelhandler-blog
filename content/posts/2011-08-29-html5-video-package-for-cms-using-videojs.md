@@ -11,10 +11,10 @@ meta_description: |-
 ---
 
 _Screencast Demo_  
-<video poster="http://pixelhandler.com/uploads/html5-video-block-demo.png" width="864" height="540" controls>
-  <source src="http://pixelhandler.com/uploads/videojs_player_demo.mp4" type='video/mp4' />
+<video poster="/media/html5-video-block-demo.png" width="864" height="540" controls>
+  <source src="/media/videojs_player_demo.mp4" type='video/mp4' />
 </video>
-[Video File](http://pixelhandler.com/uploads/videojs_player_demo.mp4)
+[Video File](/media/videojs_player_demo.mp4)
 
 *Notes:* For info on HTML5 video see : <http://diveintohtml5.info/video.html> which has a tutorial for video conversion for web using the (free) Miro Video Converter. As HTML5 video implementations vary per web browser, to use this block you will need to prepare (4) files: .mp4, .ogv, .webm and have a preview or "poster" image. Also, if needed, Flowplayer (free) plays your .mp4 as flash media content.
 

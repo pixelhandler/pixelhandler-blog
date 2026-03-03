@@ -67,13 +67,14 @@ _- Lather, Rinse, Repeat_
 
 Could have used…
 
-    
-    
-      var today = new Date(); 
-      if (today.getDay() == 0 || today.getDay() == 6) { 
-        $('#dr_billingContainer h3:eq(0)').html('XXXX XXXX');
-      }
-    
+```javascript
+
+
+  var today = new Date(); 
+  if (today.getDay() == 0 || today.getDay() == 6) { 
+    $('#dr_billingContainer h3:eq(0)').html('XXXX XXXX');
+  }
+```
 
 …Instead chose to make a jQuery plugin that acts as a utility method that can
 easily be reused for other sites
@@ -83,16 +84,17 @@ of what users will experience.
 
 ### Plugin / utility method :  TODO…
 
-    
-    
-      /**  
-       *  $.fn.isWeekend() plugin to test if browsing on Sat./Sun.
-       *  checks a date object to see if the day is a weekend day, Saturday / Sunday
-       *  requires Date object as argument and jQuery
-       *  dr.isWeekend alias for plugin to use as utility function
-       *  @return true/false
-       */
-    
+```javascript
+
+
+  /**  
+   *  $.fn.isWeekend() plugin to test if browsing on Sat./Sun.
+   *  checks a date object to see if the day is a weekend day, Saturday / Sunday
+   *  requires Date object as argument and jQuery
+   *  dr.isWeekend alias for plugin to use as utility function
+   *  @return true/false
+   */
+```
 
 What's Needed? What behavior will we test for?
 
@@ -102,23 +104,24 @@ What's Needed? What behavior will we test for?
 
 ### QUnit : Start w/ HTML
 
-    
-    
-    <!DoCtYpE html>
-    <html>
-      <head>
-        <!-- QUnit CSS, JS, etc. -->
-      </head>
-      <body>
-        <h1 id="qunit-header">QUnit Tests for ...</h3>
-        <h2 id="qunit-banner"></h2>
-        <div id="qunit-testrunner-toolbar"></div>
-        <h2 id="qunit-userAgent"></h2>
-        <ol id="qunit-tests"></ol>
-        <div id="qunit-fixture">test markup</div>
-      </body>
-    </html>
-    
+```
+
+
+<!DoCtYpE html>
+<html>
+  <head>
+    <!-- QUnit CSS, JS, etc. -->
+  </head>
+  <body>
+    <h1 id="qunit-header">QUnit Tests for ...</h3>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup</div>
+  </body>
+</html>
+```
 
 ### What does this look like? Let's see it in action with JSFIDDLE
 
@@ -129,198 +132,209 @@ expand (0, 1, 1) and see the details.
 
 ### Write a test : to fail
 
-    
-    
-      /* namespace */
-      module('namespace check');
-      test('is dr a global variable.',function(){
-          expect(1);
-          ok( window.dr, 'dr namespace is present');
-      });
-    
+```javascript
+
+
+  /* namespace */
+  module('namespace check');
+  test('is dr a global variable.',function(){
+      expect(1);
+      ok( window.dr, 'dr namespace is present');
+  });
+```
 
 ### Add namespace test :  …fails
 
 ### Add some code :
 
-    
-    
-      if (!window.dr) { var dr = {}; } // using dr as namespace
-    
+```javascript
+
+
+  if (!window.dr) { var dr = {}; } // using dr as namespace
+```
 
 ### Code for namesapce :  …passes
 
 ### Add some helper code :  in a module
 
-    
-    
-      module("dr.isWeekend() utility fn uses jQuery", {
-        setup: function() {
-          dr.date = new Date();
-          dr.weekdays = [1,2,3,4,5];
-          dr.weekends = [0,6];
-        },
-        teardown: function() {
-          delete dr.date;
-          delete dr.weekdays;
-          delete dr.weekends;
-        }
-      });
-    
+```javascript
+
+
+  module("dr.isWeekend() utility fn uses jQuery", {
+    setup: function() {
+      dr.date = new Date();
+      dr.weekdays = [1,2,3,4,5];
+      dr.weekends = [0,6];
+    },
+    teardown: function() {
+      delete dr.date;
+      delete dr.weekdays;
+      delete dr.weekends;
+    }
+  });
+```
 
 ### Add a module w/ fixture : to run with each test
 
 ### Add a test :  Arrange, Act, Assert
 
-    
-    
-      test("dr.isWeekend() expects argument of object type Date", function(){
-          // Arrange - use setup() for dr.date
-          var testPluginDefault;
-          // Act
-          testPluginDefault = dr.isWeekend();
-          // Assert
-          expect(1);
-          notStrictEqual( testPluginDefault, 'error', "Plugin does not return 'error' comparing with notStrictEqual");
-      });
-    
+```javascript
+
+
+  test("dr.isWeekend() expects argument of object type Date", function(){
+      // Arrange - use setup() for dr.date
+      var testPluginDefault;
+      // Act
+      testPluginDefault = dr.isWeekend();
+      // Assert
+      expect(1);
+      notStrictEqual( testPluginDefault, 'error', "Plugin does not return 'error' comparing with notStrictEqual");
+  });
+```
 
 ### Test for plugin / method :  …fails
 
 ### Code for plugin :  skeleton
 
-    
-    
-      (function($) {
-    
-      $.fn.isWeekend = function(options) {
-          var defaults = {};
-          opts = $.extend({},defaults, options);
-          // return this.each(function() { 
-              // code plugin here ...
-          // });
-      };
-      dr.isWeekend = $.fn.isWeekend;
-    
-      })(jQuery);
-    
+```javascript
+
+
+  (function($) {
+
+  $.fn.isWeekend = function(options) {
+      var defaults = {};
+      opts = $.extend({},defaults, options);
+      // return this.each(function() { 
+          // code plugin here ...
+      // });
+  };
+  dr.isWeekend = $.fn.isWeekend;
+
+  })(jQuery);
+```
 
 ### Code for plugin skeleton :  …passes
 
 ### Add more to the test :  date object?
 
-    
-    
-      test("dr.isWeekend() expects argument of object type Date", function(){
-          // ...
-          failDate = [];
-          testPluginFalse = dr.isWeekend({ date: failDate });
-          // Assert
-          expect(2);
-          // ...
-          equal( testPluginFalse, 'invalid', "Plugin returns sting 'invalid' if argument is not Date object");
-      });
-    
+```javascript
+
+
+  test("dr.isWeekend() expects argument of object type Date", function(){
+      // ...
+      failDate = [];
+      testPluginFalse = dr.isWeekend({ date: failDate });
+      // Assert
+      expect(2);
+      // ...
+      equal( testPluginFalse, 'invalid', "Plugin returns sting 'invalid' if argument is not Date object");
+  });
+```
 
 ### Add more to the test :  …fails
 
 ### Work it out :
 
-    
-    
-      $.fn.isWeekend = function(options) {
-          var defaults, opts;
-          defaults = { date: new Date() };
-          opts = $.extend({},defaults, options);
-          if (Object.prototype.toString.call(opts.date) === '[object Date]') {
-              opts.dateOk = true;
-          } else {
-              return 'invalid';
-          }
-      };
-    
+```javascript
+
+
+  $.fn.isWeekend = function(options) {
+      var defaults, opts;
+      defaults = { date: new Date() };
+      opts = $.extend({},defaults, options);
+      if (Object.prototype.toString.call(opts.date) === '[object Date]') {
+          opts.dateOk = true;
+      } else {
+          return 'invalid';
+      }
+  };
+```
 
 ### Code to :  pass the test
 
 ### More testing :
 
-    
-    
-      // Act
-      // ...
-      testPluginTrue = dr.isWeekend({ date: dr.date });
-      // Assert
-      expect(3);
-      // ...
-      notStrictEqual( testPluginTrue, 'invalid', "Plugin does not return 'invalid' comparing with notStrictEqual");
-    
+```
+
+
+  // Act
+  // ...
+  testPluginTrue = dr.isWeekend({ date: dr.date });
+  // Assert
+  expect(3);
+  // ...
+  notStrictEqual( testPluginTrue, 'invalid', "Plugin does not return 'invalid' comparing with notStrictEqual");
+```
 
 ### More testing :  …passes, already :)
 
 ### Write some tests for logic
 
-    
-    
-      test("dr.isWeekend() plugin returns true or false for each day of the week", function(){
-          // Arrange - use setup() for dr.date, dr.weekdays, dr.weekends
-          var n, weekday, weekend;
-    
-          // Act
-          n = 0;
-          weekend = $.inArray(n, dr.weekends);
-          n = 1;
-          weekday = $.inArray(n, dr.weekdays);
-    
-          // Assert
-          expect(2);
-          equal(weekend, 0, "testing a weekend value");
-          equal(weekday, 0, "testing a weekday value");
-      });
-    
+```javascript
+
+
+  test("dr.isWeekend() plugin returns true or false for each day of the week", function(){
+      // Arrange - use setup() for dr.date, dr.weekdays, dr.weekends
+      var n, weekday, weekend;
+
+      // Act
+      n = 0;
+      weekend = $.inArray(n, dr.weekends);
+      n = 1;
+      weekday = $.inArray(n, dr.weekdays);
+
+      // Assert
+      expect(2);
+      equal(weekend, 0, "testing a weekend value");
+      equal(weekday, 0, "testing a weekday value");
+  });
+```
 
 ### Write some tests for logic :  …passes
 
 ### Write some test for behavior :
 
-    
-    
-      // Assert
-      expect(11);
-      equal(weekend, 0, "testing a weekend value");
-      equal(weekday, 0, "testing a weekday value");
-      equal(isSunday, true, "Yes, 11/28/2010 is Sunday a weekend" );
-      equal(isMonday, false, "Yes, 11/29/2010 is Monday a weekday" );
-      equal(isTuesday, false, "Yes, Tuesday a weekday" );
-      equal(isWednesday, false, "Yes, Wednesday a weekday" );
-      equal(isThursday, false, "Yes, Thursday a weekday" );
-      equal(isFriday, false, "Yes, Friday a weekday" );
-      equal(isSaturday, true, "Yes, Saturday a weekday" );
-      equal(isTodayAWeekend, true, "Is today a weekend: true if today is a weekend" );
-      equal(isTodayAWeekend, false, "Is today a weekend: false if today is a weekday" );
-    
+```
+
+
+  // Assert
+  expect(11);
+  equal(weekend, 0, "testing a weekend value");
+  equal(weekday, 0, "testing a weekday value");
+  equal(isSunday, true, "Yes, 11/28/2010 is Sunday a weekend" );
+  equal(isMonday, false, "Yes, 11/29/2010 is Monday a weekday" );
+  equal(isTuesday, false, "Yes, Tuesday a weekday" );
+  equal(isWednesday, false, "Yes, Wednesday a weekday" );
+  equal(isThursday, false, "Yes, Thursday a weekday" );
+  equal(isFriday, false, "Yes, Friday a weekday" );
+  equal(isSaturday, true, "Yes, Saturday a weekday" );
+  equal(isTodayAWeekend, true, "Is today a weekend: true if today is a weekend" );
+  equal(isTodayAWeekend, false, "Is today a weekend: false if today is a weekday" );
+```
 
 ### Write some test for behavior :  …fails
 
 ### Code the expected behavior :
 
-    
-    
-      // ...
-      weekdays = [1,2,3,4,5];
-      weekends = [0,6];
-      if (Object.prototype.toString.call(opts.date) === '[object Date]') {
-          // check if weekend using getDay() -> returns number 0-6 for day of week
-          opts.n = opts.date.getDay();
-          if ( $.inArray(opts.n , weekends) > -1 ) {
-              return true;
-          } else if ( $.inArray(opts.n , weekdays) > -1 ) {
-              return false;
-          }
-          return 'error';
-      } else {
-          return 'invalid';
+```javascript
+
+
+  // ...
+  weekdays = [1,2,3,4,5];
+  weekends = [0,6];
+  if (Object.prototype.toString.call(opts.date) === '[object Date]') {
+      // check if weekend using getDay() -> returns number 0-6 for day of week
+      opts.n = opts.date.getDay();
+      if ( $.inArray(opts.n , weekends) > -1 ) {
+          return true;
+      } else if ( $.inArray(opts.n , weekdays) > -1 ) {
+          return false;
       }
-    
+      return 'error';
+  } else {
+      return 'invalid';
+  }
+```
 
 ### 1 fail  … everyday can't be a weekend :(
 

@@ -31,8 +31,10 @@ the `error.message` property can be rendered to notify the user of the error.
 
 **app/templates/application-error.hbs**
 
-    <h1>Oops, the app is borked…</h1>
-    <p>{{model.message}}</p>
+```
+<h1>Oops, the app is borked…</h1>
+<p>{{model.message}}</p>
+```
 
 Alternatively, when a substate is not used to display an error notification,
 your application template can display any messages that you set on the
@@ -40,13 +42,15 @@ application controller; e.g. `errorMessage` and `errorDetails`.
 
 **app/templates/application.hbs**
 
-    {{#if errorMessage}}
-      <button class="error-message" {{action 'dismissErrorMessage'}}>
-        {{errorMessage}} {{errorDetails}}
-      </button>
-    {{/if}}
-    
-    {{outlet}}
+```
+{{#if errorMessage}}
+  <button class="error-message" {{action 'dismissErrorMessage'}}>
+    {{errorMessage}} {{errorDetails}}
+  </button>
+{{/if}}
+
+{{outlet}}
+```
 
 If you want to vary the error notification text of the error substate template,
 use the `setupController` hook to set a `title` property for the template.
@@ -57,31 +61,35 @@ and **server** error like so:
 
 **app/templates/post-error.hbs**
 
-    <h1>{{title}}</h1>
-    <p>{{model.message}}</p>
+```
+<h1>{{title}}</h1>
+<p>{{model.message}}</p>
+```
 
 The `title` attribute of the controller is used in the above template. It is
 customized depending on the error code.
 
 **app/routes/post-error.js**
 
-    import Ember from 'ember';
-    
-    export default Ember.Route.extend({
-      setupController(controller, error) {
-        let title = 'Oops, this post is borked…';
-        let code = error.code || error.get('code');
-        if (code) {
-          if (code >= 500) {
-            title = 'Oops, there was a server error…';
-          } else if (code === 404) {
-            title = "Opps, can't find this one…";
-          }
-          controller.set('title', title);
-        }
-        this._super(controller, error);
+```javascript
+import Ember from 'ember';
+
+export default Ember.Route.extend({
+  setupController(controller, error) {
+    let title = 'Oops, this post is borked…';
+    let code = error.code || error.get('code');
+    if (code) {
+      if (code >= 500) {
+        title = 'Oops, there was a server error…';
+      } else if (code === 404) {
+        title = "Opps, can't find this one…";
       }
-    });
+      controller.set('title', title);
+    }
+    this._super(controller, error);
+  }
+});
+```
 
 Since the application template may be used for errors that you do not need to
 transition to an `error` substate, the user will need a way to dismiss. An
@@ -89,21 +97,23 @@ action `dismissErrorMessage` can be used to clear application error properties.
 
 **app/routes/application.js**
 
-    import Ember from 'ember';
-    
-    export default Ember.Route.extend({
-      errorMessage: null,
-      errorDetails: null,
-    
-      actions: {
-        dismissErrorMessage() {
-          this.controllerFor('application').setProperties({
-            'errorMessage': null,
-            'errorDetails': null
-          });
-        }
-      }
-    });
+```bash
+import Ember from 'ember';
+
+export default Ember.Route.extend({
+  errorMessage: null,
+  errorDetails: null,
+
+  actions: {
+    dismissErrorMessage() {
+      this.controllerFor('application').setProperties({
+        'errorMessage': null,
+        'errorDetails': null
+      });
+    }
+  }
+});
+```
 
 The `application_error` substate will be used to display any [500] errors, or
 a [404] error. However, in the case of a specific client error like [400] or [422]
@@ -117,8 +127,10 @@ you can define specific error substates at that level in the route structure,
 
 **app/templates/admin/edit-error.hbs**
 
-    <h1>{{title}}</h1>
-    <p>{{model.message}}</p>
+```
+<h1>{{title}}</h1>
+<p>{{model.message}}</p>
+```
 
 Notice the template above is the same as the 'post-error.hbs' template. The post
 `error` template handles the display of non-admin errors; the "/admin/" directory
@@ -130,27 +142,29 @@ built into the [Ember.js] Router.
 
 **app/router.js**
 
-    import Ember from 'ember';
-    import config from './config/environment';
-    
-    const Router = Ember.Router.extend({
-      location: config.locationType
-    });
-    
-    Router.map(function() {
-      this.route('index', { path: '/' });
-      this.route('post', { path: '/:post_id' }, function () {
-        this.route('detail', { path: '/' });
-        this.route('comments');
-      });
-      this.route('admin', function () {
-        this.route('index');
-        this.route('create');
-        this.route('edit', { path: ':edit_id' });
-      });
-    });
-    
-    export default Router;
+```javascript
+import Ember from 'ember';
+import config from './config/environment';
+
+const Router = Ember.Router.extend({
+  location: config.locationType
+});
+
+Router.map(function() {
+  this.route('index', { path: '/' });
+  this.route('post', { path: '/:post_id' }, function () {
+    this.route('detail', { path: '/' });
+    this.route('comments');
+  });
+  this.route('admin', function () {
+    this.route('index');
+    this.route('create');
+    this.route('edit', { path: ':edit_id' });
+  });
+});
+
+export default Router;
+```
 
 To assit with testing the `error` substates - I set the `PostController` of the
 backend (API) to respond with an error. This is the repo for the API application:
@@ -164,66 +178,72 @@ it can be helpful to log the error conditions.
 
 **app/routes/admin/edit-error.js**
 
-    import Ember from 'ember';
-    
-    export default Ember.Route.extend({
-      setupController(controller, error) {
-        let title = 'Oops, this post is borked…';
-        let code = error.code || error.get('code');
-        if (code) {
-          if (code >= 500) {
-            title = 'Oops, there was a server error…';
-          } else if (code === 404) {
-            title = "Opps, can't find this one…";
-          } else if (code === 422) {
-            Ember.Logger.warn('Not expecting to handle 422 in an error substate');
-          }
-          controller.set('title', title);
-        }
-        this._super(controller, error);
+```javascript
+import Ember from 'ember';
+
+export default Ember.Route.extend({
+  setupController(controller, error) {
+    let title = 'Oops, this post is borked…';
+    let code = error.code || error.get('code');
+    if (code) {
+      if (code >= 500) {
+        title = 'Oops, there was a server error…';
+      } else if (code === 404) {
+        title = "Opps, can't find this one…";
+      } else if (code === 422) {
+        Ember.Logger.warn('Not expecting to handle 422 in an error substate');
       }
-    });
+      controller.set('title', title);
+    }
+    this._super(controller, error);
+  }
+});
+```
 
 The post form component sends an `update` action to persist changes via the Post
 resource endpoint.
 
 **app/templates/admin/edit.hbs**
 
-    <p><strong>Edit a Blog Post</strong></p>
-    {{form-post post=model isNew=model.isNew on-edit=(action "update")}}
+```
+<p><strong>Edit a Blog Post</strong></p>
+{{form-post post=model isNew=model.isNew on-edit=(action "update")}}
+```
 
 The action is triggered after the user exists the field, this prevents a flood
 of updates from every keystroke - caused from binding a model property to an input.
 
 **app/components/form-post.js**
 
-    import Ember from 'ember';
-    import BufferedProxy from 'ember-buffered-proxy/proxy';
-    
-    export default Ember.Component.extend({
-      tagName: 'form',
-    
-      resource: Ember.computed('post', function() {
-        return BufferedProxy.create({ content: this.get('post') });
-      }).readOnly(),
-    
-      isNew: null,
-      isEditing: true,
-    
-      focusOut() {
-        if (!this.get('isNew')) {
-          this.get('resource').applyChanges();
-          this.set('isEditing', false);
-          let action = this.get('on-edit');
-          if (typeof action === 'function') {
-            action(this.get('post'), function callback() {
-              this.set('isEditing', true);
-            }.bind(this));
-          }
-        }
+```javascript
+import Ember from 'ember';
+import BufferedProxy from 'ember-buffered-proxy/proxy';
+
+export default Ember.Component.extend({
+  tagName: 'form',
+
+  resource: Ember.computed('post', function() {
+    return BufferedProxy.create({ content: this.get('post') });
+  }).readOnly(),
+
+  isNew: null,
+  isEditing: true,
+
+  focusOut() {
+    if (!this.get('isNew')) {
+      this.get('resource').applyChanges();
+      this.set('isEditing', false);
+      let action = this.get('on-edit');
+      if (typeof action === 'function') {
+        action(this.get('post'), function callback() {
+          this.set('isEditing', true);
+        }.bind(this));
       }
-      /* … */
-    });
+    }
+  }
+  /* … */
+});
+```
 
 The `admin.edit` route responds to the actions send by the form component. After
 the API request is made successfully, the `callback` function, sent with the action,
@@ -241,42 +261,44 @@ application controller which results in a dismissible error notification.
 
 **app/routes/admin/edit.js**
 
-    import Ember from 'ember';
-    import ApplicationErrorsMixin from 'jr-test/mixins/application-errors';
-    
-    export default Ember.Route.extend(ApplicationErrorsMixin, {
-      model(params) {
-        return this.store.find('posts', params.edit_id);
-      },
-    
-      setupController(controller, model) {
-        this._super(controller, model);
-        controller.set('isEditing', true);
-      },
-    
-      actions: {
-        update(model, callback) {
-          return this.store.updateResource('posts', model)
-          .finally(function() {
-            if (typeof callback === 'function') {
-              callback();
-            }
-          })
-          .catch(function(error) {
-            model.rollback();
-            this.send('error', error);
-          }.bind(this));
-        },
-    
-        error(error) {
-          if (error.code === 422 || error.code === 400) {
-            this.handleApplicationError(error);
-          } else {
-            this.intermediateTransitionTo('admin.edit_error', error);
-          }
+```javascript
+import Ember from 'ember';
+import ApplicationErrorsMixin from 'jr-test/mixins/application-errors';
+
+export default Ember.Route.extend(ApplicationErrorsMixin, {
+  model(params) {
+    return this.store.find('posts', params.edit_id);
+  },
+
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('isEditing', true);
+  },
+
+  actions: {
+    update(model, callback) {
+      return this.store.updateResource('posts', model)
+      .finally(function() {
+        if (typeof callback === 'function') {
+          callback();
         }
+      })
+      .catch(function(error) {
+        model.rollback();
+        this.send('error', error);
+      }.bind(this));
+    },
+
+    error(error) {
+      if (error.code === 422 || error.code === 400) {
+        this.handleApplicationError(error);
+      } else {
+        this.intermediateTransitionTo('admin.edit_error', error);
       }
-    });
+    }
+  }
+});
+```
 
 So that both the *admin/edit* and *admin/create* routes can use the same behavior,
 the method `handleApplicationError` is defined in a mixin.
@@ -285,42 +307,44 @@ This mixin is used to parse the error responses and format error details.
 
 **app/mixins/application-errors.js**
 
-    import Ember from 'ember';
-    
-    export default Ember.Mixin.create({
-    
-      handleApplicationError(error) {
-        let details = this.handleUnprocessableEntities(error);
-        details = details || this.handleBadRequest(error);
-        this.controllerFor('application').setProperties({
-          'errorMessage': error.message,
-          'errorDetails': details || undefined
-        });
-      },
-    
-      handleBadRequest(error) {
-        if (error.code !== 400 || !error.errors.length) { return; }
-        // See https://github.com/cerebris/jsonapi-resources#error-codes
-        let errors = error.errors.filterBy('code', 105);
-        errors = errors.mapBy('detail');
-        return (!errors) ? '' : errors.join(' ');
-      },
-    
-      handleUnprocessableEntities(error) {
-        if (error.code !== 422 || !error.errors.length) { return; }
-        // See https://github.com/cerebris/jsonapi-resources#error-codes
-        let errors = error.errors.filterBy('code', 100);
-        let fields = errors.map(function(error) {
-          let paths = error.source.pointer.split('/');
-          let attr = paths[paths.length - 1].split('_');
-          attr = attr.map(function(str) {
-            return Ember.String.capitalize(str);
-          });
-          return attr.join(' ');
-        });
-        return (!fields) ? '' : 'Invalid fields: ' + fields.join(', ') + '.';
-      }
+```javascript
+import Ember from 'ember';
+
+export default Ember.Mixin.create({
+
+  handleApplicationError(error) {
+    let details = this.handleUnprocessableEntities(error);
+    details = details || this.handleBadRequest(error);
+    this.controllerFor('application').setProperties({
+      'errorMessage': error.message,
+      'errorDetails': details || undefined
     });
+  },
+
+  handleBadRequest(error) {
+    if (error.code !== 400 || !error.errors.length) { return; }
+    // See https://github.com/cerebris/jsonapi-resources#error-codes
+    let errors = error.errors.filterBy('code', 105);
+    errors = errors.mapBy('detail');
+    return (!errors) ? '' : errors.join(' ');
+  },
+
+  handleUnprocessableEntities(error) {
+    if (error.code !== 422 || !error.errors.length) { return; }
+    // See https://github.com/cerebris/jsonapi-resources#error-codes
+    let errors = error.errors.filterBy('code', 100);
+    let fields = errors.map(function(error) {
+      let paths = error.source.pointer.split('/');
+      let attr = paths[paths.length - 1].split('_');
+      attr = attr.map(function(str) {
+        return Ember.String.capitalize(str);
+      });
+      return attr.join(' ');
+    });
+    return (!fields) ? '' : 'Invalid fields: ' + fields.join(', ') + '.';
+  }
+});
+```
 
 For the *admin/create* route no `error` substate template was needed. For handling
 [500] errors the parent application `error` substate will be used. And, for

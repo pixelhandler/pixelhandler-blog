@@ -18,9 +18,10 @@ module Blog
       p br strong em b i ul ol li h1 h2 h3 h4 h5 h6
       a code pre blockquote table thead tbody tr th td
       del sup sub mark hr span div
+      img video audio source iframe
     ].freeze
 
-    ALLOWED_ATTRIBUTES = %w[href rel target class id].freeze
+    ALLOWED_ATTRIBUTES = %w[href rel target class id src alt width height type controls poster frameborder allowfullscreen webkitallowfullscreen mozallowfullscreen].freeze
 
     class << self
       def all
@@ -150,7 +151,7 @@ module Blog
 
     def render_markdown(text)
       renderer = RougeRenderer.new(
-        filter_html: true,
+        filter_html: false,
         hard_wrap: true,
         link_attributes: {target: "_blank", rel: "noopener noreferrer"}
       )
@@ -197,7 +198,8 @@ module Blog
       end
       return "" unless first_para
 
-      plain_text = first_para.gsub(/\[([^\]]+)\]\([^)]+\)/, '\1')
+      plain_text = ActionController::Base.helpers.strip_tags(first_para)
+      plain_text = plain_text.gsub(/\[([^\]]+)\]\([^)]+\)/, '\1')
       plain_text = plain_text.gsub(/[*_~`#]/, "")
       plain_text.strip.truncate(200)
     end

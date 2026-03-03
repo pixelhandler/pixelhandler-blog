@@ -1,0 +1,152 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "fileutils"
+
+DRY_RUN = ARGV.include?("--dry-run")
+
+REPO_ROOT  = File.expand_path("..", __dir__)
+POSTS_DIR  = "#{REPO_ROOT}/content/posts"
+SRC_ROOTS  = %w[public/pixelhandler-com public/content].map { "#{REPO_ROOT}/#{_1}" }
+DEST_ROOT  = "#{REPO_ROOT}/public/media"
+MEDIA_EXTS = %w[jpg jpeg png gif mp4 m4v mp3 m4a pdf zip svg webp mov swf].freeze
+
+# Match http(s)://pixelhandler.com/... and S3 CDN URLs
+PIXELHANDLER_RE = %r{https?://pixelhandler\.com(/[^\s"'<>)]+)}
+S3_CDN_RE       = %r{https?://s3\.amazonaws\.com/cdn\.pixelhandler\.com/uploads/([^\s"'<>)]+)}
+RAW_GITHUB_RE   = %r{https?://raw\.github(?:usercontent)?\.com/[^\s"'<>)]+}
+
+def media?(url)
+  ext = File.extname(url).delete_prefix(".").downcase
+  MEDIA_EXTS.include?(ext)
+end
+
+def find_local(relative_path)
+  SRC_ROOTS.each do |root|
+    candidate = "#{root}/#{relative_path}"
+    return candidate if File.exist?(candidate)
+  end
+  nil
+end
+
+results = { replaced: [], missing: [], broken_external: [] }
+
+Dir.glob("#{POSTS_DIR}/*.md").sort.each do |post_file|
+  content  = File.read(post_file)
+  modified = content.dup
+  rel_post = post_file.sub("#{REPO_ROOT}/", "")
+
+  # Collect raw.github.com URLs (broken external, left unchanged)
+  raw_github_urls = content.scan(RAW_GITHUB_RE).uniq
+  raw_github_urls.each do |url|
+    results[:broken_external] << { file: rel_post, url: url }
+  end
+
+  # Process S3 CDN URLs: extract filename only (flat dest)
+  content.scan(S3_CDN_RE).map(&:first).uniq.each do |capture|
+    url           = "https://s3.amazonaws.com/cdn.pixelhandler.com/uploads/#{capture}"
+    relative_path = "uploads/#{capture}"
+    filename      = File.basename(capture)
+
+    next unless media?(capture)
+
+    local_src = find_local(relative_path)
+    if local_src.nil?
+      results[:missing] << { file: rel_post, url: url }
+      next
+    end
+
+    dest_path = "#{DEST_ROOT}/#{filename}"
+    local_url = "/media/#{filename}"
+
+    unless DRY_RUN
+      FileUtils.cp(local_src, dest_path) unless File.exist?(dest_path)
+      modified.gsub!(url, local_url)
+    end
+
+    results[:replaced] << { file: rel_post, old: url, new: local_url }
+  end
+
+  # Process http(s)://pixelhandler.com/<path> URLs
+  content.scan(PIXELHANDLER_RE).map(&:first).uniq.each do |path|
+    # path e.g. "/wp-content/uploads/2011/07/foo.png"
+    url_http      = "http://pixelhandler.com#{path}"
+    url_https     = "https://pixelhandler.com#{path}"
+    relative_path = path.delete_prefix("/")
+    filename      = File.basename(path)
+
+    next unless media?(path)
+
+    local_src = find_local(relative_path)
+    if local_src.nil?
+      reported_url = content.include?(url_https) ? url_https : url_http
+      results[:missing] << { file: rel_post, url: reported_url }
+      next
+    end
+
+    dest_path = "#{DEST_ROOT}/#{filename}"
+    local_url = "/media/#{filename}"
+
+    unless DRY_RUN
+      FileUtils.cp(local_src, dest_path) unless File.exist?(dest_path)
+      # Replace both http and https variants
+      [url_http, url_https].each { |u| modified.gsub!(u, local_url) }
+    end
+
+    reported_url = content.include?(url_https) ? url_https : url_http
+    results[:replaced] << { file: rel_post, old: reported_url, new: local_url }
+  end
+
+  File.write(post_file, modified) if modified != content && !DRY_RUN
+end
+
+# ── Report ──────────────────────────────────────────────────────────────────
+
+def group_by_file(list)
+  list.group_by { |r| r[:file] }
+end
+
+puts
+puts "=== Asset Link Migration Report ==="
+if DRY_RUN
+  puts "(DRY RUN — no files copied or modified)"
+end
+puts
+
+replaced_files = group_by_file(results[:replaced])
+puts "✅ COPIED & REPLACED (#{results[:replaced].size} links in #{replaced_files.size} files):"
+if replaced_files.empty?
+  puts "  (none)"
+else
+  replaced_files.each do |file, entries|
+    puts "  #{file}"
+    entries.each { |e| puts "    #{e[:old]}\n    → #{e[:new]}" }
+  end
+end
+
+puts
+missing_files = group_by_file(results[:missing])
+puts "❌ MISSING LOCALLY (#{results[:missing].size} links — not found in source dirs):"
+if missing_files.empty?
+  puts "  (none)"
+else
+  missing_files.each do |file, entries|
+    puts "  #{file}"
+    entries.each { |e| puts "    #{e[:url]}" }
+  end
+end
+
+puts
+broken_files = group_by_file(results[:broken_external])
+puts "⚠️  BROKEN EXTERNAL (#{results[:broken_external].size} links — left unchanged):"
+if broken_files.empty?
+  puts "  (none)"
+else
+  broken_files.each do |file, entries|
+    puts "  #{file}"
+    entries.each { |e| puts "    #{e[:url]}" }
+  end
+end
+
+puts
+puts DRY_RUN ? "Run without --dry-run to apply changes." : "Done."

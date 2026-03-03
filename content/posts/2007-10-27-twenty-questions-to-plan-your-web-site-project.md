@@ -23,8 +23,10 @@ meta_description: Every Web project needs a solid plan to work through the estim
   12. Please give a range of the number of pages or screens that you feel will be sufficient to meet your project objectives (e.g. 20 to 25 final pages/screens).
   13. For E-commerce Projects: 
     * Please estimate the total number of products (SKUs) and product categories.
-    * Do you have a merchant account with an online payment gateway (e.g. PayPal)?
-    * Would you like to use flat rate for shipping fees or live quotes from shipping providers?
+```
+* Do you have a merchant account with an online payment gateway (e.g. PayPal)?
+* Would you like to use flat rate for shipping fees or live quotes from shipping providers?
+```
   14. Have you established a budget for the web site?
   15. Do you have a copywriter for the content of your upcoming Web site? Do you need legal counsel to prepare 'terms of use' and 'privacy policy' pages?
   16. Do you feel that Flash animation will help your visitors 'catch' your marketing message? if so, how many concepts/animations do you think will get the message across?

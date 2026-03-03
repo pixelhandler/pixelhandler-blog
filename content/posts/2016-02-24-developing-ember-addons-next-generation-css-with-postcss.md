@@ -74,7 +74,9 @@ Below is an explaination the solution I found, starting from the end of the stor
 
 First an application needs to install the addon (for common styles).
 
-    ember install git+ssh://git@gitlab.com:pixelhandler/xyz-styles.git
+```
+ember install git+ssh://git@gitlab.com:pixelhandler/xyz-styles.git
+```
 
 This command results in adding dependencies to my package.json. I moved the 'styles addon' to `dependencies` (from `devDependencies`):
 
@@ -82,36 +84,40 @@ This command results in adding dependencies to my package.json. I moved the 'sty
 
 The output was…
 
-    version: 2.3.0
-    Installed packages for tooling via npm.
-    installing xyz-styles
-    install packages autoprefixer, broccoli-funnel, broccoli-merge-trees, broccoli-postcss, postcss-cssnext, postcss-import
-    Installing packages for tooling via npm..caniuse-api: Generation ok
-    Installed packages for tooling via npm.
-    Installed addon package.
+```css
+version: 2.3.0
+Installed packages for tooling via npm.
+installing xyz-styles
+install packages autoprefixer, broccoli-funnel, broccoli-merge-trees, broccoli-postcss, postcss-cssnext, postcss-import
+Installing packages for tooling via npm..caniuse-api: Generation ok
+Installed packages for tooling via npm.
+Installed addon package.
+```
 
 In order for this command to work, the addon needed a [blueprint]…
 
 [blueprint]: https://gitlab.com/pixelhandler/xyz-styles/blob/master/blueprints/xyz-styles/index.js
 
-    /* jshint node: true */
-    /* global module */
-    module.exports = {
-      description: 'xyz-styles',
-    
-      normalizeEntityName: function () {},
-    
-      afterInstall: function () {
-        return this.addPackagesToProject([
-          { name: 'autoprefixer', target: '^6.3.3' },
-          { name: 'broccoli-funnel', target: '^1.0.1' },
-          { name: 'broccoli-merge-trees',target: '^1.1.1' },
-          { name: 'broccoli-postcss', target: '^2.1.1' },
-          { name: 'postcss-cssnext', target: '^2.4.0' },
-          { name: 'postcss-import', target: '^8.0.2' }
-        ]);
-      }
-    };
+```javascript
+/* jshint node: true */
+/* global module */
+module.exports = {
+  description: 'xyz-styles',
+
+  normalizeEntityName: function () {},
+
+  afterInstall: function () {
+    return this.addPackagesToProject([
+      { name: 'autoprefixer', target: '^6.3.3' },
+      { name: 'broccoli-funnel', target: '^1.0.1' },
+      { name: 'broccoli-merge-trees',target: '^1.1.1' },
+      { name: 'broccoli-postcss', target: '^2.1.1' },
+      { name: 'postcss-cssnext', target: '^2.4.0' },
+      { name: 'postcss-import', target: '^8.0.2' }
+    ]);
+  }
+};
+```
 
 My `afterInstall` hook in the `index.js` file adds  required dependencies for processing CSS files using PostCSS and a couple plugins for `cssnext` and `import`.
 
@@ -125,61 +131,63 @@ An Ember CLI addon uses it's `index.js` file to provide hooks for the consuming 
 
 Below is the `xyz-styles/index.js` file:
 
-    /* jshint node: true */
-    /* global require, module */
-    'use strict';
-    
-    module.exports = {
-      name: 'xyz-styles',
-    
-      getCssFileName: function () {
-        return this.name + '.css';
-      },
-    
-      isAddon: function () {
-        var keywords = this.project.pkg.keywords;
-        return (keywords && keywords.indexOf('ember-addon') !== -1);
-      },
-    
-      included: function (app) {
-        this._super.included(app);
-        if (!this.isAddon()) {
-          app.import('vendor/' + this.getCssFileName());
-        }
-      },
-    
-      treeForVendor: function (node) {
-        if (this.isAddon()) { return node; }
-    
-        var path = require('path');
-        var Funnel = require('broccoli-funnel');
-        var mergeTrees = require('broccoli-merge-trees');
-        var compileCSS = require('broccoli-postcss');
-    
-        var styles = path.join(this.project.nodeModulesPath, this.name, 'app', 'styles');
-        var inputTrees = new Funnel(styles, { include: [/.css$/] });
-        var inputFile = this.getCssFileName();
-        var outputFile = inputFile;
-        var plugins = this.getPlugins();
-        var sourceMaps = { inline: true };
-        var css = compileCSS([inputTrees], inputFile, outputFile, plugins, sourceMaps);
-        node = (node) ? mergeTrees([ node, css ]) : css;
-    
-        return node;
-      },
-    
-      getPlugins() {
-        var autoprefixer = require('autoprefixer');
-        var cssnext = require('postcss-cssnext');
-        var cssimport = require('postcss-import');
-    
-        return [
-          { module: autoprefixer, options: { browsers: ['last 2 version'] } },
-          { module: cssimport },
-          { module: cssnext, options: { sourcemap: true } }
-        ];
-      }
-    };
+```javascript
+/* jshint node: true */
+/* global require, module */
+'use strict';
+
+module.exports = {
+  name: 'xyz-styles',
+
+  getCssFileName: function () {
+    return this.name + '.css';
+  },
+
+  isAddon: function () {
+    var keywords = this.project.pkg.keywords;
+    return (keywords && keywords.indexOf('ember-addon') !== -1);
+  },
+
+  included: function (app) {
+    this._super.included(app);
+    if (!this.isAddon()) {
+      app.import('vendor/' + this.getCssFileName());
+    }
+  },
+
+  treeForVendor: function (node) {
+    if (this.isAddon()) { return node; }
+
+    var path = require('path');
+    var Funnel = require('broccoli-funnel');
+    var mergeTrees = require('broccoli-merge-trees');
+    var compileCSS = require('broccoli-postcss');
+
+    var styles = path.join(this.project.nodeModulesPath, this.name, 'app', 'styles');
+    var inputTrees = new Funnel(styles, { include: [/.css$/] });
+    var inputFile = this.getCssFileName();
+    var outputFile = inputFile;
+    var plugins = this.getPlugins();
+    var sourceMaps = { inline: true };
+    var css = compileCSS([inputTrees], inputFile, outputFile, plugins, sourceMaps);
+    node = (node) ? mergeTrees([ node, css ]) : css;
+
+    return node;
+  },
+
+  getPlugins() {
+    var autoprefixer = require('autoprefixer');
+    var cssnext = require('postcss-cssnext');
+    var cssimport = require('postcss-import');
+
+    return [
+      { module: autoprefixer, options: { browsers: ['last 2 version'] } },
+      { module: cssimport },
+      { module: cssnext, options: { sourcemap: true } }
+    ];
+  }
+};
+```
 
 The `treeForVendor` hook above utilizes the PostCSS modules and a few Broccoli.js modules - to build the CSS with the build pipeline of the consuming application. I used a `getPlugins` method to setup the options for the `broccoli-postcss` module to compile the CSS with.
 
@@ -196,34 +204,36 @@ Notice that the [ember-cli-build.js] file is very similar to the `index.js` file
 
 [ember-cli-build.js]: https://gitlab.com/pixelhandler/xyz-styles/blob/master/ember-cli-build.js
 
-    /*jshint node:true*/
-    /* global require, module */
-    var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
-    var autoprefixer = require('autoprefixer');
-    var cssnext = require('postcss-cssnext');
-    var cssimport = require('postcss-import');
-    var Funnel = require('broccoli-funnel');
-    var compileCSS = require('broccoli-postcss');
-    var path = require('path');
-    
-    module.exports = function(defaults) {
-      var options = {
-        plugins: [
-          { module: autoprefixer, options: { browsers: ['last 2 version'] } },
-          { module: cssimport },
-          { module: cssnext, options: { sourcemap: true } }
-        ]
-      };
-    
-      var app = new EmberAddon(defaults, { postcssOptions: options });
-    
-      var file = 'xyz-styles.css';
-      var styles = path.join('./', 'app', 'styles');
-      styles = new Funnel(styles, { include: [/.css$/] });
-      var css = compileCSS([styles], file, 'vendor/' + file, options.plugins, { inline: false });
-    
-      return app.toTree([css]);
-    };
+```javascript
+/*jshint node:true*/
+/* global require, module */
+var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+var autoprefixer = require('autoprefixer');
+var cssnext = require('postcss-cssnext');
+var cssimport = require('postcss-import');
+var Funnel = require('broccoli-funnel');
+var compileCSS = require('broccoli-postcss');
+var path = require('path');
+
+module.exports = function(defaults) {
+  var options = {
+    plugins: [
+      { module: autoprefixer, options: { browsers: ['last 2 version'] } },
+      { module: cssimport },
+      { module: cssnext, options: { sourcemap: true } }
+    ]
+  };
+
+  var app = new EmberAddon(defaults, { postcssOptions: options });
+
+  var file = 'xyz-styles.css';
+  var styles = path.join('./', 'app', 'styles');
+  styles = new Funnel(styles, { include: [/.css$/] });
+  var css = compileCSS([styles], file, 'vendor/' + file, options.plugins, { inline: false });
+
+  return app.toTree([css]);
+};
+```
 
 The build recipe above uses the same strategy as the build setup in the addon's index.js file. It utilizes a file `xyz-styles.css` as the target for input, and outputs the same filename inside the `dist/vendor` directory.
 
@@ -248,12 +258,14 @@ In this example, the xyz-foundation app defines a `body` style with the color as
 
 [app/templates/application.hbs]: https://gitlab.com/pixelhandler/xyz-foundation/blob/master/app/templates/application.hbs
 
-    <h2 id="title">Welcome to <span class="red">Ember</span></h2>
+```
+<h2 id="title">Welcome to <span class="red">Ember</span></h2>
+```
 
 The `red` class above is introduced to the application's vendor CSS by the styles addon. The title text is blue since the vendor CSS set the text color to **red**, but the application's CSS defines the body text as **blue**.
 
-![xyz-foundation-app screenshot](https://pixelhandler.com/uploads/xyz-foundation-app.jpg)
+![xyz-foundation-app screenshot](/media/xyz-foundation-app.jpg)
 
-![xyz-foundation css stylesheet screenshot](https://pixelhandler.com/uploads/xyz-foundation-css.jpg)
+![xyz-foundation css stylesheet screenshot](/media/xyz-foundation-css.jpg)
 
-![xyz-foundation vendor styles screenshot](https://pixelhandler.com/uploads/xyz-styles-vendor-css.jpg)
+![xyz-foundation vendor styles screenshot](/media/xyz-styles-vendor-css.jpg)

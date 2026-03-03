@@ -27,37 +27,43 @@ I setup a route for **[not-found]** in my router. The last route uses the wildca
 
 [not-found]: https://github.com/pixelhandler/blog/blob/master/client/app/router.js
 
-    Router.map(function () {
-      this.route('about');
-      this.resource('posts', function () {
-        this.resource('post', { path: ':post_slug' });
-      });
-      this.route('not-found', { path: '/*path' });
-    });
+```javascript
+Router.map(function () {
+  this.route('about');
+  this.resource('posts', function () {
+    this.resource('post', { path: ':post_slug' });
+  });
+  this.route('not-found', { path: '/*path' });
+});
+```
 
 When the wildcard path matches a url that should result in the application rendering a 404 page, the (404) [not-found route] utilizes the `redirect` hook in order to transition to the url `/not-found`. My app has a Route prototype (app/routes/not-found.js) which is mapped to the 'non-found' route:
 
 [not-found route]: https://github.com/pixelhandler/blog/blob/master/client/app/routes/not-found.js
 
-    import Ember from 'ember';
+```javascript
+import Ember from 'ember';
 
-    export default Ember.Route.extend({
-      redirect: function () {
-        var url = this.router.location.formatURL('/not-found');
-        if (window.location.pathname !== url) {
-          this.transitionTo('/not-found');
-        }
-      }
-    });
+export default Ember.Route.extend({
+  redirect: function () {
+    var url = this.router.location.formatURL('/not-found');
+    if (window.location.pathname !== url) {
+      this.transitionTo('/not-found');
+    }
+  }
+});
+```
 
 The result is that the application renders a `not-found` template (templates/not-found.hbs) with a link to my archives page. 
 
 [not-found template]: https://github.com/pixelhandler/blog/blob/master/client/app/templates/not-found.hbs
 
-    <h1>404 Not Found</h1>
-    <p>
-      Perhaps you have a link that has changed, see {{#link-to 'posts'}}Archives{{/link-to}}.
-    </p>
+```
+<h1>404 Not Found</h1>
+<p>
+  Perhaps you have a link that has changed, see {{#link-to 'posts'}}Archives{{/link-to}}.
+</p>
+```
 
 ## Error in a route hook
 
@@ -67,15 +73,17 @@ Any route having a hook (e.g. `model`, `beforeModel`, `afterModel`) that results
 
 Define the action, log the error and transition to the '/not-found' page
 
-    import Ember from 'ember';
+```javascript
+import Ember from 'ember';
 
-    export default Ember.Route.extend({
-      actions: {
-        error: function (error) {
-          Ember.Logger.error(error);
-          this.transitionTo('/not-found');
-        }
-      }
-    });
+export default Ember.Route.extend({
+  actions: {
+    error: function (error) {
+      Ember.Logger.error(error);
+      this.transitionTo('/not-found');
+    }
+  }
+});
+```
 
 Here is my 404 page: <http://pixelhandler.com/not-found>.

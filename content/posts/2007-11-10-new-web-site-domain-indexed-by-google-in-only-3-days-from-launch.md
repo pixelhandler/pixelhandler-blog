@@ -46,4 +46,4 @@ _WordPress Plugins in use for this site_
   * WordPress Mobile Edition
   * WP Navigation Tool (NAVT)
   * podPress
-**ScreenShots from search engine results and google's cache **:_Initially the site started ranking well in a few days: _ ![Top Rankings](http://pixelhandler.com/uploads/toprankings-bcf.jpg)_Seven days later I noticed that the site was cached by Google in three days after launching/posting the Web site:_![google cache](http://pixelhandler.com/uploads/googlecache-bcf.jpg)_After a couple weeks passed the site ranked number one on the first page of Google: _![ranking number one on google](http://pixelhandler.com/uploads/toprankings-bcf-number1.jpg)
+**ScreenShots from search engine results and google's cache **:_Initially the site started ranking well in a few days: _ ![Top Rankings](/media/toprankings-bcf.jpg)_Seven days later I noticed that the site was cached by Google in three days after launching/posting the Web site:_![google cache](/media/googlecache-bcf.jpg)_After a couple weeks passed the site ranked number one on the first page of Google: _![ranking number one on google](/media/toprankings-bcf-number1.jpg)

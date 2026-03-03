@@ -4,9 +4,8 @@ slug: social-justice-is-a-movement-to-end-injustice-in-the-world
 published_at: '2010-06-23'
 author: pixelhandler
 tags: []
-meta_description: "**Human trafficking fact**: 27 million modern day slaves; more
-  today than there was when England ruled the world during the trans-Atlantic slave
-  trade. \n\n![]..."
+meta_description: "27 million modern day slaves exist today — more than during the
+  trans-Atlantic slave trade. Notes on social justice and ending injustice in the world."
 ---
 
 More stats: 

@@ -19,7 +19,7 @@ meta_description: |-
 <li><p>Demo of the plugin behavior showing both lists and definition list... <a href="http://www.pixelhandler.com/menutree/jQuery-MenuTree-Plugin/example/">Demo</a></p></li>
 <li><p>Status : New plugin, give it a try!</p></li>
 <li><p>Tracer plugin added and featured with demo.</p></li>
-<li><p>Blog post for MenuTree plugin on my blog... <a href="http://www.pixelhandler.com/blog/2010/01/28/jquery-menutree-plugin-hosted-at-github-com/">Blog</a></p></li>
+<li><p>Blog post for MenuTree plugin on my blog... <a href="https://pixelhandler.dev/posts/jquery-menutree-plugin-hosted-on-github">Blog</a></p></li>
 </ul>
 
 
@@ -54,7 +54,9 @@ meta_description: |-
 $(document).ready(function() {
 
 	$('#myTree').menuTree({
-    	animation: true,
+```css
+	animation: true,
+```
 		handler: 'slideToggle',
 		anchor: 'a[href="#"]',
 		trace: true

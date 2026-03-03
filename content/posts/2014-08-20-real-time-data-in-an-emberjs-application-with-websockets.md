@@ -57,25 +57,31 @@ See: [jsonpatch.com] ...
 
 The original document:
 
-    {
-      "baz": "qux",
-      "foo": "bar"
-    }
+```
+{
+  "baz": "qux",
+  "foo": "bar"
+}
+```
 
 The patch:
 
-    [
-      { "op": "replace", "path": "/baz", "value": "boo" },
-      { "op": "add", "path": "/hello, "value": ["world"] },
-      { "op": "remove, "path": "/foo}
-    ]
+```
+[
+  { "op": "replace", "path": "/baz", "value": "boo" },
+  { "op": "add", "path": "/hello, "value": ["world"] },
+  { "op": "remove, "path": "/foo}
+]
+```
 
 The result:
 
-    {
-       "baz": "boo",
-       "hello": ["world"]
-    }
+```
+{
+   "baz": "boo",
+   "hello": ["world"]
+}
+```
 
 ### Operations
 
@@ -83,19 +89,25 @@ The result:
 
 #### Add
 
-    {"op": "add", "path": "/biscuits/1", "value": {"name": "Ginger Nut"}}
+```
+{"op": "add", "path": "/biscuits/1", "value": {"name": "Ginger Nut"}}
+```
 
 Adds a value to an object or inserts it into an array. In the case of an array the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.
 
 #### Remove
 
-    {"op": "remove", "path": "/biscuits"}
+```
+{"op": "remove", "path": "/biscuits"}
+```
 
 Removes a value from an object or array.
 
 #### Replace
 
-    {"op": "replace", "path": "/biscuits/0/name", "value": "Chocolate Digestive"}
+```
+{"op": "replace", "path": "/biscuits/0/name", "value": "Chocolate Digestive"}
+```
 
 Replaces a value, equivalent to a “remove” followed by an “add”.
 
@@ -105,20 +117,24 @@ Replaces a value, equivalent to a “remove” followed by an “add”.
 An add operation...
 
 
-    {"op":"add","path":"/posts/-","value":{"id":"a4d213d6-5595-4686-9817-169a7eddbda1","slug":"test","title":"test title","date":"2014-10-29","excerpt":"test excerpt text","body":"test body text","links":{"author":null}}}
+```
+{"op":"add","path":"/posts/-","value":{"id":"a4d213d6-5595-4686-9817-169a7eddbda1","slug":"test","title":"test title","date":"2014-10-29","excerpt":"test excerpt text","body":"test body text","links":{"author":null}}}
 
-    {"path":"/posts/a4d213d6-5595-4686-9817-169a7eddbda1/links/author","op":"add","value":"5c9b62ec-1569-448b-912a-97e6d62f493e"}
+{"path":"/posts/a4d213d6-5595-4686-9817-169a7eddbda1/links/author","op":"add","value":"5c9b62ec-1569-448b-912a-97e6d62f493e"}
 
-    {"path":"/authors/5c9b62ec-1569-448b-912a-97e6d62f493e/links/posts/-","op":"add","value":"a4d213d6-5595-4686-9817-169a7eddbda1"}
+{"path":"/authors/5c9b62ec-1569-448b-912a-97e6d62f493e/links/posts/-","op":"add","value":"a4d213d6-5595-4686-9817-169a7eddbda1"}
+```
 
 A delete operation...
 
 
-    {"op":"remove","path":"/posts/341207e0-cfd9-4d3a-a5ab-d2268ab2e472/links/author"}
+```
+{"op":"remove","path":"/posts/341207e0-cfd9-4d3a-a5ab-d2268ab2e472/links/author"}
 
-    {"op":"remove","path":"/authors/5c9b62ec-1569-448b-912a-97e6d62f493e/links/posts/341207e0-cfd9-4d3a-a5ab-d2268ab2e472"}
+{"op":"remove","path":"/authors/5c9b62ec-1569-448b-912a-97e6d62f493e/links/posts/341207e0-cfd9-4d3a-a5ab-d2268ab2e472"}
 
-    {"op":"remove","path":"/posts/341207e0-cfd9-4d3a-a5ab-d2268ab2e472"}
+{"op":"remove","path":"/posts/341207e0-cfd9-4d3a-a5ab-d2268ab2e472"}
+```
 
 _Compare with the JSON API payloads_
 
@@ -167,9 +183,11 @@ Events associated with an action:
 
 A single method, `transform`, which can be used to change the contents of a source.
 
-    {op: 'add', path: 'planet/1', value: {__id: 1, name: 'Jupiter', classification: 'gas giant'}
-    {op: 'replace', path: 'planet/1/name', value: 'Earth'}
-    {op: 'remove', path: 'planet/1'}
+```
+{op: 'add', path: 'planet/1', value: {__id: 1, name: 'Jupiter', classification: 'gas giant'}
+{op: 'replace', path: 'planet/1/name', value: 'Earth'}
+{op: 'remove', path: 'planet/1'}
+```
 
 ### TransformConnector
 
@@ -212,88 +230,90 @@ Configure Ember-Orbit with an application initializer that sets up Orbit and reg
 [initializers/ember-orbit.js]
 
 
-    import Orbit from 'orbit';
-    import EO from 'ember-orbit';
-    import JSONAPISource from 'orbit-common/jsonapi-source';
-    import ApplicationSerializer from '../serializers/application';
-    import SocketSource from '../adapters/socket-source';
-    import Ember from 'ember';
-    import config from '../config/environment';
+```javascript
+import Orbit from 'orbit';
+import EO from 'ember-orbit';
+import JSONAPISource from 'orbit-common/jsonapi-source';
+import ApplicationSerializer from '../serializers/application';
+import SocketSource from '../adapters/socket-source';
+import Ember from 'ember';
+import config from '../config/environment';
 
-    Orbit.Promise = Orbit.Promise || Ember.RSVP.Promise;
+Orbit.Promise = Orbit.Promise || Ember.RSVP.Promise;
 
-    function jsonApiStore() {
-      Orbit.ajax = Ember.$.ajax;
-      return EO.Store.extend({
-        orbitSourceClass: JSONAPISource,
-        orbitSourceOptions: {
-          host: config.APP.API_HOST,
-          namespace: config.APP.API_PATH,
-          SerializerClass: ApplicationSerializer,
-          usePatch: true,
-        }
-      });
+function jsonApiStore() {
+  Orbit.ajax = Ember.$.ajax;
+  return EO.Store.extend({
+    orbitSourceClass: JSONAPISource,
+    orbitSourceOptions: {
+      host: config.APP.API_HOST,
+      namespace: config.APP.API_PATH,
+      SerializerClass: ApplicationSerializer,
+      usePatch: true,
     }
+  });
+}
 
-    function socketStore() {
-      return EO.Store.extend({
-        orbitSourceClass: SocketSource,
-        orbitSourceOptions: {
-          host: config.APP.SOCKET_URL,
-          SerializerClass: ApplicationSerializer,
-          usePatch: true,
-        }
-      });
+function socketStore() {
+  return EO.Store.extend({
+    orbitSourceClass: SocketSource,
+    orbitSourceOptions: {
+      host: config.APP.SOCKET_URL,
+      SerializerClass: ApplicationSerializer,
+      usePatch: true,
     }
+  });
+}
 
-    var Schema = EO.Schema.extend({
-      idField: 'id',
+var Schema = EO.Schema.extend({
+  idField: 'id',
 
-      init: function (options) {
-        this._super(options);
-        this._schema.meta = Ember.Map.create();
-      }
-    });
+  init: function (options) {
+    this._super(options);
+    this._schema.meta = Ember.Map.create();
+  }
+});
 
-    export default {
-      name: 'ember-orbit',
-      after: 'socket',
+export default {
+  name: 'ember-orbit',
+  after: 'socket',
 
-      initialize: function(container, application) {
-        application.register('schema:main', Schema);
-        application.register('store:main', EO.Store);
-        if (notPrerenderService() && canUseSocket(container)) {
-          application.register('store:secondary', socketStore());
-        } else {
-          application.register('store:secondary', jsonApiStore());
-        }
-        connectSources(container);
-
-        application.inject('controller', 'store', 'store:main');
-        application.inject('route', 'store', 'store:main');
-      }
-    };
-
-    function notPrerenderService() {
-      return window.navigator.userAgent.match(/Prerender/) === null;
+  initialize: function(container, application) {
+    application.register('schema:main', Schema);
+    application.register('store:main', EO.Store);
+    if (notPrerenderService() && canUseSocket(container)) {
+      application.register('store:secondary', socketStore());
+    } else {
+      application.register('store:secondary', jsonApiStore());
     }
+    connectSources(container);
 
-    function canUseSocket(container) {
-      return window.WebSocket && container.lookup('socket:main');
-    }
+    application.inject('controller', 'store', 'store:main');
+    application.inject('route', 'store', 'store:main');
+  }
+};
 
-    function connectSources(container) {
-      var primarySource = container.lookup('store:main').orbitSource;
-      var secondarySource = container.lookup('store:secondary').orbitSource;
-      // Connect (using default blocking strategy)
-      setupConnectors(primarySource, secondarySource);
-    }
+function notPrerenderService() {
+  return window.navigator.userAgent.match(/Prerender/) === null;
+}
 
-    function setupConnectors(primary, secondary/*, local*/) {
-      new Orbit.TransformConnector(primary, secondary);
-      new Orbit.TransformConnector(secondary, primary);
-      primary.on('assistFind', secondary.find);
-    }
+function canUseSocket(container) {
+  return window.WebSocket && container.lookup('socket:main');
+}
+
+function connectSources(container) {
+  var primarySource = container.lookup('store:main').orbitSource;
+  var secondarySource = container.lookup('store:secondary').orbitSource;
+  // Connect (using default blocking strategy)
+  setupConnectors(primarySource, secondarySource);
+}
+
+function setupConnectors(primary, secondary/*, local*/) {
+  new Orbit.TransformConnector(primary, secondary);
+  new Orbit.TransformConnector(secondary, primary);
+  primary.on('assistFind', secondary.find);
+}
+```
 
 [initializers/ember-orbit.js]: https://github.com/pixelhandler/blog/blob/master/client/app/initializers/ember-orbit.js
 
@@ -304,237 +324,239 @@ Configure Ember-Orbit with an application initializer that sets up Orbit and reg
 [adapters/socket-source.js]
 
 
-    import Ember from 'ember';
-    import Orbit from 'orbit';
-    import OC from 'orbit-common';
-    import SocketService from '../services/socket';
-    import JSONAPISource from 'orbit-common/jsonapi-source';
+```javascript
+import Ember from 'ember';
+import Orbit from 'orbit';
+import OC from 'orbit-common';
+import SocketService from '../services/socket';
+import JSONAPISource from 'orbit-common/jsonapi-source';
 
-    Orbit.Promise = Orbit.Promise || Ember.RSVP.Promise;
+Orbit.Promise = Orbit.Promise || Ember.RSVP.Promise;
 
-    var SocketSource = JSONAPISource.extend({
+var SocketSource = JSONAPISource.extend({
 
-      init: function (schema, options) {
-        Orbit.assert('SocketSource requires SocketService be defined', SocketService);
-        Orbit.assert('SocketSource requires Orbit.Promise be defined', Orbit.Promise);
-        Orbit.assert('SocketSource only supports usePatch option', this.usePatch);
-        this._socket = SocketService.create();
-        this.initSerializer(schema, options);
-        // not calling super, instead calling template/abstract prototype init method
-        return OC.Source.prototype.init.apply(this, arguments);
-      },
+  init: function (schema, options) {
+    Orbit.assert('SocketSource requires SocketService be defined', SocketService);
+    Orbit.assert('SocketSource requires Orbit.Promise be defined', Orbit.Promise);
+    Orbit.assert('SocketSource only supports usePatch option', this.usePatch);
+    this._socket = SocketService.create();
+    this.initSerializer(schema, options);
+    // not calling super, instead calling template/abstract prototype init method
+    return OC.Source.prototype.init.apply(this, arguments);
+  },
 
-      initSerializer: function (schema, options) {
-        // See JSONAPISource
-        this.SerializerClass = options.SerializerClass || this.SerializerClass;
-        if (this.SerializerClass && this.SerializerClass.wrappedFunction) {
-          this.SerializerClass = this.SerializerClass.wrappedFunction;
-        }
-        this.serializer = new this.SerializerClass(schema);
-      },
+  initSerializer: function (schema, options) {
+    // See JSONAPISource
+    this.SerializerClass = options.SerializerClass || this.SerializerClass;
+    if (this.SerializerClass && this.SerializerClass.wrappedFunction) {
+      this.SerializerClass = this.SerializerClass.wrappedFunction;
+    }
+    this.serializer = new this.SerializerClass(schema);
+  },
 
-      // using JSONPatch via WebSocket
-      usePatch: true,
+  // using JSONPatch via WebSocket
+  usePatch: true,
 
-      // Requestable interface implementation
+  // Requestable interface implementation
 
-      _find: function(type, id) {
-        if (id && (typeof id === 'number' || typeof id === 'string')) {
-          return this._findOne(type, id);
+  _find: function(type, id) {
+    if (id && (typeof id === 'number' || typeof id === 'string')) {
+      return this._findOne(type, id);
+    } else {
+      return this._findQuery(type, id);
+    }
+  },
+
+  _findLink: function() {
+    console.error('TODO, SocketSource#_findLink not supported yet');
+  },
+
+  // Requestable Internals
+
+  _findOne: function (type, id) {
+    var query = this._queryFactory(type, { id: id });
+
+    return this._remoteFind('find', type, query);
+  },
+
+  _findMany: function () {
+    throw new Error('SocketSource#_findMany not supported');
+  },
+
+  _findQuery: function (type, query) {
+    query = this._queryFactory(type, query);
+
+    return this._remoteFind('findQuery', type, query);
+  },
+
+  _remoteFind: function (channel, type, query) {
+    var root = pluralize(type);
+    var id = query.id;
+    query = JSON.stringify(query);
+
+    // handle promise resolution serially, pass off return to next then handler
+    var records;
+    return new Orbit.Promise(function doFind(resolve, reject) {
+      this._socket.emit(channel, query, function didFind(raw) {
+        if (raw.errors || !raw[root]) {
+          reject(raw.errors);
         } else {
-          return this._findQuery(type, id);
+          resolve(raw);
         }
-      },
-
-      _findLink: function() {
-        console.error('TODO, SocketSource#_findLink not supported yet');
-      },
-
-      // Requestable Internals
-
-      _findOne: function (type, id) {
-        var query = this._queryFactory(type, { id: id });
-
-        return this._remoteFind('find', type, query);
-      },
-
-      _findMany: function () {
-        throw new Error('SocketSource#_findMany not supported');
-      },
-
-      _findQuery: function (type, query) {
-        query = this._queryFactory(type, query);
-
-        return this._remoteFind('findQuery', type, query);
-      },
-
-      _remoteFind: function (channel, type, query) {
-        var root = pluralize(type);
-        var id = query.id;
-        query = JSON.stringify(query);
-
-        // handle promise resolution serially, pass off return to next then handler
-        var records;
-        return new Orbit.Promise(function doFind(resolve, reject) {
-          this._socket.emit(channel, query, function didFind(raw) {
-            if (raw.errors || !raw[root]) {
-              reject(raw.errors);
-            } else {
-              resolve(raw);
-            }
-          });
-        }.bind(this))
-        .then(function doProcess(raw) {
-          return this.deserialize(type, id, raw);
-        }.bind(this))
-        .then(function (data) {
-          records = data;
-          return this.settleTransforms();
-        }.bind(this))
-        .then(function () {
-          // finally send back the records
-          return records;
-        })
-        .catch(function onError(error) {
-          console.error('SocketSource#_remoteFind Error w/ query: ' + query);
-          console.error(error);
-        });
-      },
-
-      _queryFactory: function (type, query) {
-        query = query || {};
-        query.resource = query.resource || pluralize(type);
-
-        var attrs = Ember.String.w('limit offset sortBy order resource withFields');
-        attrs.forEach(function (attr) {
-          query[attr] = query[attr] || Ember.get(this, attr);
-        }.bind(this));
-
-        return query;
-      },
-
-      // Transformable Internals
-
-      _transformAdd: function (operation) {
-        var type = operation.path[0];
-        var id = operation.path[1];
-        var remoteOp = {
-          op: 'add',
-          path: '/' + pluralize(type) + '/-',
-          value: this.serializer.serializeRecord(type, operation.value)
-        };
-        return this._remotePatch(type, id, remoteOp);
-      },
-
-      _transformReplace: function (operation) {
-        var type = operation.path[0];
-        operation.path[0] = pluralize(type);
-        var id = operation.path[1];
-        var remoteOp = {
-          op: 'replace',
-          path: '/' + operation.path.join('/'),
-          value: this.serializer.serializeRecord(type, operation.value)
-        };
-        return this._remotePatch(type, id, remoteOp);
-      },
-
-      _transformRemove: function (operation) {
-        var type = operation.path[0];
-        operation.path[0] = pluralize(type);
-        var id = operation.path[1];
-        var path = '/' + operation.path.join('/');
-        var remoteOp = { op: 'remove', path: path };
-        return this._remotePatch(type, id, remoteOp);
-      },
-
-      _transformUpdateAttribute: function (operation) {
-        var type = operation.path[0];
-        operation.path[0] = pluralize(type);
-        var id = operation.path[1];
-        var remoteOp = {
-          op: 'replace',
-          path: '/' + operation.path.join('/'), // includes attr in path
-          value: operation.value
-        };
-        return this._remotePatch(type, id, remoteOp);
-      },
-
-      _transformAddLink: function (operation) {
-        var type = operation.path[0];
-        operation.path[0] = pluralize(type);
-        var id = operation.path[1];
-        var link = operation.path[3];
-        var linkId = operation.path[4] || operation.value;
-        var linkDef = this.schema.models[type].links[link];
-        var path;
-        if (linkDef.type === 'hasMany') {
-          operation.path.pop();
-          path = '/' + operation.path.join('/').replace(/__rel/, 'links') + '/-';
-        } else if (linkDef.type === 'hasOne') {
-          path = '/' + operation.path.join('/').replace(/__rel/, 'links');
-        }
-        var remoteOp = { path: path, op: 'add', value: linkId };
-        return this._remotePatch(type, id, remoteOp);
-      },
-
-      _transformRemoveLink: function (operation) {
-        var type = operation.path[0];
-        operation.path[0] = pluralize(type);
-        var id = operation.path[1];
-        var path = '/' + operation.path.join('/').replace(/__rel/, 'links');
-        var remoteOp = { op: 'remove', path: path };
-        return this._remotePatch(type, id, remoteOp);
-      },
-
-      _transformReplaceLink: function (operation) {
-        console.error('TODO, SocketSource#_transformReplaceLink not supported yet');
-      },
-
-      _remotePatch: function (type, id, remoteOp) {
-        var records;
-        // handle promise resolution serially, pass off return to next then handler
-        return new Orbit.Promise(function doPatch(resolve, reject) {
-          this._socket.emit('patch', JSON.stringify(remoteOp), function didPatch(raw) {
-            if (raw && raw.errors) {
-              reject(raw.errors);
-            } else {
-              resolve(raw); // doesn't matter what raw is, socket called back w/o errors
-            }
-          });
-        }.bind(this))
-        .then(function doProcess(raw) {
-          if (raw && Array.isArray(raw)) {
-            return this.deserialize(type, id, raw[0]);
-          }
-          return null;
-        }.bind(this))
-        .then(function (data) {
-          records = data;
-          return this.settleTransforms();
-        }.bind(this))
-        .then(function () {
-          // finally send back the records
-          return records;
-        })
-        .catch(function onError(error) {
-          console.error(error);
-          var e = "SocketSource#_remotePatch Error w/ op: %@, path: %@";
-          throw new Error(e.fmt(remoteOp.op, remoteOp.path));
-        });
-      }
-
+      });
+    }.bind(this))
+    .then(function doProcess(raw) {
+      return this.deserialize(type, id, raw);
+    }.bind(this))
+    .then(function (data) {
+      records = data;
+      return this.settleTransforms();
+    }.bind(this))
+    .then(function () {
+      // finally send back the records
+      return records;
+    })
+    .catch(function onError(error) {
+      console.error('SocketSource#_remoteFind Error w/ query: ' + query);
+      console.error(error);
     });
+  },
 
-    // TODO use Ember.Inflector https://github.com/stefanpenner/ember-inflector.git
-    var pluralize = function (name) {
-      return name + 's';
-    };
-    // borrowed from 'orbit/lib/objects'
-    var isObject = function(obj) {
-      return obj !== null && typeof obj === 'object';
-    };
+  _queryFactory: function (type, query) {
+    query = query || {};
+    query.resource = query.resource || pluralize(type);
 
-    export default SocketSource;
+    var attrs = Ember.String.w('limit offset sortBy order resource withFields');
+    attrs.forEach(function (attr) {
+      query[attr] = query[attr] || Ember.get(this, attr);
+    }.bind(this));
+
+    return query;
+  },
+
+  // Transformable Internals
+
+  _transformAdd: function (operation) {
+    var type = operation.path[0];
+    var id = operation.path[1];
+    var remoteOp = {
+      op: 'add',
+      path: '/' + pluralize(type) + '/-',
+      value: this.serializer.serializeRecord(type, operation.value)
+    };
+    return this._remotePatch(type, id, remoteOp);
+  },
+
+  _transformReplace: function (operation) {
+    var type = operation.path[0];
+    operation.path[0] = pluralize(type);
+    var id = operation.path[1];
+    var remoteOp = {
+      op: 'replace',
+      path: '/' + operation.path.join('/'),
+      value: this.serializer.serializeRecord(type, operation.value)
+    };
+    return this._remotePatch(type, id, remoteOp);
+  },
+
+  _transformRemove: function (operation) {
+    var type = operation.path[0];
+    operation.path[0] = pluralize(type);
+    var id = operation.path[1];
+    var path = '/' + operation.path.join('/');
+    var remoteOp = { op: 'remove', path: path };
+    return this._remotePatch(type, id, remoteOp);
+  },
+
+  _transformUpdateAttribute: function (operation) {
+    var type = operation.path[0];
+    operation.path[0] = pluralize(type);
+    var id = operation.path[1];
+    var remoteOp = {
+      op: 'replace',
+      path: '/' + operation.path.join('/'), // includes attr in path
+      value: operation.value
+    };
+    return this._remotePatch(type, id, remoteOp);
+  },
+
+  _transformAddLink: function (operation) {
+    var type = operation.path[0];
+    operation.path[0] = pluralize(type);
+    var id = operation.path[1];
+    var link = operation.path[3];
+    var linkId = operation.path[4] || operation.value;
+    var linkDef = this.schema.models[type].links[link];
+    var path;
+    if (linkDef.type === 'hasMany') {
+      operation.path.pop();
+      path = '/' + operation.path.join('/').replace(/__rel/, 'links') + '/-';
+    } else if (linkDef.type === 'hasOne') {
+      path = '/' + operation.path.join('/').replace(/__rel/, 'links');
+    }
+    var remoteOp = { path: path, op: 'add', value: linkId };
+    return this._remotePatch(type, id, remoteOp);
+  },
+
+  _transformRemoveLink: function (operation) {
+    var type = operation.path[0];
+    operation.path[0] = pluralize(type);
+    var id = operation.path[1];
+    var path = '/' + operation.path.join('/').replace(/__rel/, 'links');
+    var remoteOp = { op: 'remove', path: path };
+    return this._remotePatch(type, id, remoteOp);
+  },
+
+  _transformReplaceLink: function (operation) {
+    console.error('TODO, SocketSource#_transformReplaceLink not supported yet');
+  },
+
+  _remotePatch: function (type, id, remoteOp) {
+    var records;
+    // handle promise resolution serially, pass off return to next then handler
+    return new Orbit.Promise(function doPatch(resolve, reject) {
+      this._socket.emit('patch', JSON.stringify(remoteOp), function didPatch(raw) {
+        if (raw && raw.errors) {
+          reject(raw.errors);
+        } else {
+          resolve(raw); // doesn't matter what raw is, socket called back w/o errors
+        }
+      });
+    }.bind(this))
+    .then(function doProcess(raw) {
+      if (raw && Array.isArray(raw)) {
+        return this.deserialize(type, id, raw[0]);
+      }
+      return null;
+    }.bind(this))
+    .then(function (data) {
+      records = data;
+      return this.settleTransforms();
+    }.bind(this))
+    .then(function () {
+      // finally send back the records
+      return records;
+    })
+    .catch(function onError(error) {
+      console.error(error);
+      var e = "SocketSource#_remotePatch Error w/ op: %@, path: %@";
+      throw new Error(e.fmt(remoteOp.op, remoteOp.path));
+    });
+  }
+
+});
+
+// TODO use Ember.Inflector https://github.com/stefanpenner/ember-inflector.git
+var pluralize = function (name) {
+  return name + 's';
+};
+// borrowed from 'orbit/lib/objects'
+var isObject = function(obj) {
+  return obj !== null && typeof obj === 'object';
+};
+
+export default SocketSource;
+```
 
 [adapters/socket-source.js]: https://github.com/pixelhandler/blog/blob/master/client/app/adapters/socket-source.js
 
@@ -548,47 +570,55 @@ Below are a few examples of how I use the application store in a Route:
 Custom query for posts
 
 
-    model: function () {
-      var query = { offset: this.get('offset'), limit: this.get('limit') };
-      return this.store.find('post', query);
-    },
+```javascript
+model: function () {
+  var query = { offset: this.get('offset'), limit: this.get('limit') };
+  return this.store.find('post', query);
+},
+```
 
 List of posts
 
 
-    model: function () {
-      return this.store.find('post');
-    },
+```javascript
+model: function () {
+  return this.store.find('post');
+},
+```
 
 A specific post by id
 
 
-    model: function (params) {
-      return this.store.find('post', params.edit_id);
-    },
+```javascript
+model: function (params) {
+  return this.store.find('post', params.edit_id);
+},
+```
 
 A post route that can find a post from the store's memory or ask the secondary source (adapter) for the resource
 
 
-    model: function (params) {
-      return new Ember.RSVP.Promise(function (resolve, reject) {
-        var found = this.store.filter('post', function (post) {
-          return post.get('slug') === params.post_slug;
-        });
-        if (found.get('length') > 0) {
-          resolve(found[0]);
-        } else {
-          this.store.find('post', params.post_slug).then(
-            function (post) {
-              resolve(post);
-            },
-            function (error) {
-              reject(error);
-            }
-          );
+```javascript
+model: function (params) {
+  return new Ember.RSVP.Promise(function (resolve, reject) {
+    var found = this.store.filter('post', function (post) {
+      return post.get('slug') === params.post_slug;
+    });
+    if (found.get('length') > 0) {
+      resolve(found[0]);
+    } else {
+      this.store.find('post', params.post_slug).then(
+        function (post) {
+          resolve(post);
+        },
+        function (error) {
+          reject(error);
         }
-      }.bind(this));
-    },
+      );
+    }
+  }.bind(this));
+},
+```
 
 #### Push Support
 
@@ -597,173 +627,175 @@ Routes can use a mixin for push support for real-time update to connected client
 [mixins/push-support.js]
 
 
-    import Ember from 'ember';
+```javascript
+import Ember from 'ember';
 
-    export default Ember.Mixin.create({
+export default Ember.Mixin.create({
 
-      beforeModel: function () {
-        this.socketSanityCheck();
-        return this._super();
-      },
+  beforeModel: function () {
+    this.socketSanityCheck();
+    return this._super();
+  },
 
-      socketSanityCheck: function () {
-        // Sanity check, is socket working? check output browser console.
-        var socket = this.socket;
-        socket.on('hello', function (data) {
-          console.log(data);
-          socket.emit('talk-to-me', 'I like talking.', function (msg) {
-            console.log('back talk', msg);
-          });
-        });
-      },
-
-      // Template methods...
-
-      onDidPatch: Ember.required,
-
-      patchRecord: function (operation) {
-        this._patchRecord(operation);
-      },
-
-      addLink: Ember.K,
-      replaceLink: Ember.K,
-      removeLink: Ember.K,
-      addRecord: Ember.K,
-      updateAttribute: Ember.K,
-      deleteRecord: Ember.K,
-
-      // Use in template methods...
-
-      _patchRecord: function (operation) {
-        operation = (typeof operation === 'string') ? JSON.parse(operation) : operation;
-        if (!operation.op || !operation.path) {
-          console.error('Push error! Invalid patch operation.');
-          return;
-        }
-        if (operation.path.match('/links/') !== null) {
-          if (operation.op === 'add') {
-            Ember.run.later(this, 'addLink', operation, this._delay);
-          } else if (operation.op === 'replace') {
-            Ember.run.next(this, 'replaceLink', operation);
-          } else if (operation.op === 'remove') {
-            Ember.run.next(this, 'removeLink', operation);
-          }
-        } else {
-          if (operation.op === 'add') {
-            Ember.run.next(this, 'addRecord', operation);
-          } else if (operation.op === 'replace') {
-            Ember.run.next(this, 'updateAttribute', operation);
-          } else if (operation.op === 'remove') {
-            Ember.run.next(this, 'deleteRecord', operation);
-          }
-        }
-      },
-
-      _addLink: function(operation) {
-        var model = this._retrieveModel(operation);
-        if (model) {
-          var type = operation.path.split('/links/')[1];
-          var relation = this.store.retrieve(type, { primaryId: operation.value });
-          if (relation) {
-            model.addLink(type, relation);
-          }
-        }
-      },
-
-      _replaceLink: function(operation) {
-        console.error('TODO replaceLink not supported yet', operation);
-      },
-
-      _removeLink: function(operation) {
-        var model = this._retrieveModel(operation);
-        if (model) {
-          var path = operation.path.split('/links/')[1].split('/');
-          var type = path[0];
-          var id = path[1];
-          var relation = null;
-          if (id) {
-            relation = this.store.retrieve(type, { primaryId: id });
-          }
-          model.removeLink(type, relation);
-        }
-      },
-
-      _addRecord: function (operation) {
-        var type = this._extractType(operation);
-        var id = operation.value.id;
-        var model = this.store.retrieve(type, { primaryId: id });
-        if (!model) {
-          this.store.add(type, operation.value);
-          this.store.then(function() {
-            model = this.store.retrieve(type, { primaryId: id });
-            var name = this.get('routeName');
-            var collection = this.modelFor(name);
-            if (collection && !collection.contains(model)) {
-              collection.insertAt(0, model);
-              this.controllerFor(name).set('model', collection);
-            }
-          }.bind(this));
-        }
-      },
-
-      _updateAttribute: function(operation) {
-        var type = this._extractType(operation);
-        if (!type) {
-          return;
-        }
-        var typeKey = this.store.schema._schema.pluralize(type);
-        var path = operation.path.split('/' + typeKey + '/')[1];
-        var id, attribute;
-        if (path.indexOf('/') !== -1) {
-          path = path.split('/');
-          id = path[0];
-          attribute = path[1];
-        }
-        var model = this.store.retrieve(type, {primaryId: id});
-        if (model && attribute) {
-          model.set(attribute, operation.value);
-        }
-      },
-
-      _deleteRecord: function (operation) {
-        var model = this._retrieveModel(operation);
-        if (model) {
-          var name = this.get('routeName');
-          var collection = this.modelFor(name);
-          if (collection) {
-            collection.removeObject(model);
-          }
-          var controller = this.controllerFor(name);
-          if (controller) {
-            controller.removeObject(model);
-          }
-          if (model.constructor.typeKey) {
-            var type = model.constructor.typeKey;
-            var id = model.get('primaryId');
-            Ember.run.later(this.store, 'remove', type, id, this._delay);
-          }
-        }
-      },
-
-      _extractType: function (operation) {
-        var path = operation.path.split('/');
-        var type = this.store.schema._schema.singularize(path[1]);
-        if (!this.store.schema._schema.models[type]) {
-          console.error('Cannot extract type', path);
-        }
-        return type;
-      },
-
-      _retrieveModel: function (operation) {
-        var path = operation.path.split('/');
-        var type = this.store.schema._schema.singularize(path[1]);
-        var id = path[2];
-        return this.store.retrieve(type, { primaryId: id });
-      },
-
-      _delay: 1000
-
+  socketSanityCheck: function () {
+    // Sanity check, is socket working? check output browser console.
+    var socket = this.socket;
+    socket.on('hello', function (data) {
+      console.log(data);
+      socket.emit('talk-to-me', 'I like talking.', function (msg) {
+        console.log('back talk', msg);
+      });
     });
+  },
+
+  // Template methods...
+
+  onDidPatch: Ember.required,
+
+  patchRecord: function (operation) {
+    this._patchRecord(operation);
+  },
+
+  addLink: Ember.K,
+  replaceLink: Ember.K,
+  removeLink: Ember.K,
+  addRecord: Ember.K,
+  updateAttribute: Ember.K,
+  deleteRecord: Ember.K,
+
+  // Use in template methods...
+
+  _patchRecord: function (operation) {
+    operation = (typeof operation === 'string') ? JSON.parse(operation) : operation;
+    if (!operation.op || !operation.path) {
+      console.error('Push error! Invalid patch operation.');
+      return;
+    }
+    if (operation.path.match('/links/') !== null) {
+      if (operation.op === 'add') {
+        Ember.run.later(this, 'addLink', operation, this._delay);
+      } else if (operation.op === 'replace') {
+        Ember.run.next(this, 'replaceLink', operation);
+      } else if (operation.op === 'remove') {
+        Ember.run.next(this, 'removeLink', operation);
+      }
+    } else {
+      if (operation.op === 'add') {
+        Ember.run.next(this, 'addRecord', operation);
+      } else if (operation.op === 'replace') {
+        Ember.run.next(this, 'updateAttribute', operation);
+      } else if (operation.op === 'remove') {
+        Ember.run.next(this, 'deleteRecord', operation);
+      }
+    }
+  },
+
+  _addLink: function(operation) {
+    var model = this._retrieveModel(operation);
+    if (model) {
+      var type = operation.path.split('/links/')[1];
+      var relation = this.store.retrieve(type, { primaryId: operation.value });
+      if (relation) {
+        model.addLink(type, relation);
+      }
+    }
+  },
+
+  _replaceLink: function(operation) {
+    console.error('TODO replaceLink not supported yet', operation);
+  },
+
+  _removeLink: function(operation) {
+    var model = this._retrieveModel(operation);
+    if (model) {
+      var path = operation.path.split('/links/')[1].split('/');
+      var type = path[0];
+      var id = path[1];
+      var relation = null;
+      if (id) {
+        relation = this.store.retrieve(type, { primaryId: id });
+      }
+      model.removeLink(type, relation);
+    }
+  },
+
+  _addRecord: function (operation) {
+    var type = this._extractType(operation);
+    var id = operation.value.id;
+    var model = this.store.retrieve(type, { primaryId: id });
+    if (!model) {
+      this.store.add(type, operation.value);
+      this.store.then(function() {
+        model = this.store.retrieve(type, { primaryId: id });
+        var name = this.get('routeName');
+        var collection = this.modelFor(name);
+        if (collection && !collection.contains(model)) {
+          collection.insertAt(0, model);
+          this.controllerFor(name).set('model', collection);
+        }
+      }.bind(this));
+    }
+  },
+
+  _updateAttribute: function(operation) {
+    var type = this._extractType(operation);
+    if (!type) {
+      return;
+    }
+    var typeKey = this.store.schema._schema.pluralize(type);
+    var path = operation.path.split('/' + typeKey + '/')[1];
+    var id, attribute;
+    if (path.indexOf('/') !== -1) {
+      path = path.split('/');
+      id = path[0];
+      attribute = path[1];
+    }
+    var model = this.store.retrieve(type, {primaryId: id});
+    if (model && attribute) {
+      model.set(attribute, operation.value);
+    }
+  },
+
+  _deleteRecord: function (operation) {
+    var model = this._retrieveModel(operation);
+    if (model) {
+      var name = this.get('routeName');
+      var collection = this.modelFor(name);
+      if (collection) {
+        collection.removeObject(model);
+      }
+      var controller = this.controllerFor(name);
+      if (controller) {
+        controller.removeObject(model);
+      }
+      if (model.constructor.typeKey) {
+        var type = model.constructor.typeKey;
+        var id = model.get('primaryId');
+        Ember.run.later(this.store, 'remove', type, id, this._delay);
+      }
+    }
+  },
+
+  _extractType: function (operation) {
+    var path = operation.path.split('/');
+    var type = this.store.schema._schema.singularize(path[1]);
+    if (!this.store.schema._schema.models[type]) {
+      console.error('Cannot extract type', path);
+    }
+    return type;
+  },
+
+  _retrieveModel: function (operation) {
+    var path = operation.path.split('/');
+    var type = this.store.schema._schema.singularize(path[1]);
+    var id = path[2];
+    return this.store.retrieve(type, { primaryId: id });
+  },
+
+  _delay: 1000
+
+});
+```
 
 [mixins/push-support.js]: https://github.com/pixelhandler/blog/blob/master/client/app/mixins/push-support.js
 
@@ -773,58 +805,60 @@ Routes can use a mixin for push support for real-time update to connected client
 [routes/application.js]
 
 
-    import Ember from 'ember';
-    import PushSupport from '../mixins/push-support';
-    import config from '../config/environment';
+```javascript
+import Ember from 'ember';
+import PushSupport from '../mixins/push-support';
+import config from '../config/environment';
 
-    var ApplicationRoute = Ember.Route.extend(PushSupport, {
+var ApplicationRoute = Ember.Route.extend(PushSupport, {
 
-      model: function () {
-        return this.store.find('post');
-      },
+  model: function () {
+    return this.store.find('post');
+  },
 
-      /* some code not included here */
+  /* some code not included here */
 
-      // Push support...
+  // Push support...
 
-      onDidPatch: function () {
-        this.socket.on('didPatch', this.patchRecord.bind(this));
-      }.on('init'),
+  onDidPatch: function () {
+    this.socket.on('didPatch', this.patchRecord.bind(this));
+  }.on('init'),
 
-      addLink: function (operation) {
-        this._addLink(operation);
-      },
+  addLink: function (operation) {
+    this._addLink(operation);
+  },
 
-      removeLink: function (operation) {
-        this._removeLink(operation);
-      },
+  removeLink: function (operation) {
+    this._removeLink(operation);
+  },
 
-      addRecord: function (operation) {
-        this._addRecord(operation);
-      },
+  addRecord: function (operation) {
+    this._addRecord(operation);
+  },
 
-      updateAttribute: function (operation) {
-        this._updateAttribute(operation);
-      },
+  updateAttribute: function (operation) {
+    this._updateAttribute(operation);
+  },
 
-      deleteRecord: function (operation) {
-        this._deleteRecord(operation);
-      },
+  deleteRecord: function (operation) {
+    this._deleteRecord(operation);
+  },
 
-      /* some code not included here */
+  /* some code not included here */
 
-    });
+});
 
-    function lookupSocket(container) {
-      if (!window.WebSocket) {
-        return false;
-      }
-      return container.lookup('socket:main');
-    }
+function lookupSocket(container) {
+  if (!window.WebSocket) {
+    return false;
+  }
+  return container.lookup('socket:main');
+}
 
-    /* some code not included here */
+/* some code not included here */
 
-    export default ApplicationRoute;
+export default ApplicationRoute;
+```
 
 [routes/application.js]: https://github.com/pixelhandler/blog/blob/master/client/app/routes/application.js
 
@@ -832,54 +866,56 @@ Routes can use a mixin for push support for real-time update to connected client
 [routes/index.js]
 
 
-    import Ember from 'ember';
-    import RecordChunksMixin from '../mixins/record-chunks';
-    import ResetScroll from '../mixins/reset-scroll';
-    import PushSupport from '../mixins/push-support';
+```javascript
+import Ember from 'ember';
+import RecordChunksMixin from '../mixins/record-chunks';
+import ResetScroll from '../mixins/reset-scroll';
+import PushSupport from '../mixins/push-support';
 
-    export default Ember.Route.extend(ResetScroll, RecordChunksMixin, PushSupport, {
+export default Ember.Route.extend(ResetScroll, RecordChunksMixin, PushSupport, {
 
-      /* some code not included here */
+  /* some code not included here */
 
-      model: function () {
-        var posts = this.modelFor('application');
-        if (this.get('offset') < posts.get('length')) {
-          return posts;
-        } else {
-          var query = this.buildQuery();
-          return this.store.find('post', query);
-        }
-      },
+  model: function () {
+    var posts = this.modelFor('application');
+    if (this.get('offset') < posts.get('length')) {
+      return posts;
+    } else {
+      var query = this.buildQuery();
+      return this.store.find('post', query);
+    }
+  },
 
-      // Push support...
+  // Push support...
 
-      onDidPatch: function () {
-        this.socket.on('didPatch', this.patchRecord.bind(this));
-      }.on('init'),
+  onDidPatch: function () {
+    this.socket.on('didPatch', this.patchRecord.bind(this));
+  }.on('init'),
 
-      addRecord: function (operation) {
-        if (operation.path.split('/')[1] === 'posts') {
-          var posts = this.model();
-          var controller = this.controllerFor(this.get('routeName'));
-          if (typeof posts.then === 'function') {
-            posts.then(function (_posts) {
-              controller.set('model', _posts);
-            });
-          } else {
-            controller.set('model', posts);
-          }
-        }
-      },
-
-      deleteRecord: function (operation) {
-        if (operation.path.split('/')[1] === 'posts') {
-          this._deleteRecord(operation);
-        }
+  addRecord: function (operation) {
+    if (operation.path.split('/')[1] === 'posts') {
+      var posts = this.model();
+      var controller = this.controllerFor(this.get('routeName'));
+      if (typeof posts.then === 'function') {
+        posts.then(function (_posts) {
+          controller.set('model', _posts);
+        });
+      } else {
+        controller.set('model', posts);
       }
+    }
+  },
 
-      /* some code not included here */
+  deleteRecord: function (operation) {
+    if (operation.path.split('/')[1] === 'posts') {
+      this._deleteRecord(operation);
+    }
+  }
 
-    });
+  /* some code not included here */
+
+});
+```
 
 [routes/index.js]: https://github.com/pixelhandler/blog/blob/master/client/app/routes/index.js
 
@@ -892,232 +928,234 @@ The push support is provided by an adapter on the server which uses [Socket.IO] 
 [server/lib/socket_adapter.js]
 
 
-    /**
-      @module app
-      @submodule socket_adapter
+```javascript
+/**
+  @module app
+  @submodule socket_adapter
 
-      db adapter using Socket.io
-    **/
+  db adapter using Socket.io
+**/
 
-    var db = require('./rethinkdb_adapter');
-    var debug = require('debug')('socket_adapter');
-    var config = require('../config')();
+var db = require('./rethinkdb_adapter');
+var debug = require('debug')('socket_adapter');
+var config = require('../config')();
 
-    /**
-      Exports setup function
+/**
+  Exports setup function
 
-      @param {Object} express server
-      @return {Object} `io` socket.io instance
-    **/
-    module.exports = function(server, sessionMiddleware) {
+  @param {Object} express server
+  @return {Object} `io` socket.io instance
+**/
+module.exports = function(server, sessionMiddleware) {
 
-      // options: https://github.com/Automattic/engine.io#methods-1
-      var options = {
-        'transports': ['websocket', 'polling'],
-        'cookie': 'connect.sid'
+  // options: https://github.com/Automattic/engine.io#methods-1
+  var options = {
+    'transports': ['websocket', 'polling'],
+    'cookie': 'connect.sid'
+  };
+
+  var io = require('socket.io')(server, options);
+
+  io.use(function(socket, next) {
+    sessionMiddleware(socket.request, socket.request.res, next);
+  });
+
+  io.on('connection', function (socket) {
+    // Simple sanity check for client to confirm socket is working
+    socket.emit('hello', { hello: 'world' });
+    socket.on('talk-to-me', function (data, cb) {
+      cb(data);
+    });
+
+    socket.on('isLoggedIn', function (callback) {
+      var user = socket.request.session.user;
+      if (!!user) { debug('isLogggedIn', user); }
+      callback(!!user);
+    });
+
+    socket.on('login', function (credentials, callback) {
+      credentials = JSON.parse(credentials);
+      if (!credentials) {
+        return callback(false);
+      }
+      var uname = credentials.username;
+      var pword = credentials.password;
+      var session = socket.request.session;
+      if (uname === config.admin.username && pword === config.admin.password) {
+        session.user = uname;
+        debug('login: %s', session.user);
+        session.save();
+        callback(true);
+      }
+    });
+
+    socket.on('logout', function (callback) {
+      socket.request.session = null;
+      callback(true);
+    });
+
+    socket.on('findQuery', findQuery);
+
+    socket.on('find', find);
+
+    socket.on('patch', function (operation, callback) {
+      if (!socket.request.session.user) {
+        debug('patch tried without user session');
+        return callback(JSON.stringify({errors: ["Login Required"]}));
+      }
+      var _callback = function (error, payload) {
+        if (error) {
+          debug('Patch Error!', error);
+          callback({errors: error});
+        } else {
+          payload = payload || JSON.stringify({code: 204});
+          callback(payload);
+          debug('didPatch...', operation, payload);
+          socket.broadcast.emit('didPatch', operation);
+        }
       };
+      patch(operation, _callback);
+    });
 
-      var io = require('socket.io')(server, options);
+    socket.on('disconnect', function () {
+      io.emit('error', 'User disconnected');
+    });
+  });
 
-      io.use(function(socket, next) {
-        sessionMiddleware(socket.request, socket.request.res, next);
-      });
+  return io;
+};
 
-      io.on('connection', function (socket) {
-        // Simple sanity check for client to confirm socket is working
-        socket.emit('hello', { hello: 'world' });
-        socket.on('talk-to-me', function (data, cb) {
-          cb(data);
-        });
+/**
+  findQuery - uses query to find resources
 
-        socket.on('isLoggedIn', function (callback) {
-          var user = socket.request.session.user;
-          if (!!user) { debug('isLogggedIn', user); }
-          callback(!!user);
-        });
+  @param {String} JSON strigified query object `resource` property is required
+  @param {Function} callback
+  @private
+**/
+function findQuery(query, callback) {
+  debug('findQuery...', query);
+  if (typeof query === 'string') {
+    query = JSON.parse(query);
+  }
+  var resource = query.resource;
+  delete query.resource;
+  var _cb = callback;
+  db.findQuery(resource, query, function (err, payload) {
+    if (err) {
+      debug(err);
+      payload = { errors: { code: 500, error: 'Server failure' } };
+    }
+    _cb(payload);
+  });
+}
 
-        socket.on('login', function (credentials, callback) {
-          credentials = JSON.parse(credentials);
-          if (!credentials) {
-            return callback(false);
-          }
-          var uname = credentials.username;
-          var pword = credentials.password;
-          var session = socket.request.session;
-          if (uname === config.admin.username && pword === config.admin.password) {
-            session.user = uname;
-            debug('login: %s', session.user);
-            session.save();
-            callback(true);
-          }
-        });
+/**
+  find - uses query to find resources by id or slug
 
-        socket.on('logout', function (callback) {
-          socket.request.session = null;
-          callback(true);
-        });
-
-        socket.on('findQuery', findQuery);
-
-        socket.on('find', find);
-
-        socket.on('patch', function (operation, callback) {
-          if (!socket.request.session.user) {
-            debug('patch tried without user session');
-            return callback(JSON.stringify({errors: ["Login Required"]}));
-          }
-          var _callback = function (error, payload) {
-            if (error) {
-              debug('Patch Error!', error);
-              callback({errors: error});
-            } else {
-              payload = payload || JSON.stringify({code: 204});
-              callback(payload);
-              debug('didPatch...', operation, payload);
-              socket.broadcast.emit('didPatch', operation);
-            }
-          };
-          patch(operation, _callback);
-        });
-
-        socket.on('disconnect', function () {
-          io.emit('error', 'User disconnected');
-        });
-      });
-
-      return io;
-    };
-
-    /**
-      findQuery - uses query to find resources
-
-      @param {String} JSON strigified query object `resource` property is required
-      @param {Function} callback
-      @private
-    **/
-    function findQuery(query, callback) {
-      debug('findQuery...', query);
-      if (typeof query === 'string') {
-        query = JSON.parse(query);
-      }
-      var resource = query.resource;
-      delete query.resource;
-      var _cb = callback;
-      db.findQuery(resource, query, function (err, payload) {
-        if (err) {
-          debug(err);
-          payload = { errors: { code: 500, error: 'Server failure' } };
-        }
+  @param {String} JSON strigified query object requires `resource`, `id` properties
+  @param {Function} callback
+  @private
+**/
+function find(query, callback) {
+  debug('find...', query);
+  if (typeof query === 'string') {
+    query = JSON.parse(query);
+  }
+  var resource = query.resource;
+  delete query.resource;
+  var id = query.id;
+  delete query.id;
+  var _cb = callback;
+  var errorPayload = { errors: { code: 500, error: 'Server failure' } };
+  db.find(resource, id, function (err, payload) {
+    if (err) {
+      _cb(errorPayload);
+    } else {
+      if (payload[resource] !== null) {
         _cb(payload);
-      });
-    }
-
-    /**
-      find - uses query to find resources by id or slug
-
-      @param {String} JSON strigified query object requires `resource`, `id` properties
-      @param {Function} callback
-      @private
-    **/
-    function find(query, callback) {
-      debug('find...', query);
-      if (typeof query === 'string') {
-        query = JSON.parse(query);
-      }
-      var resource = query.resource;
-      delete query.resource;
-      var id = query.id;
-      delete query.id;
-      var _cb = callback;
-      var errorPayload = { errors: { code: 500, error: 'Server failure' } };
-      db.find(resource, id, function (err, payload) {
-        if (err) {
-          _cb(errorPayload);
-        } else {
-          if (payload[resource] !== null) {
-            _cb(payload);
+      } else {
+        db.findBySlug(resource, id, function (err, payload) {
+          if (err) {
+            _cb(errorPayload);
           } else {
-            db.findBySlug(resource, id, function (err, payload) {
-              if (err) {
-                _cb(errorPayload);
-              } else {
-                if (payload[resource] !== null) {
-                  _cb(payload);
-                } else {
-                  _cb({ errors: { code: 404, error: 'Not Found' } });
-                }
-              }
-            });
-          }
-        }
-      });
-    }
-
-    function patch(operation, callback) {
-      debug('patch...', operation);
-      if (typeof operation === 'string') {
-        operation = JSON.parse(operation);
-      }
-      var path = operation.path.split('/');
-      var type = path[1];
-      var id = path[2];
-      var prop = path[3]; // REVIEW support sub-path?
-      if (prop === 'links') {
-        var link = path[4];
-        patchLinks(type, id, link, operation, callback);
-      } else if (operation.op === 'replace') {
-        var payload = {};
-        payload[prop] = operation.value;
-        db.updateRecord(type, id, payload, callback);
-      } else if (operation.op === 'remove') {
-        db.deleteRecord(type, id, callback);
-      } if (operation.op === 'add') {
-        db.createRecord(type, operation.value, callback);
-      }
-    }
-
-    function patchLinks(type, id, linkName, operation, callback) {
-      debug('patchLinks...', type, id, linkName, operation);
-      find({resource: type, id: id}, function (record) {
-        if (!record || record && record.errors) {
-          var errors = (record) ? record.errors : [];
-          debug('Error finding resource for patchLinks action', errors);
-          callback(errors);
-        } else {
-          var path = operation.path.split(linkName);
-          path = (path) ? path[1] : null;
-          var value = operation.value;
-          var op = operation.op;
-          var payload = record[type];
-          payload.links = payload.links || {};
-          payload.links[linkName] = payload.links[linkName] || [];
-          if (op === 'add' && path.match(/\-$/) !== null && value) {
-            payload.links[linkName].push(value);
-          } else if (value && op === 'add' || op === 'replace') {
-            payload.links[linkName] = value;
-          } else if (op === 'remove') {
-            var linkId = path.split('/');
-            if (linkId.length > 1) {
-              linkId = linkId[1];
-              var idx = payload.links[linkName].indexOf(linkId);
-              payload.links[linkName].splice(idx, 1);
+            if (payload[resource] !== null) {
+              _cb(payload);
             } else {
-              payload.links[linkName] = null;
+              _cb({ errors: { code: 404, error: 'Not Found' } });
             }
           }
-          db.updateRecord(type, id, {links: payload.links}, callback);
+        });
+      }
+    }
+  });
+}
+
+function patch(operation, callback) {
+  debug('patch...', operation);
+  if (typeof operation === 'string') {
+    operation = JSON.parse(operation);
+  }
+  var path = operation.path.split('/');
+  var type = path[1];
+  var id = path[2];
+  var prop = path[3]; // REVIEW support sub-path?
+  if (prop === 'links') {
+    var link = path[4];
+    patchLinks(type, id, link, operation, callback);
+  } else if (operation.op === 'replace') {
+    var payload = {};
+    payload[prop] = operation.value;
+    db.updateRecord(type, id, payload, callback);
+  } else if (operation.op === 'remove') {
+    db.deleteRecord(type, id, callback);
+  } if (operation.op === 'add') {
+    db.createRecord(type, operation.value, callback);
+  }
+}
+
+function patchLinks(type, id, linkName, operation, callback) {
+  debug('patchLinks...', type, id, linkName, operation);
+  find({resource: type, id: id}, function (record) {
+    if (!record || record && record.errors) {
+      var errors = (record) ? record.errors : [];
+      debug('Error finding resource for patchLinks action', errors);
+      callback(errors);
+    } else {
+      var path = operation.path.split(linkName);
+      path = (path) ? path[1] : null;
+      var value = operation.value;
+      var op = operation.op;
+      var payload = record[type];
+      payload.links = payload.links || {};
+      payload.links[linkName] = payload.links[linkName] || [];
+      if (op === 'add' && path.match(/\-$/) !== null && value) {
+        payload.links[linkName].push(value);
+      } else if (value && op === 'add' || op === 'replace') {
+        payload.links[linkName] = value;
+      } else if (op === 'remove') {
+        var linkId = path.split('/');
+        if (linkId.length > 1) {
+          linkId = linkId[1];
+          var idx = payload.links[linkName].indexOf(linkId);
+          payload.links[linkName].splice(idx, 1);
+        } else {
+          payload.links[linkName] = null;
         }
-      });
+      }
+      db.updateRecord(type, id, {links: payload.links}, callback);
     }
+  });
+}
 
-    // TODO Use Ember.Inflector or other Inflector?
-    function singularize(name) {
-      return name.slice(0, name.length - 1);
-    }
+// TODO Use Ember.Inflector or other Inflector?
+function singularize(name) {
+  return name.slice(0, name.length - 1);
+}
 
-    function pluralize(name) {
-      return name + 's';
-    }
+function pluralize(name) {
+  return name + 's';
+}
+```
 
 [Socket.IO]: http://socket.io/
 [server/lib/socket_adapter.js]: https://github.com/pixelhandler/blog/blob/master/server/lib/socket_adapter.js

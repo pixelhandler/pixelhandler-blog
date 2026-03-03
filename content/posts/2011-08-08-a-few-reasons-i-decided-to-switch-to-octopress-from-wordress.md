@@ -10,7 +10,6 @@ meta_description: |-
   developer who doesn'...
 ---
 
-
   * Ruby gems like capistrano for deployment,
   * Git (SCM) to manage both the code to generate my site and generated code,
   * local development using Ruby to build my now Jekyll powered website,
@@ -30,7 +29,9 @@ A few other things that just make me happy are:
   * no WordPress updates when a security issues is discovered
   * The Octopress plugins are cool: Gist Tag, Render Partial, Github Style codeblock, Category Generator 
     * I can include code snippets from a download folder
-    * Or import a Gist from github.com
+```
+* Or import a Gist from github.com
+```
   * Since the site is generated with rake tasks, resulting in Web standards code (HTML, CSS, Javascript) I can test preview the site on my localhost easily…
 
 Well that sums up what made me happy about the switch.

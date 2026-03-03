@@ -4,8 +4,10 @@ slug: field-notes-from-an-event-apart-2009-for-web-professionals-day-one
 published_at: '2009-05-05'
 author: pixelhandler
 tags: []
-meta_description: "![An Event Apart 2009 Seattle, Zeldman](http://pixelhandler.com/wp-content/uploads/2009/05/seattle090504zeldman.jpg)"
+meta_description: "Field notes from An Event Apart 2009 in Seattle for web professionals, day one."
 ---
+
+![An Event Apart 2009 Seattle, Zeldman](/media/seattle090504zeldman.jpg)
 
 ## Jeffrey Zeldman on Redesign, session 1
 
@@ -24,7 +26,7 @@ meta_description: "![An Event Apart 2009 Seattle, Zeldman](http://pixelhandler.c
 
 > Design is like music, when you (or the clients) see it you say, "yeah that's us" or "no that's not us." --@Zeldman
 
-![An Event Apart 2009 Seattle, Eric Meyer](http://pixelhandler.com/wp-content/uploads/2009/05/seattle090504meyer.jpg)
+![An Event Apart 2009 Seattle, Eric Meyer](/media/seattle090504meyer.jpg)
 
 ## Eric Meyer on Redesign of AnEventApart.com, session 2
 
@@ -45,7 +47,7 @@ meta_description: "![An Event Apart 2009 Seattle, Zeldman](http://pixelhandler.c
 
 > "Presentation never trumps semantics… well hardly ever." --@Meyerweb
 
-![An Event Apart 2009 Seattle, Ethan](http://pixelhandler.com/wp-content/uploads/2009/05/seattle090504ethan.jpg)
+![An Event Apart 2009 Seattle, Ethan](/media/seattle090504ethan.jpg)
 
 ## Ethan Marcotte - Comps vs. Code, session 3
 
@@ -91,7 +93,7 @@ Question we should answer for our users:
 
 > The form shouldn't be your master, you will control your own destiny. --@LukeWDesign
 
-![An Event Apart 2009 Seattle, Tara Hunt](http://pixelhandler.com/wp-content/uploads/2009/05/seattle090504missrouge.jpg)
+![An Event Apart 2009 Seattle, Tara Hunt](/media/seattle090504missrouge.jpg)
 
 ## Tara Hunt - Social Capital Equals Whuffie, session 5
 
@@ -126,7 +128,7 @@ Kristina's examples:
   * Good: Mint.com
   * Bad: Quicken.com
 
-![An Event Apart 2009 Seattle, Jared Spool](http://pixelhandler.com/wp-content/uploads/2009/05/seattle090504jmspool2.jpg)
+![An Event Apart 2009 Seattle, Jared Spool](/media/seattle090504jmspool2.jpg)
 
 ## Jared Spool - User Interface Engineering, session 7
 

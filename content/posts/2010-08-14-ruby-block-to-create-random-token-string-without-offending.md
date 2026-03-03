@@ -10,16 +10,15 @@ meta_description: |-
   creating ...
 ---
 
-
-    
-    def random_token
-      characters = 'BCDFGHJKLMNPQRSTVWXYZbcdfghjkmnpqrstvwxyz23456789-_'
-      temp_token = ''
-      srand
-      TOKEN_LENGTH.times do
-        pos = rand(characters.length)
-        temp_token += characters[pos..pos]
-      end
-      temp_token
-    end
-    
+```ruby
+def random_token
+  characters = 'BCDFGHJKLMNPQRSTVWXYZbcdfghjkmnpqrstvwxyz23456789-_'
+  temp_token = ''
+  srand
+  TOKEN_LENGTH.times do
+    pos = rand(characters.length)
+    temp_token += characters[pos..pos]
+  end
+  temp_token
+end
+```

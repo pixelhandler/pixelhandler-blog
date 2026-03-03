@@ -543,27 +543,29 @@ Below is a look at the calculations for each of the benchmarks that I included i
 
 *HTMLbars shaved of 76 milliseconds, a 46% gain in rendering speed*
 
-    {
-      fast: 32.94,
-      geometric_mean: 86.653,
-      measurments: 100,
-      name: "index_view",
-      slow: 819,
-      emberVersion: "1.10",
-      platform: "Macintosh",
-      browser: "Safari"
-    }
+```css
+{
+  fast: 32.94,
+  geometric_mean: 86.653,
+  measurments: 100,
+  name: "index_view",
+  slow: 819,
+  emberVersion: "1.10",
+  platform: "Macintosh",
+  browser: "Safari"
+}
 
-    {
-      fast: 105.18,
-      geometric_mean: 162.343,
-      measurments: 4,
-      name: "index_view",
-      slow: 244.669,
-      emberVersion: "1.8",
-      platform: "Macintosh",
-      browser: "Safari"
-    }
+{
+  fast: 105.18,
+  geometric_mean: 162.343,
+  measurments: 4,
+  name: "index_view",
+  slow: 244.669,
+  emberVersion: "1.8",
+  platform: "Macintosh",
+  browser: "Safari"
+}
+```
 
 #### Chrome on Macintosh
 
@@ -947,79 +949,85 @@ I only had a couple measurments…
 
 *HTMLBars was 146 milliseconds faster, a 48% gain in rendering speed*
 
-    {
-      fast: 239.835,
-      geometric_mean: 302.707,
-      measurments: 13,
-      name: "metrics_table",
-      slow: 416.321,
-      emberVersion: "1.10",
-      platform: "Macintosh",
-      browser: "Safari"
-    }
+```css
+{
+  fast: 239.835,
+  geometric_mean: 302.707,
+  measurments: 13,
+  name: "metrics_table",
+  slow: 416.321,
+  emberVersion: "1.10",
+  platform: "Macintosh",
+  browser: "Safari"
+}
 
-    {
-      fast: 287,
-      geometric_mean: 448.611,
-      measurments: 6,
-      name: "metrics_table",
-      slow: 568.253,
-      emberVersion: "1.8",
-      platform: "Macintosh",
-      browser: "Safari"
-    }
+{
+  fast: 287,
+  geometric_mean: 448.611,
+  measurments: 6,
+  name: "metrics_table",
+  slow: 568.253,
+  emberVersion: "1.8",
+  platform: "Macintosh",
+  browser: "Safari"
+}
+```
 
 #### Chrome on Macintosh
 
 *HTMLBars was 257 milliseconds faster, a 28% gain in rendering speed*
 
-    {
-      fast: 414.107,
-      geometric_mean: 646.06,
-      measurments: 27,
-      name: "metrics_table",
-      slow: 1584.423,
-      emberVersion: "1.10",
-      platform: "Macintosh",
-      browser: "Chrome"
-    }
+```css
+{
+  fast: 414.107,
+  geometric_mean: 646.06,
+  measurments: 27,
+  name: "metrics_table",
+  slow: 1584.423,
+  emberVersion: "1.10",
+  platform: "Macintosh",
+  browser: "Chrome"
+}
 
-    {
-      fast: 457.012,
-      geometric_mean: 903.33,
-      measurments: 27,
-      name: "metrics_table",
-      slow: 1564.946,
-      emberVersion: "1.8",
-      platform: "Macintosh",
-      browser: "Chrome"
-    }
+{
+  fast: 457.012,
+  geometric_mean: 903.33,
+  measurments: 27,
+  name: "metrics_table",
+  slow: 1564.946,
+  emberVersion: "1.8",
+  platform: "Macintosh",
+  browser: "Chrome"
+}
+```
 
 #### Chrome on Windows
 
 *Handlebars 1.3 was 17 milliseconds faster, a 2% decrease in rendering speed*
 
-    {
-      fast: 615.905,
-      geometric_mean: 829.604,
-      measurments: 3,
-      name: "metrics_table",
-      slow: 1142.15,
-      emberVersion: "1.10",
-      platform: "Windows",
-      browser: "Chrome"
-    }
+```css
+{
+  fast: 615.905,
+  geometric_mean: 829.604,
+  measurments: 3,
+  name: "metrics_table",
+  slow: 1142.15,
+  emberVersion: "1.10",
+  platform: "Windows",
+  browser: "Chrome"
+}
 
-    {
-      fast: 765.64,
-      geometric_mean: 812.356,
-      measurments: 2,
-      name: "metrics_table",
-      slow: 861.923,
-      emberVersion: "1.8",
-      platform: "Windows",
-      browser: "Chrome"
-    }
+{
+  fast: 765.64,
+  geometric_mean: 812.356,
+  measurments: 2,
+  name: "metrics_table",
+  slow: 861.923,
+  emberVersion: "1.8",
+  platform: "Windows",
+  browser: "Chrome"
+}
+```
 
 #### Firefox on Windows
 
@@ -1031,92 +1039,94 @@ The data is limited to 2 and 4 measurements, I've incluced the metrics, and uniq
 
 *In this limited set, HTMLBars is 122 milliseconds faster, a 14% gain in rendering speed*
 
+```
+{
+  "durations": [
+    696.713,
+    903.421,
+    660.65,
+    734.586
+  ],
+  "fast": 660.65,
+  "geometric_mean": 743.429,
+  "measurments": 4,
+  "metrics": [
     {
-      "durations": [
-        696.713,
-        903.421,
-        660.65,
-        734.586
-      ],
-      "fast": 660.65,
-      "geometric_mean": 743.429,
-      "measurments": 4,
-      "metrics": [
-        {
-          "date": "2015-02-17T06:04:15.251Z",
-          "duration": 696.713,
-          "emberVersion": "1.10.0",
-          "id": "8b6994ee-268b-43ce-8f26-96ddfcf466a7",
-          "pathname": "/metrics"
-        },
-        {
-          "date": "2015-02-17T06:04:06.243Z",
-          "duration": 903.421,
-          "emberVersion": "1.10.0",
-          "id": "28bad254-c3b9-462e-9966-4bc2fcc8fc63",
-          "pathname": "/metrics"
-        },
-        {
-          "date": "2015-02-17T06:02:24.487Z",
-          "duration": 660.65,
-          "emberVersion": "1.10.0",
-          "id": "11dfee70-d635-41fd-8e69-2df4f1c70dc1",
-          "pathname": "/metrics"
-        },
-        {
-          "date": "2015-02-17T06:02:24.021Z",
-          "duration": 734.586,
-          "emberVersion": "1.10.0",
-          "id": "b58722d9-c9eb-4ab2-bac7-41ba187a3646",
-          "pathname": "/metrics"
-        }
-      ],
-      "name": "metrics_table",
-      "slow": 903.421,
-      "userAgents": [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:37.0) Gecko/20100101 Firefox/37.0"
-      ],
-      "emberVersion": "1.10",
-      "platform": "Macintosh",
-      "browser": "Firefox"
+      "date": "2015-02-17T06:04:15.251Z",
+      "duration": 696.713,
+      "emberVersion": "1.10.0",
+      "id": "8b6994ee-268b-43ce-8f26-96ddfcf466a7",
+      "pathname": "/metrics"
+    },
+    {
+      "date": "2015-02-17T06:04:06.243Z",
+      "duration": 903.421,
+      "emberVersion": "1.10.0",
+      "id": "28bad254-c3b9-462e-9966-4bc2fcc8fc63",
+      "pathname": "/metrics"
+    },
+    {
+      "date": "2015-02-17T06:02:24.487Z",
+      "duration": 660.65,
+      "emberVersion": "1.10.0",
+      "id": "11dfee70-d635-41fd-8e69-2df4f1c70dc1",
+      "pathname": "/metrics"
+    },
+    {
+      "date": "2015-02-17T06:02:24.021Z",
+      "duration": 734.586,
+      "emberVersion": "1.10.0",
+      "id": "b58722d9-c9eb-4ab2-bac7-41ba187a3646",
+      "pathname": "/metrics"
     }
+  ],
+  "name": "metrics_table",
+  "slow": 903.421,
+  "userAgents": [
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:37.0) Gecko/20100101 Firefox/37.0"
+  ],
+  "emberVersion": "1.10",
+  "platform": "Macintosh",
+  "browser": "Firefox"
+}
 
-    {
-      "metric": {
-        "durations": [
-          746.559,
-          1002.809
-        ],
-        "fast": 746.559,
-        "geometric_mean": 865.249,
-        "measurments": 2,
-        "metrics": [
-          {
-            "date": "2015-02-17T03:02:27.682Z",
-            "duration": 746.559,
-            "emberVersion": "1.8.1",
-            "id": "d828e5b6-c5c2-4fee-8bf3-2d08d97ed36d",
-            "pathname": "/metrics"
-          },
-          {
-            "date": "2015-02-17T03:02:11.844Z",
-            "duration": 1002.809,
-            "emberVersion": "1.8.1",
-            "id": "e65effb9-4756-4642-8397-1757c4f3be15",
-            "pathname": "/metrics"
-          }
-        ],
-        "name": "metrics_table",
-        "slow": 1002.809,
-        "userAgents": [
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:37.0) Gecko/20100101 Firefox/37.0"
-        ],
-        "emberVersion": "1.8",
-        "platform": "Macintosh",
-        "browser": "Firefox"
+{
+  "metric": {
+    "durations": [
+      746.559,
+      1002.809
+    ],
+    "fast": 746.559,
+    "geometric_mean": 865.249,
+    "measurments": 2,
+    "metrics": [
+      {
+        "date": "2015-02-17T03:02:27.682Z",
+        "duration": 746.559,
+        "emberVersion": "1.8.1",
+        "id": "d828e5b6-c5c2-4fee-8bf3-2d08d97ed36d",
+        "pathname": "/metrics"
+      },
+      {
+        "date": "2015-02-17T03:02:11.844Z",
+        "duration": 1002.809,
+        "emberVersion": "1.8.1",
+        "id": "e65effb9-4756-4642-8397-1757c4f3be15",
+        "pathname": "/metrics"
       }
-    }
+    ],
+    "name": "metrics_table",
+    "slow": 1002.809,
+    "userAgents": [
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:37.0) Gecko/20100101 Firefox/37.0"
+    ],
+    "emberVersion": "1.8",
+    "platform": "Macintosh",
+    "browser": "Firefox"
+  }
+}
+```
 
 Perhaps I'll use the queries and API endpoints for my metrics collection and reporting to see how the next version of Ember.js does, or see how a feature change impacts performance.
