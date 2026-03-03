@@ -73,7 +73,14 @@ select.faux-select {
 .faux-select-selected, .faux-select-graphic {
     border: 1px solid black;
     height: 30px;
+    background: #fdfaed;
+    background: -moz-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fdfaed), color-stop(100%, #b5cbeb));
+    background: -webkit-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
+    background: -o-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
+    background: -ms-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
     background: linear-gradient(to bottom, #fdfaed 0%, #b5cbeb 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#fdfaed', endColorstr='#b5cbeb', GradientType=0);
 }
 .faux-select-selected {
     border-top-left-radius: 10px;
