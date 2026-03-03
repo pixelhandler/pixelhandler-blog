@@ -11,30 +11,30 @@ meta_description: |-
   Plugin/](http://github.com/pixelhandl...
 ---
 
-<h2>A JavaScript plugin based on jQuery library that builds an expandable/collapsable menu tree from a list element</h2>
+## A JavaScript plugin based on jQuery library that builds an expandable/collapsable menu tree from a list element
 
-<ul>
-<li><p>Requires JavaScript library: <a href="http://jquery.com/">jQuery</a></p></li>
-<li><p>Developed using jQuery version 1.4 ... <a href="http://plugins.jquery.com/project/menuTree">Plugin page</a></p></li>
-<li><p>Demo of the plugin behavior showing both lists and definition list... <a href="http://www.pixelhandler.com/menutree/jQuery-MenuTree-Plugin/example/">Demo</a></p></li>
-<li><p>Status : New plugin, give it a try!</p></li>
-<li><p>Tracer plugin added and featured with demo.</p></li>
-<li><p>Blog post for MenuTree plugin on my blog... <a href="https://pixelhandler.dev/posts/jquery-menutree-plugin-hosted-on-github">Blog</a></p></li>
-</ul>
+* Requires JavaScript library: [jQuery](http://jquery.com/)
+* Developed using jQuery version 1.4 ... [Plugin page](http://plugins.jquery.com/project/menuTree)
+* Demo of the plugin behavior showing both lists and definition list... [Demo](http://www.pixelhandler.com/menutree/jQuery-MenuTree-Plugin/example/)
+* Status : New plugin, give it a try!
+* Tracer plugin added and featured with demo.
+* Blog post for MenuTree plugin on my blog... [Blog](https://pixelhandler.dev/posts/jquery-menutree-plugin-hosted-on-github)
 
 
-<h2>How to build a menu tree that is expandable with jQuery</h2>
+## How to build a menu tree that is expandable with jQuery
 
-<p>Your html will need to link to the jQuery plugin in the head element</p>
+Your html will need to link to the jQuery plugin in the head element
 
-<p><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js" type="text/javascript" charset="utf-8"></script></p>
+```html
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"
+        type="text/javascript" charset="utf-8"></script>
+```
 
-<p>Your html markup needs to use a list, see github link for reference.</p>
+Your html markup needs to use a list, see github link for reference.
 
+menuTree plugin uses a few CSS classes for visual design...
 
-<p>menuTree plugin plugin uses a few CSS classes for visual design...</p>
-<pre name="code" class="css">
-
+```css
 #myTree .menuTree:before {
 	content: "[+] ";
 }
@@ -46,11 +46,11 @@ meta_description: |-
 #myTree .collapsed {
 	display: none;
 }
+```
 
-</pre>
-<p>At the end of your html markup, before the closing body element use a script to setup the function...</p>
-<pre name="code" class="js">
+At the end of your html markup, before the closing body element use a script to setup the function...
 
+```javascript
 $(document).ready(function() {
 
 	$('#myTree').menuTree({
@@ -61,19 +61,19 @@ $(document).ready(function() {
 	});
 
 });
+```
 
-</pre>
-<p>This plugin has default options which you may override. The animation option may use jQuery <strong>toggle or slideToggle</strong> methods, or just use the default <strong>css</strong> option to show/hide the child list(s).</p>
+This plugin has default options which you may override. The animation option may use jQuery **toggle or slideToggle** methods, or just use the default **css** option to show/hide the child list(s).
 
-<p>When called with the animation: true option the plugin uses the handler option to select <em>slideToggle</em> or <em>toggle</em> method to add effects to the display of child menu(s). You may set the speed as you please, e.g. speed: 'slow'. Also, you may indicate what the child menu(s) are marked up with, e.g. listElement: <em>'ol'</em> instead of the default listElement: <em>'ul'</em></p>
+When called with the animation: true option the plugin uses the handler option to select *slideToggle* or *toggle* method to add effects to the display of child menu(s). You may set the speed as you please, e.g. speed: 'slow'. Also, you may indicate what the child menu(s) are marked up with, e.g. listElement: *'ol'* instead of the default listElement: *'ul'*
 
-<p>The default options:</p>
-<pre name="code" class="js">
+The default options:
 
+```javascript
 $.fn.menuTree.defaults = {
 
 	// setup animation
-	animation: false, 
+	animation: false,
 	handler: 'css',
 	speed: 'fast',
 	// setup hooks in markup
@@ -82,8 +82,8 @@ $.fn.menuTree.defaults = {
 	// uses 'tracer' plugin
 	trace: false
 };
+```
 
-</pre>
-<p>If you have any questions, please feel free to ask them on the jQuery
-meetup site, found here:<br />
-<a href="http://meetups.jquery.com/group/jquerylosangeles">http://meetups.jquery.com/group/jquerylosangeles</a></p>
+If you have any questions, please feel free to ask them on the jQuery
+meetup site, found here:
+[http://meetups.jquery.com/group/jquerylosangeles](http://meetups.jquery.com/group/jquerylosangeles)
