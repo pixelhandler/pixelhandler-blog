@@ -30,62 +30,9 @@ custom view, that's what Ember.Component is for. I'd like the custom
 select box to work like a custom html element, e.g. `{{faux-select}}`
 can be used where I would use a select element in my Handlebars templates.
 
-The custom "faux" select box will look like this:
+The custom "faux" select box markup will look like this:
 
-<style type="text/css">
-select.faux-select {
-    display: block;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    position: absolute;
-    height: 20px;
-    width: 125px;
-    margin: 5px
-}
-
-.faux-select {
-    color: black;
-    position: relative;
-    font: 14px/18px "Andale Mono", AndaleMono, monospace;
-    letter-spacing: 1px;
-    text-transform: uppercase
-}
-
-.faux-select-box {
-    position: absolute;
-    min-width: 137px
-}
-
-.faux-select-selected, .faux-select-graphic {
-    border: 1px solid black;
-    height: 30px;
-    background: #fdfaed;
-    background: -moz-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fdfaed), color-stop(100%, #b5cbeb));
-    background: -webkit-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-    background: -o-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-    background: -ms-linear-gradient(top, #fdfaed 0%, #b5cbeb 100%);
-    background: linear-gradient(to bottom, #fdfaed 0%, #b5cbeb 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#fdfaed', endColorstr='#b5cbeb', GradientType=0 )
-}
-
-.faux-select-selected {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-right: none;
-    float: left;
-    min-width: 117px;
-    padding: 5px 10px
-}
-
-.faux-select-graphic {
-    float: right;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    padding: 5px 7px
-}
-</style>
-
+```html
 <div class="faux-select">
   <div class="faux-select-box">
     <span class="faux-select-selected">Choose One</span>
@@ -98,7 +45,51 @@ select.faux-select {
     <option value="3">AngularJS</option>
   </select>
 </div>
-<br><br>
+```
+
+With these base styles:
+
+```css
+select.faux-select {
+    display: block;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    position: absolute;
+    height: 20px;
+    width: 125px;
+    margin: 5px;
+}
+.faux-select {
+    color: black;
+    position: relative;
+    font: 14px/18px "Andale Mono", AndaleMono, monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.faux-select-box {
+    position: absolute;
+    min-width: 137px;
+}
+.faux-select-selected, .faux-select-graphic {
+    border: 1px solid black;
+    height: 30px;
+    background: linear-gradient(to bottom, #fdfaed 0%, #b5cbeb 100%);
+}
+.faux-select-selected {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: none;
+    float: left;
+    min-width: 117px;
+    padding: 5px 10px;
+}
+.faux-select-graphic {
+    float: right;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 5px 7px;
+}
+```
 
 ### Step 1 - Start by using the Ember Starter-Kit repo
 
@@ -284,7 +275,7 @@ result, more style is needed but this css will be the foundation.
 
 **css/style.css**
 
-```handlebars
+```css
 /* FauxSelectComponent */
 select.faux-select {
     opacity: 0;
@@ -363,7 +354,7 @@ Below is a list of required styles for this example of a faux select box.
 
 **css/style.css**
 
-```handlebars
+```css
 /* FauxSelectComponent */
 select.faux-select {
     display: block;
@@ -396,7 +387,7 @@ select.faux-select {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-right: none;
-    fl    oat: left;
+    float: left;
     min-width: 117px;
     padding: 5px 10px;
 }
