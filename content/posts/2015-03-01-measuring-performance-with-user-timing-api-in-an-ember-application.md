@@ -38,33 +38,35 @@ I created a utility with an interface to [mark][performancemark], [measure][perf
 
 I used the mixin below in various routes, e.g. Index, Application, Post etc. to collect and measure the statistics for reporting on the timings that an Ember application renders HTML.
 
-    import Ember from 'ember';
-    import config from '../config/environment';
-    import { mark, measure, report } from '../utils/metrics';
+```javascript
+import Ember from 'ember';
+import config from '../config/environment';
+import { mark, measure, report } from '../utils/metrics';
 
-    export default Ember.Mixin.create({
+export default Ember.Mixin.create({
 
-      measurementName: Ember.required,
+  measurementName: Ember.required,
 
-      reportUserTimings: true,
+  reportUserTimings: true,
 
-      renderTemplate(controller, model) {
-        var beginName = 'mark_begin_rendering_' + this.measurementName;
-        var endName = 'mark_end_rendering_' + this.measurementName;
-        if (config.APP.REPORT_METRICS) {
-          mark(beginName);
-          Ember.run.scheduleOnce('afterRender', this, function() {
-            mark(endName);
-            measure(this.measurementName, beginName, endName);
-            if (this.reportUserTimings) {
-              report();
-            }
-          });
+  renderTemplate(controller, model) {
+    var beginName = 'mark_begin_rendering_' + this.measurementName;
+    var endName = 'mark_end_rendering_' + this.measurementName;
+    if (config.APP.REPORT_METRICS) {
+      mark(beginName);
+      Ember.run.scheduleOnce('afterRender', this, function() {
+        mark(endName);
+        measure(this.measurementName, beginName, endName);
+        if (this.reportUserTimings) {
+          report();
         }
-        return this._super(controller, model);
-      }
+      });
+    }
+    return this._super(controller, model);
+  }
 
-    });
+});
+```
 
 ## Utility Module for Metrics Collection and Reporting
 
@@ -75,113 +77,115 @@ What is amazing about the performance measurements is that the API uses high-res
 [Google Analytics to report User Timings]: https://developers.google.com/analytics/devguides/collection/analyticsjs/user-timings
 
 
-    /*jshint unused:false*/
-    import Ember from 'ember';
-    import config from '../config/environment';
+```javascript
+/*jshint unused:false*/
+import Ember from 'ember';
+import config from '../config/environment';
 
-    export function mark(name) {
-      if (!window.performance || !window.performance.mark ) { return; }
-      window.performance.mark(name);
-    }
+export function mark(name) {
+  if (!window.performance || !window.performance.mark ) { return; }
+  window.performance.mark(name);
+}
 
-    export function measure(name, begin, end) {
-      if (!window.performance || !window.performance.measure ) { return; }
-      window.performance.measure(name, begin, end);
-    }
+export function measure(name, begin, end) {
+  if (!window.performance || !window.performance.measure ) { return; }
+  window.performance.measure(name, begin, end);
+}
 
-    export function appReady() {
-      return measureEntry('app_ready');
-    }
+export function appReady() {
+  return measureEntry('app_ready');
+}
 
-    export function appUnload() {
-      return measureEntry('app_unload');
-    }
+export function appUnload() {
+  return measureEntry('app_unload');
+}
 
-    export function pageView() {
-      return measureEntry('page_view');
-    }
+export function pageView() {
+  return measureEntry('page_view');
+}
 
-    function measureEntry(name) {
-      if (!window.performance || !window.performance.getEntriesByName ) { return; }
-      var markName = name + '_now';
-      mark(markName);
-      if (window.performance.timing) {
-        measure(name, 'navigationStart', markName);
-      } else {
-        measure(name, markName, markName);
-      }
-    }
+function measureEntry(name) {
+  if (!window.performance || !window.performance.getEntriesByName ) { return; }
+  var markName = name + '_now';
+  mark(markName);
+  if (window.performance.timing) {
+    measure(name, 'navigationStart', markName);
+  } else {
+    measure(name, markName, markName);
+  }
+}
 
-    export function report() {
-      if (!window.performance || !window.performance.getEntriesByType ) { return; }
-      window.setTimeout(function() {
-        send(window.performance.getEntriesByType('measure'));
-        clear();
-      }, 1000);
-    }
+export function report() {
+  if (!window.performance || !window.performance.getEntriesByType ) { return; }
+  window.setTimeout(function() {
+    send(window.performance.getEntriesByType('measure'));
+    clear();
+  }, 1000);
+}
 
-    function send(measurements) {
-      var measurement;
-      for (var i = 0; i < measurements.length; ++i) {
-        measurement = measurements[i];
-        post(measurement);
-        gaTrackTiming(measurement);
-      }
-    }
+function send(measurements) {
+  var measurement;
+  for (var i = 0; i < measurements.length; ++i) {
+    measurement = measurements[i];
+    post(measurement);
+    gaTrackTiming(measurement);
+  }
+}
 
-    export function post(measurement) {
-      var payload = createMetric(measurement);
-      return Ember.$.ajax({
-        type: 'POST',
-        url: endpointUri('metrics'),
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ metrics: payload }),
-        dataType: 'json'
-      });
-    }
+export function post(measurement) {
+  var payload = createMetric(measurement);
+  return Ember.$.ajax({
+    type: 'POST',
+    url: endpointUri('metrics'),
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify({ metrics: payload }),
+    dataType: 'json'
+  });
+}
 
-    function gaTrackTiming(measurement) {
-      if (typeof window.ga !== 'function') { return; }
-      window.ga('send', {
-        'hitType': 'timing',
-        'timingCategory': 'user_timing',
-        'timingVar': measurement.name,
-        'timingValue': measurement.duration,
-        'timingLabel': measurement.emberVersion,
-        'page': measurement.pathname
-      });
-    }
+function gaTrackTiming(measurement) {
+  if (typeof window.ga !== 'function') { return; }
+  window.ga('send', {
+    'hitType': 'timing',
+    'timingCategory': 'user_timing',
+    'timingVar': measurement.name,
+    'timingValue': measurement.duration,
+    'timingLabel': measurement.emberVersion,
+    'page': measurement.pathname
+  });
+}
 
-    function createMetric(measurement) {
-      return {
-        date: Date.now(),
-        name: measurement.name,
-        pathname: location.pathname,
-        startTime: Math.round(measurement.startTime),
-        duration: Number(Math.round(measurement.duration + 'e3') + 'e-3'), // round to thousandths
-        visitor: window.localStorage.getItem('visitor'),
-        screenWidth: window.screen.width,
-        screenHeight: window.screen.height,
-        screenColorDepth: window.screen.colorDepth,
-        screenPixelDepth: window.screen.pixelDepth,
-        screenOrientation: (window.screen.orientation) ? window.screen.orientation.type : null,
-        blogVersion: config.APP.version,
-        emberVersion: Ember.VERSION,
-        adapterType: (config.APP.USE_SOCKET_ADAPTER) ? 'SOCKET' : 'JSONAPI'
-      };
-    }
+function createMetric(measurement) {
+  return {
+    date: Date.now(),
+    name: measurement.name,
+    pathname: location.pathname,
+    startTime: Math.round(measurement.startTime),
+    duration: Number(Math.round(measurement.duration + 'e3') + 'e-3'), // round to thousandths
+    visitor: window.localStorage.getItem('visitor'),
+    screenWidth: window.screen.width,
+    screenHeight: window.screen.height,
+    screenColorDepth: window.screen.colorDepth,
+    screenPixelDepth: window.screen.pixelDepth,
+    screenOrientation: (window.screen.orientation) ? window.screen.orientation.type : null,
+    blogVersion: config.APP.version,
+    emberVersion: Ember.VERSION,
+    adapterType: (config.APP.USE_SOCKET_ADAPTER) ? 'SOCKET' : 'JSONAPI'
+  };
+}
 
-    function endpointUri(resource) {
-      var host = config.APP.API_HOST;
-      var path = config.APP.API_PATH;
-      var uri = (path) ? host + '/' + path : host;
-      return uri + '/' + resource;
-    }
+function endpointUri(resource) {
+  var host = config.APP.API_HOST;
+  var path = config.APP.API_PATH;
+  var uri = (path) ? host + '/' + path : host;
+  return uri + '/' + resource;
+}
 
-    function clear() {
-      window.performance.clearMarks();
-      window.performance.clearMeasures();
-    }
+function clear() {
+  window.performance.clearMarks();
+  window.performance.clearMeasures();
+}
+```
 
 ### Learn more about User Timing API to Measure Performance
 
@@ -200,25 +204,27 @@ In addition to collecting measurements for rendering templates I collected metri
 
 *An Example Metric Resource:*
 
-    {
-      adapterType: 'SOCKET',
-      blogVersion: '3.3.8.fa3fbaf8',
-      date: '2015-02-08T06:29:17.368Z',
-      duration: 113.35,
-      emberVersion: '1.10.0',
-      id: '1a9864a2-4011-49d8-9233-fa76d26e9040',
-      name: 'post_view',
-      pathname: '/posts/refreshed-my-blog-with-express-and-emberjs',
-      screenColorDepth: 24,
-      screenHeight: 900,
-      screenOrientation: 'landscape-primary',
-      screenPixelDepth: 24,
-      screenWidth: 1440,
-      startTime: 391,
-      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) .... Safari/537.36',
-      visit: '22d5d2b0be4067ac3af57f4b14fcbb4b4d89fe34b1eeeaab910c259e7b9c55aa',
-      visitor: 'c56f439e-646b-4f6a-b91b-5c119e21efba'
-    }
+```json
+{
+  adapterType: 'SOCKET',
+  blogVersion: '3.3.8.fa3fbaf8',
+  date: '2015-02-08T06:29:17.368Z',
+  duration: 113.35,
+  emberVersion: '1.10.0',
+  id: '1a9864a2-4011-49d8-9233-fa76d26e9040',
+  name: 'post_view',
+  pathname: '/posts/refreshed-my-blog-with-express-and-emberjs',
+  screenColorDepth: 24,
+  screenHeight: 900,
+  screenOrientation: 'landscape-primary',
+  screenPixelDepth: 24,
+  screenWidth: 1440,
+  startTime: 391,
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) .... Safari/537.36',
+  visit: '22d5d2b0be4067ac3af57f4b14fcbb4b4d89fe34b1eeeaab910c259e7b9c55aa',
+  visitor: 'c56f439e-646b-4f6a-b91b-5c119e21efba'
+}
+```
 
 I created endpoints on my API for */metrics/impressions* and */metrics/durations* that accept queries that use regular expression matching to search for data based on the object properties of the metrics. For example I can search the pathname, userAgent and emberVersion when reporting on the metrics data.
 
@@ -248,77 +254,89 @@ The measurements below highlight some gains and losses as a result of the upgrad
 
 Index (home) page in v1.8.1  
 
-    //Ember v1.8.1
-    {
-      average: 154.41764912280703,
-      durations: 114,
-      fastest: 5,
-      pathname: "/",
-      slowest: 914
-    }
+```json
+//Ember v1.8.1
+{
+  average: 154.41764912280703,
+  durations: 114,
+  fastest: 5,
+  pathname: "/",
+  slowest: 914
+}
+```
 
 Index (home) page in v1.10.0  
 
-    // Ember v1.10.0
-    {
-      average: 244.7352818181818,
-      durations: 220,
-      fastest: 5,
-      pathname: "/",
-      slowest: 1854.635
-    }
+```json
+// Ember v1.10.0
+{
+  average: 244.7352818181818,
+  durations: 220,
+  fastest: 5,
+  pathname: "/",
+  slowest: 1854.635
+}
+```
 
 The most visited (post) page in v1.8.1
 
 /metrics/durations?name=post_view&pathname=mongoose&emberVersion=1.8
 
-    // Ember v1.8.1
-    {
-      average: 251.42101618705053,
-      durations: 1668,
-      fastest: 8,
-      pathname: "/posts/develop-a-restful-api-using-nodejs-with-express-and-mongoose",
-      slowest: 3696
-    }
+```json
+// Ember v1.8.1
+{
+  average: 251.42101618705053,
+  durations: 1668,
+  fastest: 8,
+  pathname: "/posts/develop-a-restful-api-using-nodejs-with-express-and-mongoose",
+  slowest: 3696
+}
+```
 
 The most visited (post) page in v1.10.0
 
 /metrics/durations?name=post_view&pathname=mongoose&emberVersion=1.10
 
-    // Ember v1.10.0
-    {
-      average: 232.02967880485514,
-      durations: 2142,
-      fastest: 8,
-      pathname: "/posts/develop-a-restful-api-using-nodejs-with-express-and-mongoose",
-      slowest: 5726
-    }
+```json
+// Ember v1.10.0
+{
+  average: 232.02967880485514,
+  durations: 2142,
+  fastest: 8,
+  pathname: "/posts/develop-a-restful-api-using-nodejs-with-express-and-mongoose",
+  slowest: 5726
+}
+```
 
 Long list (1,000 metrics) in v1.10.0, in Chrome
 
 /api/metrics/durations?name=metrics_table&emberVersion=1.10&userAgent=Chrome
 
-    // Ember Version 1.10.0
-    {
-      average: 690.5488399999999,
-      durations: 25,
-      fastest: 427.563,
-      pathname: "/metrics",
-      slowest: 1142.15
-    }
+```json
+// Ember Version 1.10.0
+{
+  average: 690.5488399999999,
+  durations: 25,
+  fastest: 427.563,
+  pathname: "/metrics",
+  slowest: 1142.15
+}
+```
 
 Long list (1,000 metrics) in v1.8.1, in Chrome
 
 /metrics/durations?name=metrics_table&emberVersion=1.8&userAgent=Chrome
 
-    // Ember Version 1.8.1
-    {
-      average: 682.4195625,
-      durations: 16,
-      fastest: 457.012,
-      pathname: "/metrics",
-      slowest: 991.684
-    }
+```json
+// Ember Version 1.8.1
+{
+  average: 682.4195625,
+  durations: 16,
+  fastest: 457.012,
+  pathname: "/metrics",
+  slowest: 991.684
+}
+```
 
 #### On Mobile
 
@@ -326,53 +344,61 @@ Index (home) page in v1.10.0, on Mobile
 
 /metrics/durations?name=index_view&emberVersion=1.10&userAgent=Mobile
 
-    // Ember Version 1.10.0
-    {
-      average: 580.4696976744186,
-      durations: 43,
-      fastest: 160,
-      pathname: "/",
-      slowest: 1490
-    }
+```json
+// Ember Version 1.10.0
+{
+  average: 580.4696976744186,
+  durations: 43,
+  fastest: 160,
+  pathname: "/",
+  slowest: 1490
+}
+```
 
 Index (home) page in v1.8.1, on Mobile
 
 /metrics/durations?name=index_view&emberVersion=1.8&userAgent=Mobile
 
-    // Ember Version 1.8.1
-    {
-      average: 515.881875,
-      durations: 8,
-      fastest: 330,
-      pathname: "/",
-      slowest: 914
-    }
+```json
+// Ember Version 1.8.1
+{
+  average: 515.881875,
+  durations: 8,
+  fastest: 330,
+  pathname: "/",
+  slowest: 914
+}
+```
 
 Long list (1,000 metrics) in v1.8.1, on Mobile
 
 /metrics/durations?name=metrics_table&emberVersion=1.8&userAgent=Mobile
 
-    // Ember Version 1.8.1
-    {
-      average: 2179.4,
-      durations: 10,
-      fastest: 871,
-      pathname: "/metrics",
-      slowest: 5380
-    }
+```json
+// Ember Version 1.8.1
+{
+  average: 2179.4,
+  durations: 10,
+  fastest: 871,
+  pathname: "/metrics",
+  slowest: 5380
+}
+```
 
 Long list (1,000 metrics) in v1.10.0, on Mobile
 
 /metrics/durations?name=metrics_table&emberVersion=1.10&userAgent=Mobile
 
-    // Ember Version 1.10.0
-    {
-      average: 1617.4285714285713,
-      durations: 7,
-      fastest: 1014,
-      pathname: "/metrics",
-      slowest: 2285
-    }
+```json
+// Ember Version 1.10.0
+{
+  average: 1617.4285714285713,
+  durations: 7,
+  fastest: 1014,
+  pathname: "/metrics",
+  slowest: 2285
+}
+```
 
 ## What I learned about my Performance in my Ember app
 

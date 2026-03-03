@@ -62,8 +62,8 @@ In summary, remote work is not about isolation. It is a lifestyle that prioritiz
 
 Working from the beach
 
-<img src="https://s3.amazonaws.com/cdn.pixelhandler.com/uploads/working-remote-socal.jpg" alt="Working at the beach" width="640">
+![Working at the beach](/media/working-remote-socal.jpg)
 
 Afternoon walk
 
-<img src="https://s3.amazonaws.com/cdn.pixelhandler.com/uploads/afternoon-hike.jpg" alt="Afternoon walk" width="640">
+![Afternoon walk](/media/afternoon-hike.jpg)

@@ -10,17 +10,19 @@ meta_description: |-
   individua...
 ---
 
-    # Allows concatenation from files ending with .js and .css  
-    # In styles.combined.css use...
-    #   <!--#include file="reset.css" -->
-    #   <!--#include file="layout.css" -->
-    # these will included into this single file
-    
-    <FilesMatch ".combined.js">
-            Options +Includes
-            SetOutputFilter INCLUDES
-    </FilesMatch>
-    <FilesMatch ".combined.css">
-            Options +Includes
-            SetOutputFilter INCLUDES
-    </FilesMatch>
+```
+# Allows concatenation from files ending with .js and .css  
+# In styles.combined.css use...
+#   <!--#include file="reset.css" -->
+#   <!--#include file="layout.css" -->
+# these will included into this single file
+
+<FilesMatch ".combined.js">
+        Options +Includes
+        SetOutputFilter INCLUDES
+</FilesMatch>
+<FilesMatch ".combined.css">
+        Options +Includes
+        SetOutputFilter INCLUDES
+</FilesMatch>
+```

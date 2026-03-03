@@ -109,30 +109,36 @@ An outlet in the Ember application template:
 
 **templates/application**
 
-    <script type="text/x-handlebars">
-      {{outlet}}
-    </script>    
+```
+<script type="text/x-handlebars">
+  {{outlet}}
+</script>    
+```
 
 An index template used to try out the custom element (component).
 
 **templates/index**
 
-    <script type="text/x-handlebars" id="index">
-      <h1>Components</h1>
-    </script>    
+```
+<script type="text/x-handlebars" id="index">
+  <h1>Components</h1>
+</script>    
+```
 
 An empty model will be used for now, later I'll put a list of choices in
 this object.
 
 **javascript/app.js**
 
-    App = Ember.Application.create();
-    
-    App.IndexRoute = Ember.Route.extend({
-      model: function() {
-        return {};
-      }
-    });    
+```javascript
+App = Ember.Application.create();
+
+App.IndexRoute = Ember.Route.extend({
+  model: function() {
+    return {};
+  }
+});    
+```
 
 ### Step 2 - Add a component template with a select box
 
@@ -144,12 +150,14 @@ Custom Element, see [Web Components].
 
 **templates/components/faux-select**
 
-    <script type="text/x-handlebars" id="components/faux-select">
-      <h2>Faux Select</h2>
-      <select>
-        <option value="">Choose One</option>
-      </select>
-    </script>    
+```handlebars
+<script type="text/x-handlebars" id="components/faux-select">
+  <h2>Faux Select</h2>
+  <select>
+    <option value="">Choose One</option>
+  </select>
+</script>    
+```
 
 To use the component just place the name of the component in a
 Handlebars template, I've added it in the index template so it renders.
@@ -157,10 +165,12 @@ Notice the `{{faux-select}}` addition below:
 
 **templates/index**
 
-    <script type="text/x-handlebars" id="index">
-      <h1>Components</h1>
-      {{faux-select}}
-    </script>    
+```handlebars
+<script type="text/x-handlebars" id="index">
+  <h1>Components</h1>
+  {{faux-select}}
+</script>    
+```
 
 Now the select element can be rendered, it's not much and not even a
 much as Ember.Select provides yet, but it's a start toward a custom
@@ -173,28 +183,32 @@ of choices, I've started with only one choice the default "Choose One".
 
 **javascript/app.js**
 
-    App = Ember.Application.create();
-    
-    App.IndexRoute = Ember.Route.extend({
-      model: function() {
-        return [
-          { choice: 'Choose One' }
-        ];
-      }
-    });    
+```javascript
+App = Ember.Application.create();
+
+App.IndexRoute = Ember.Route.extend({
+  model: function() {
+    return [
+      { choice: 'Choose One' }
+    ];
+  }
+});    
+```
 
 The component template needs to enumerate over the list of choices:
 
 **templates/components/faux-select**
 
-    <script type="text/x-handlebars" id="components/faux-select">
-      <h2>Faux Select</h2>
-      <select class="faux-select">
-        {{#each choices}}
-          <option {{bindAttr value=choice}}>{{choice}}</option>
-        {{/each}}
-      </select>
-    </script>    
+```handlebars
+<script type="text/x-handlebars" id="components/faux-select">
+  <h2>Faux Select</h2>
+  <select class="faux-select">
+    {{#each choices}}
+      <option {{bindAttr value=choice}}>{{choice}}</option>
+    {{/each}}
+  </select>
+</script>    
+```
 
 Now the model defined in the route can be passed to the `choices`
 property of the component. Below the model data is mapped to the
@@ -202,10 +216,12 @@ component's choices property.
 
 **templates/index**
 
-    <script type="text/x-handlebars" id="index">
-      <h1>Components</h1>
-      {{faux-select choices=model}}
-    </script>    
+```handlebars
+<script type="text/x-handlebars" id="index">
+  <h1>Components</h1>
+  {{faux-select choices=model}}
+</script>    
+```
 
 ### Step 4 - Add some attributes and choices
 
@@ -216,43 +232,49 @@ few items to choose from.
 
 **javascript/app.js**
 
-    App = Ember.Application.create();
-    
-    App.IndexRoute = Ember.Route.extend({
-      model: function() {
-        return {
-          name: 'one',
-          className: 'dropdown',
-          choices: [
-            { choice: 'Choose One' }, { choice: 'First' }, { choice: 'Last' }
-          ]
-        };
-      }
-    });
+```javascript
+App = Ember.Application.create();
+
+App.IndexRoute = Ember.Route.extend({
+  model: function() {
+    return {
+      name: 'one',
+      className: 'dropdown',
+      choices: [
+        { choice: 'Choose One' }, { choice: 'First' }, { choice: 'Last' }
+      ]
+    };
+  }
+});
+```
 
 The select element's attributes are now dynamically set with `bindAttr`.
 One static class name is kept for standard css styling, `faux-select`
 
 **templates/components/faux-select**
 
-    <script type="text/x-handlebars" id="components/faux-select">
-      <select {{bindAttr name=name class=":faux-select className"}}>
-        {{#each choices}}
-          <option {{bindAttr value=choice}}>{{choice}}</option>
-        {{/each}}
-      </select>
-    </script>
+```handlebars
+<script type="text/x-handlebars" id="components/faux-select">
+  <select {{bindAttr name=name class=":faux-select className"}}>
+    {{#each choices}}
+      <option {{bindAttr value=choice}}>{{choice}}</option>
+    {{/each}}
+  </select>
+</script>
+```
 
 The instance of the `faux-select` component used in the index tempate now has
 the dynamic properties mapped for name and className.
 
 **templates/index**
 
-    <script type="text/x-handlebars" id="index">
-      <h1>Components</h1>
-      <h2>Faux Select</h2>
-      {{faux-select choices=model.choices name=model.name className=model.className}}
-    </script>    
+```handlebars
+<script type="text/x-handlebars" id="index">
+  <h1>Components</h1>
+  <h2>Faux Select</h2>
+  {{faux-select choices=model.choices name=model.name className=model.className}}
+</script>    
+```
 
 ### Step 5 - Scaffold markup and styles for faux select w/ zero opacity
 
@@ -262,19 +284,21 @@ result, more style is needed but this css will be the foundation.
 
 **css/style.css**
 
-    /* FauxSelectComponent */
-    select.faux-select {
-        opacity: 0;
-        position: absolute;
-    }
-    .faux-select {
-        position: relative;
-    }
-    .faux-select-box {
-        position: absolute;
-    }
-    .faux-select-selected {}
-    .faux-select-graphic {}
+```handlebars
+/* FauxSelectComponent */
+select.faux-select {
+    opacity: 0;
+    position: absolute;
+}
+.faux-select {
+    position: relative;
+}
+.faux-select-box {
+    position: absolute;
+}
+.faux-select-selected {}
+.faux-select-graphic {}
+```
 
 To bind the `selected` value to the component's template a class (object)
 is needed which defines the property for the `selected` choice. Later an
@@ -282,42 +306,46 @@ event will be added to respond to the user's choice.
 
 **javascript/app.js**
 
-    App = Ember.Application.create();
-    
-    App.IndexRoute = Ember.Route.extend({
-      model: function() {
-        return {
-          name: 'one',
-          className: 'dropdown',
-          choices: [
-            { choice: 'Choose One' }, { choice: 'First' }, { choice: 'Last' }
-          ]
-        };
-      }
-    });
-    
-    App.FauxSelectComponent = Ember.Component.extend({
-      selected: 'Choose One'
-    });
+```javascript
+App = Ember.Application.create();
+
+App.IndexRoute = Ember.Route.extend({
+  model: function() {
+    return {
+      name: 'one',
+      className: 'dropdown',
+      choices: [
+        { choice: 'Choose One' }, { choice: 'First' }, { choice: 'Last' }
+      ]
+    };
+  }
+});
+
+App.FauxSelectComponent = Ember.Component.extend({
+  selected: 'Choose One'
+});
+```
 
 The component's template now has the custom HTML to use instead of the
 native select element.
 
 **templates/components/faux-select**
 
-    <script type="text/x-handlebars" id="components/faux-select">
-      <div class="faux-select">
-        <div class="faux-select-box">
-          <span class="faux-select-selected">{{selected}}</span>
-          <span class="faux-select-graphic">&#x25BE;</span>
-        </div>
-        <select {{bindAttr name=name class=":faux-select className"}}>
-        {{#each choices}}
-          <option {{bindAttr value=choice}}>{{choice}}</option>
-        {{/each}}
-        </select>
-      </div>
-    </script>
+```handlebars
+<script type="text/x-handlebars" id="components/faux-select">
+  <div class="faux-select">
+    <div class="faux-select-box">
+      <span class="faux-select-selected">{{selected}}</span>
+      <span class="faux-select-graphic">&#x25BE;</span>
+    </div>
+    <select {{bindAttr name=name class=":faux-select className"}}>
+    {{#each choices}}
+      <option {{bindAttr value=choice}}>{{choice}}</option>
+    {{/each}}
+    </select>
+  </div>
+</script>
+```
 
 ### Step 6 - Add some custom style for the faux select box
 
@@ -335,48 +363,50 @@ Below is a list of required styles for this example of a faux select box.
 
 **css/style.css**
 
-    /* FauxSelectComponent */
-    select.faux-select {
-        display: block;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        position: absolute;
-        height: 20px;
-        width: 125px;
-        margin: 5px;
-    }
-    .faux-select {
-        color: black;
-        position: relative;
-        font: 14px/18px "Andale Mono", AndaleMono, monospace;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-    .faux-select-box {
-        position: absolute;
-        min-width: 137px;
-    }
-    .faux-select-selected,
-    .faux-select-graphic {
-        background-image: linear-gradient(rgb(253, 250, 237), rgb(181, 203, 235));
-        /* visit http://www.colorzilla.com/gradient-editor/ and create your own */
-        border: 1px solid black;
-        height: 17px;
-    }
-    .faux-select-selected {
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        border-right: none;
-        fl    oat: left;
-        min-width: 117px;
-        padding: 5px 10px;
-    }
-    .faux-select-graphic {
-        float: right;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-        padding: 5px 7px;
-    }
+```handlebars
+/* FauxSelectComponent */
+select.faux-select {
+    display: block;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    position: absolute;
+    height: 20px;
+    width: 125px;
+    margin: 5px;
+}
+.faux-select {
+    color: black;
+    position: relative;
+    font: 14px/18px "Andale Mono", AndaleMono, monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.faux-select-box {
+    position: absolute;
+    min-width: 137px;
+}
+.faux-select-selected,
+.faux-select-graphic {
+    background-image: linear-gradient(rgb(253, 250, 237), rgb(181, 203, 235));
+    /* visit http://www.colorzilla.com/gradient-editor/ and create your own */
+    border: 1px solid black;
+    height: 17px;
+}
+.faux-select-selected {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-right: none;
+    fl    oat: left;
+    min-width: 117px;
+    padding: 5px 10px;
+}
+.faux-select-graphic {
+    float: right;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 5px 7px;
+}
+```
 
 ### Step 7 - Bind the selected value
 
@@ -385,26 +415,28 @@ choice to the choice selected by the user.
 
 **javascript/app.js**
 
-    App = Ember.Application.create();
-    
-    App.IndexRoute = Ember.Route.extend({
-      model: function() {
-        return {
-          name: 'one',
-          className: 'dropdown',
-          choices: [
-            { choice: 'Choose One' }, { choice: 'First' }, { choice: 'Last' }
-          ]
-        };
-      }
-    });
-    
-    App.FauxSelectComponent = Ember.Component.extend({
-      selected: 'Choose One',
-      change: function(e){
-        this.set('selected', e.target.value);
-      }
-    });
+```javascript
+App = Ember.Application.create();
+
+App.IndexRoute = Ember.Route.extend({
+  model: function() {
+    return {
+      name: 'one',
+      className: 'dropdown',
+      choices: [
+        { choice: 'Choose One' }, { choice: 'First' }, { choice: 'Last' }
+      ]
+    };
+  }
+});
+
+App.FauxSelectComponent = Ember.Component.extend({
+  selected: 'Choose One',
+  change: function(e){
+    this.set('selected', e.target.value);
+  }
+});
+```
 
 ## Summary
 

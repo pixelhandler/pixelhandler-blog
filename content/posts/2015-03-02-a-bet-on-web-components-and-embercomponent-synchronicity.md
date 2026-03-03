@@ -163,18 +163,20 @@ _How do the two components line up? Can they work together? What are the differe
 * Logically bundle together custom functionality into a single tag
 * Extend the API of existing DOM elements
 
-    var XFoo = document.registerElement('x-foo', {
-      prototype: Object.create(HTMLElement.prototype, {
-        bar: {
-          get: function() { return 5; }
-        },
-        foo: {
-          value: function() {
-            alert('foo() called');
-          }
-        }
-      })
-    });
+```javascript
+var XFoo = document.registerElement('x-foo', {
+  prototype: Object.create(HTMLElement.prototype, {
+    bar: {
+      get: function() { return 5; }
+    },
+    foo: {
+      value: function() {
+        alert('foo() called');
+      }
+    }
+  })
+});
+```
 
 Lifecycle callback methods:  
 
@@ -198,20 +200,24 @@ For example, if an element is hosting a shadow root, you can write `#host::shado
 
 _(Code samples borrowed from HTMLRocks tutorials)_
 
-    <style>
-      #host::shadow span { color: red; }
-    </style>
-    <div id="host"><span>Light DOM</span></div>
-    <script>
-      var host = document.querySelector('div');
-      var root = host.createShadowRoot();
-      root.innerHTML = '<span>Shadow DOM</span>' + 
-                       '<content></content>';
-    </script>
+```javascript
+<style>
+  #host::shadow span { color: red; }
+</style>
+<div id="host"><span>Light DOM</span></div>
+<script>
+  var host = document.querySelector('div');
+  var root = host.createShadowRoot();
+  root.innerHTML = '<span>Shadow DOM</span>' + 
+                   '<content></content>';
+</script>
+```
 
 Using JavaScript can the shadow tree be accessed? Yes, with the power comes the responsibility to respect encapsulation.
 
-    document.querySelector('x-tabs::shadow x-panel::shadow #foo');
+```
+document.querySelector('x-tabs::shadow x-panel::shadow #foo');
+```
 
 Do the `::shadow` pseudo-element and `/deep/` combinator defeat the purpose of style encapsulation? Shadow DOM prevents accidental styling from outsiders but never promises to be a bullet proof vest.
 
@@ -244,12 +250,14 @@ Developers should be allowed to intentionally style inner parts of your Shadow t
 * The .content property is a read-only `DocumentFragment` containing the guts of the template
 * Create a deep copy of its .content using `document.importNode()`
 
-    var t = document.querySelector('#mytemplate');
-    // Populate the src at runtime.
-    t.content.querySelector('img').src = 'logo.png';
+```javascript
+var t = document.querySelector('#mytemplate');
+// Populate the src at runtime.
+t.content.querySelector('img').src = 'logo.png';
 
-    var clone = document.importNode(t.content, true);
-    document.body.appendChild(clone);
+var clone = document.importNode(t.content, true);
+document.body.appendChild(clone);
+```
 
 
 ## Blurring the lines between Web Components and Ember.Component
@@ -263,40 +271,46 @@ See the jsbin and github repos for demo links to inspect and see the code in act
 * See [jayphelps jsbin](http://jsbin.com/hafivocecu/1/edit?html,js,output) (code samples below copied from this jsbin)
 
 
-    <script type="text/x-handlebars">
-      {{input value=value}}
-      <x-ember class="blue"></x-ember>
-      <x-native foo={{value}} class="red">
-        {{value}}
-      </x-native>
-    </script>
+```handlebars
+<script type="text/x-handlebars">
+  {{input value=value}}
+  <x-ember class="blue"></x-ember>
+  <x-native foo={{value}} class="red">
+    {{value}}
+  </x-native>
+</script>
 
-    <script type="text/x-handlebars" data-template-name="components/x-ember">
-      I am an ember component
-    </script>
+<script type="text/x-handlebars" data-template-name="components/x-ember">
+  I am an ember component
+</script>
+```
 
 Setup component generation...
 
-    window.EmberENV = {
-      FEATURES: {
-        'ember-htmlbars-component-generation': true
-      }
-    };
+```
+window.EmberENV = {
+  FEATURES: {
+    'ember-htmlbars-component-generation': true
+  }
+};
+```
 
 Create a native Web Component...
 
-    // Native Web Component
-    function XNativeElement() {}
+```javascript
+// Native Web Component
+function XNativeElement() {}
 
-    XNativeElement.prototype = Object.create(HTMLElement.prototype);
+XNativeElement.prototype = Object.create(HTMLElement.prototype);
 
-    document.registerElement('x-native', XNativeElement);
+document.registerElement('x-native', XNativeElement);
 
-    // Upgraded to an Ember Component using `x-native` element
-    App.XNativeComponent = Ember.Component.extend({
-      tagName: 'x-native',
-      attributeBindings: ['foo']
-    });
+// Upgraded to an Ember Component using `x-native` element
+App.XNativeComponent = Ember.Component.extend({
+  tagName: 'x-native',
+  attributeBindings: ['foo']
+});
+```
 
 ### Upgrading a Web Component to an Ember.Component
 
@@ -316,281 +330,291 @@ These three demos show examples of using only Web Components, upgrading a Web Co
 
 #### Alert Box Web Component Code:
 
-    <!--
-      Web Component: Alert Box
-    -->
-    <template id="alert-box">
-      <style>
-        html {
-          box-sizing: border-box;
-        }
-        *, *:before, *:after {
-          box-sizing: inherit;
-        }
+```javascript
+<!--
+  Web Component: Alert Box
+-->
+<template id="alert-box">
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
 
-        /* alert-box */
-        :host {
-          display: none;
-          width: 400px;
-          margin: 15px 0;
-        }
-        :host(.ready) {
-          display: block;
-        }
+    /* alert-box */
+    :host {
+      display: none;
+      width: 400px;
+      margin: 15px 0;
+    }
+    :host(.ready) {
+      display: block;
+    }
 
-        section {
-          background-color: #337ab7;
-        }
-        :host(.red) section,
-        :host([type="danger"]) section,
-        :host([type="fail"]) section {
-          background-color: #D9534F;
-        }
-        :host(.orange) section,
-        :host([type="warning"]) section {
-          background-color: #F0AD4E;
-        }
-        :host(.green) section,
-        :host([type="success"]) section {
-          background-color: #5CB85C;
-        }
-        :host(.blue) section,
-        :host([type="info"]) section {
-          background-color: #337ab7;
-        }
+    section {
+      background-color: #337ab7;
+    }
+    :host(.red) section,
+    :host([type="danger"]) section,
+    :host([type="fail"]) section {
+      background-color: #D9534F;
+    }
+    :host(.orange) section,
+    :host([type="warning"]) section {
+      background-color: #F0AD4E;
+    }
+    :host(.green) section,
+    :host([type="success"]) section {
+      background-color: #5CB85C;
+    }
+    :host(.blue) section,
+    :host([type="info"]) section {
+      background-color: #337ab7;
+    }
 
-        main {
-          color: #fff;
-          background-color: transparent;
-          font-family: 'Fira Sans', sans-serif;
-          overflow: visible;
-          display: flex;
-          flex-flow: row;
-          height: 60px;
-        }
-        section {
-          border-radius: 4px;
-          margin-right: 2px;
-          padding: 0;
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          flex-flow: row;
-        }
-        section.notice {
-          flex: 10.5 10%;
-        }
-        section.action {
-          flex: 1 10%;
-        }
-        section.action:hover {
-          cursor: pointer;
-        }
-        aside {
-          flex: 1 10%;
-          padding: 6px 0 0 0;
-        }
-        article {
-          flex: 9 10%;
-        }
-        div {
-          flex: 1 auto;
-          align-self: center;
-          text-align: center;
-          padding: 6px 0 0 0;
-        }
-        div .close {
-          text-align: center;
-        }
-      </style>
-      <main class="alert-box">
-        <section class="notice">
-          <aside>
-            <content select=".icon"></content>
-          </aside>
-          <article>
-            <content select=".message"></content>
-          </article>
-        </section>
-        <section class="action">
-          <div>
-            <content select=".close"></content>
-          </div>
-        </section>
-      </main>
-    </template>
-    <script type="text/javascript" charset="utf-8">
-      document.addEventListener('DOMContentLoaded', function () {
-        'use-strict';
+    main {
+      color: #fff;
+      background-color: transparent;
+      font-family: 'Fira Sans', sans-serif;
+      overflow: visible;
+      display: flex;
+      flex-flow: row;
+      height: 60px;
+    }
+    section {
+      border-radius: 4px;
+      margin-right: 2px;
+      padding: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-flow: row;
+    }
+    section.notice {
+      flex: 10.5 10%;
+    }
+    section.action {
+      flex: 1 10%;
+    }
+    section.action:hover {
+      cursor: pointer;
+    }
+    aside {
+      flex: 1 10%;
+      padding: 6px 0 0 0;
+    }
+    article {
+      flex: 9 10%;
+    }
+    div {
+      flex: 1 auto;
+      align-self: center;
+      text-align: center;
+      padding: 6px 0 0 0;
+    }
+    div .close {
+      text-align: center;
+    }
+  </style>
+  <main class="alert-box">
+    <section class="notice">
+      <aside>
+        <content select=".icon"></content>
+      </aside>
+      <article>
+        <content select=".message"></content>
+      </article>
+    </section>
+    <section class="action">
+      <div>
+        <content select=".close"></content>
+      </div>
+    </section>
+  </main>
+</template>
+<script type="text/javascript" charset="utf-8">
+  document.addEventListener('DOMContentLoaded', function () {
+    'use-strict';
 
-        window.AlertBoxElement = document.registerElement('alert-box', {
-          prototype: Object.create(HTMLElement.prototype, {
-            createdCallback: {
-              value: function () {
-                this.addEventListener('click', this.clickHandler);
-              }
-            },
-            attachedCallback: {
-              value: function () {
-                if (this.innerHTML !== '') {
-                  var template = document.getElementById('alert-box');
-                  var clone = document.importNode(template.content, true);
-                  this.createShadowRoot().appendChild(clone);
-                }
-                this.classList.add('ready');
-              }
-            },
-            detachedCallback: {
-              value: function () {
-                this.removeEventListener('click', this.clickHandler);
-              }
-            },
-            clickHandler: {
-              value: function (evt) {
-                evt = new CustomEvent('alert-box-click', evt);
-                this.dispatchEvent(evt);
-                this.parentNode.removeChild(this);
-              }
+    window.AlertBoxElement = document.registerElement('alert-box', {
+      prototype: Object.create(HTMLElement.prototype, {
+        createdCallback: {
+          value: function () {
+            this.addEventListener('click', this.clickHandler);
+          }
+        },
+        attachedCallback: {
+          value: function () {
+            if (this.innerHTML !== '') {
+              var template = document.getElementById('alert-box');
+              var clone = document.importNode(template.content, true);
+              this.createShadowRoot().appendChild(clone);
             }
-          })
-        });
-      });
-    </script>
-    <!--
-      Web Component: Icon Info
-    -->
-    <template id="info-icon">
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-        <g>
-          <path fill="#FFFFFF" d="M51.833,39.464c0,0.919-0.68,1.68-1.76,1.68c-1.04,0-1.72-0.76-1.72-1.68c0-0.92,0.68-1.68,1.72-1.68
-            C51.153,37.785,51.833,38.544,51.833,39.464z M48.954,67.899V46.983h2.32v20.917H48.954z"/>
-        </g>
-        <circle fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" cx="49.95" cy="50.198" r="29.416"/>
-      </svg>
-    </template>
-    <script type="text/javascript" charset="utf-8">
-      document.addEventListener('DOMContentLoaded', function () {
-        'use-strict';
+            this.classList.add('ready');
+          }
+        },
+        detachedCallback: {
+          value: function () {
+            this.removeEventListener('click', this.clickHandler);
+          }
+        },
+        clickHandler: {
+          value: function (evt) {
+            evt = new CustomEvent('alert-box-click', evt);
+            this.dispatchEvent(evt);
+            this.parentNode.removeChild(this);
+          }
+        }
+      })
+    });
+  });
+</script>
+<!--
+  Web Component: Icon Info
+-->
+<template id="info-icon">
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+    <g>
+      <path fill="#FFFFFF" d="M51.833,39.464c0,0.919-0.68,1.68-1.76,1.68c-1.04,0-1.72-0.76-1.72-1.68c0-0.92,0.68-1.68,1.72-1.68
+        C51.153,37.785,51.833,38.544,51.833,39.464z M48.954,67.899V46.983h2.32v20.917H48.954z"/>
+    </g>
+    <circle fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" cx="49.95" cy="50.198" r="29.416"/>
+  </svg>
+</template>
+<script type="text/javascript" charset="utf-8">
+  document.addEventListener('DOMContentLoaded', function () {
+    'use-strict';
 
-        window.IconInfoElement = document.registerElement('icon-info', {
-          prototype: Object.create(HTMLElement.prototype, {
-            attachedCallback: {
-              value: function () {
-                var template = document.getElementById('info-icon');
-                var clone = document.importNode(template.content, true);
-                this.createShadowRoot().appendChild(clone);
-              }
-            },
-          })
-        });
-      });
-    </script>
-    <!--
-      Web Component: Icon X
-    -->
-    <template id="icon-x">
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-        <g>
-          <path fill="#FFFFFF" d="M61.059,64.036L49.884,49.837L39.005,64.036h-3.058l12.35-15.459L37.182,35.303h3.176l9.585,11.972
-            l9.467-11.972h3.059L51.59,48.451l12.643,15.585H61.059z"/>
-        </g>
-      </svg>
-    </template>
-    <script type="text/javascript" charset="utf-8">
-      document.addEventListener('DOMContentLoaded', function () {
-        'use-strict';
+    window.IconInfoElement = document.registerElement('icon-info', {
+      prototype: Object.create(HTMLElement.prototype, {
+        attachedCallback: {
+          value: function () {
+            var template = document.getElementById('info-icon');
+            var clone = document.importNode(template.content, true);
+            this.createShadowRoot().appendChild(clone);
+          }
+        },
+      })
+    });
+  });
+</script>
+<!--
+  Web Component: Icon X
+-->
+<template id="icon-x">
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+    <g>
+      <path fill="#FFFFFF" d="M61.059,64.036L49.884,49.837L39.005,64.036h-3.058l12.35-15.459L37.182,35.303h3.176l9.585,11.972
+        l9.467-11.972h3.059L51.59,48.451l12.643,15.585H61.059z"/>
+    </g>
+  </svg>
+</template>
+<script type="text/javascript" charset="utf-8">
+  document.addEventListener('DOMContentLoaded', function () {
+    'use-strict';
 
-        window.IconXElement = document.registerElement('icon-x', {
-          prototype: Object.create(HTMLElement.prototype, {
-            attachedCallback: {
-              value: function () {
-                var template = document.getElementById('icon-x');
-                var clone = document.importNode(template.content, true);
-                this.createShadowRoot().appendChild(clone);
-              }
-            },
-          })
-        });
-      });
-    </script>
+    window.IconXElement = document.registerElement('icon-x', {
+      prototype: Object.create(HTMLElement.prototype, {
+        attachedCallback: {
+          value: function () {
+            var template = document.getElementById('icon-x');
+            var clone = document.importNode(template.content, true);
+            this.createShadowRoot().appendChild(clone);
+          }
+        },
+      })
+    });
+  });
+</script>
+```
 
 Upgraded Web Component to an Ember.Component...
 
-    <!--
-      Upgraded Web Component (to an Ember.Component) used within a template...
-      Ember Components utilizing native `<alert-box>` Web Component.
-    -->
-    <script type="text/x-handlebars" data-template-name="components/countdown-info">
-      <p class="message">Info Alert Box, Countdown is Over.</p>
-      <icon-info class="icon"></icon-info>
-      <icon-x class="close"></icon-x>
-    </script>
+```
+<!--
+  Upgraded Web Component (to an Ember.Component) used within a template...
+  Ember Components utilizing native `<alert-box>` Web Component.
+-->
+<script type="text/x-handlebars" data-template-name="components/countdown-info">
+  <p class="message">Info Alert Box, Countdown is Over.</p>
+  <icon-info class="icon"></icon-info>
+  <icon-x class="close"></icon-x>
+</script>
+```
 
 Ember.Component template for content of native template...
 
-    <script type="text/x-handlebars" data-template-name="components/countdown-warning">
-      <p class="message">
-        Warning Alert Box w/ Countdown:<br>
-        <span class="minutes">{{minutes}}</span> minutes 
-        <span class="seconds">{{seconds}}</span> seconds.
-      </p>
-      <icon-warning class="icon"></icon-warning>
-      <icon-x class="close"></icon-x>
-    </script>
+```
+<script type="text/x-handlebars" data-template-name="components/countdown-warning">
+  <p class="message">
+    Warning Alert Box w/ Countdown:<br>
+    <span class="minutes">{{minutes}}</span> minutes 
+    <span class="seconds">{{seconds}}</span> seconds.
+  </p>
+  <icon-warning class="icon"></icon-warning>
+  <icon-x class="close"></icon-x>
+</script>
+```
 
 Ember.Component upgrade from Web Component...
 
-    // AlertBoxComponents and components that extend it upgrade
-    // a native Web Component `<alert-box>`
+```javascript
+// AlertBoxComponents and components that extend it upgrade
+// a native Web Component `<alert-box>`
 
-    // NOTE: without alert-box being defined in ember...
-    // The feature for `ember-htmlbars-component-generation: true`
-    // would bug out on `<alert-box>` used in a template
-    App.AlertBoxComponent = Ember.Component.extend({
-      tagName: 'alert-box',
-      attributeBindings: ['type'],
-      type: 'info'
-    });
+// NOTE: without alert-box being defined in ember...
+// The feature for `ember-htmlbars-component-generation: true`
+// would bug out on `<alert-box>` used in a template
+App.AlertBoxComponent = Ember.Component.extend({
+  tagName: 'alert-box',
+  attributeBindings: ['type'],
+  type: 'info'
+});
 
-    App.CountdownWarningComponent = App.AlertBoxComponent.extend({
-      classNames: ['fixed'],
-      attributeBindings: ['minutes:data-minutes', 'seconds:data-seconds'],
-      layoutName: 'countdown-warning',
-      type: 'warning',
-      minutes: 0,
-      seconds: 0
-    });
+App.CountdownWarningComponent = App.AlertBoxComponent.extend({
+  classNames: ['fixed'],
+  attributeBindings: ['minutes:data-minutes', 'seconds:data-seconds'],
+  layoutName: 'countdown-warning',
+  type: 'warning',
+  minutes: 0,
+  seconds: 0
+});
 
-    App.CountdownInfoComponent = App.AlertBoxComponent.extend({
-      classNames: ['fixed'],
-      layoutName: 'countdown-info'
-    });
+App.CountdownInfoComponent = App.AlertBoxComponent.extend({
+  classNames: ['fixed'],
+  layoutName: 'countdown-info'
+});
+```
 
 Ember.Component only (not using the Web Component)...
 
-    <script type="text/x-handlebars" data-template-name="components/alert-box">
-      <div class="notice box">
-        <div class="left">
-          {{partial iconTemplateName}}
-        </div>
-        <div class="middle">
-          <p class="message">
-            {{yield}}
-          </p>
-        </div>
-      </div>
-      <div class="action box">
-        <div class="right">
-          {{#if hasCloseContent}}
-            {{closeContent}}
-          {{else}}
-            {{partial closeTemplateName}}
-          {{/if}}
-        </div>
-      </div>
-    </script>
+```
+<script type="text/x-handlebars" data-template-name="components/alert-box">
+  <div class="notice box">
+    <div class="left">
+      {{partial iconTemplateName}}
+    </div>
+    <div class="middle">
+      <p class="message">
+        {{yield}}
+      </p>
+    </div>
+  </div>
+  <div class="action box">
+    <div class="right">
+      {{#if hasCloseContent}}
+        {{closeContent}}
+      {{else}}
+        {{partial closeTemplateName}}
+      {{/if}}
+    </div>
+  </div>
+</script>
+```
 
 ## I'm betting Ember and Web Components…
 

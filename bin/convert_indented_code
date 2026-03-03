@@ -1,0 +1,122 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Converts 4-space indented code blocks to fenced code blocks in content/posts/*.md
+# Skips list continuations and existing fenced blocks.
+
+REPO_ROOT = File.expand_path("..", __dir__)
+POSTS_DIR = "#{REPO_ROOT}/content/posts"
+
+ALREADY_FIXED = %w[
+  2010-08-14-boilerplate-code-for-jquery-plugin-with-debug-and-logging-methods.md
+].freeze
+
+LIST_ITEM_RE = /^\s{0,3}[-*+]\s|^\s{0,3}\d+\.\s/
+
+def infer_language(code)
+  return "javascript" if code.match?(/function\s*[\(\{]|var\s+\w+|jQuery|\$[\.\(]|\.fn\.|const\s+\w|let\s+\w|=>\s*[\{\(]|require\(['"]\w/)
+  return "ruby"       if code.match?(/\bdef\s+\w+|\bend\b|\.each\s|attr_\w+|@\w+\s*=|puts\s|\.rb['"]/)
+  return "php"        if code.match?(/<\?php|\$[a-z_]\w*\s*=\s*|function\s+\w+\s*\(\s*\$/)
+  return "bash"       if code.match?(/^\s*(git |npm |bower |cd |ls |mkdir |cp |mv |rm |echo |export |brew |sudo |apt|rails |rake |\$ \w)/)
+  return "scss"       if code.match?(/@mixin|@include|\$\w+\s*:/)
+  return "sql"        if code.match?(/\b(SELECT|INSERT INTO|CREATE TABLE|mysqldump)\b/i)
+  return "css"        if code.match?(/^\s*[\.\#]?\w[\w-]*\s*\{|^\s*[\w-]+\s*:\s*[\w#'"]/)
+  ""
+end
+
+def convert_body(body)
+  lines     = body.lines
+  result    = []
+  i         = 0
+  in_fenced = false
+  changed   = false
+
+  while i < lines.length
+    line = lines[i]
+
+    # Track fenced blocks — don't touch their contents
+    if line.match?(/^```/)
+      in_fenced = !in_fenced
+      result << line
+      i += 1
+      next
+    end
+
+    if in_fenced
+      result << line
+      i += 1
+      next
+    end
+
+    # Candidate: line starts with 4 spaces
+    if line.start_with?("    ")
+      # Look at the last non-blank line in result to determine context
+      prev = result.reverse.find { |l| !l.strip.empty? }
+
+      # If preceded by a list item, this is a list continuation — skip
+      if prev&.match?(LIST_ITEM_RE)
+        result << line
+        i += 1
+        next
+      end
+
+      # Collect the full indented block (including interior blank lines
+      # as long as more indented lines follow)
+      code_lines = []
+      while i < lines.length
+        l = lines[i]
+        if l.start_with?("    ")
+          code_lines << l.sub(/^    /, "")
+          i += 1
+        elsif l.strip.empty?
+          # Peek ahead: if next non-blank line is still indented, include blank
+          j = i + 1
+          j += 1 while j < lines.length && lines[j].strip.empty?
+          if j < lines.length && lines[j].start_with?("    ")
+            code_lines << "\n"
+            i += 1
+          else
+            break
+          end
+        else
+          break
+        end
+      end
+
+      # Drop trailing blank lines
+      code_lines.pop while code_lines.last == "\n" || code_lines.last&.strip&.empty?
+      next if code_lines.empty?
+
+      lang = infer_language(code_lines.join)
+      result << "```#{lang}\n"
+      result.concat(code_lines)
+      result << "```\n"
+      changed = true
+      next
+    end
+
+    result << line
+    i += 1
+  end
+
+  [result.join, changed]
+end
+
+updated = []
+
+Dir.glob("#{POSTS_DIR}/*.md").sort.each do |path|
+  next if ALREADY_FIXED.include?(File.basename(path))
+
+  content = File.read(path)
+  parts   = content.split(/^---\s*$/, 3)
+  next unless parts.length == 3
+
+  body, changed = convert_body(parts[2])
+  next unless changed
+
+  File.write(path, "---#{parts[1]}---\n#{body}")
+  updated << File.basename(path)
+  puts "updated: #{File.basename(path)}"
+end
+
+puts "\n#{updated.size} files updated."

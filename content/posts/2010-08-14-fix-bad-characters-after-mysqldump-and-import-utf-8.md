@@ -7,13 +7,13 @@ tags: []
 meta_description: Fix bad characters â€ Â after mysqldump and import
 ---
 
-    
-    mysqldump --default-character-set=latin1 --opt -h localhost -u
-    export -p export > export.sql
-    
-    replace "CHARSET=latin1" "CHARSET=utf8" "SET NAMES latin1" "SET NAMES
-    utf8" < export.sql > export-utf8.sql
-    
-    mysql --user=root -p --host=localhost --default-character-set=utf8
-    cms_production < export-utf8.sql
-    
+```bash
+mysqldump --default-character-set=latin1 --opt -h localhost -u
+export -p export > export.sql
+
+replace "CHARSET=latin1" "CHARSET=utf8" "SET NAMES latin1" "SET NAMES
+utf8" < export.sql > export-utf8.sql
+
+mysql --user=root -p --host=localhost --default-character-set=utf8
+cms_production < export-utf8.sql
+```

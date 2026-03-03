@@ -10,19 +10,22 @@ meta_description: Find running apps, find running app on port number, kill proce
 
 ## find running apps :
 
-    
-    ps aux | grep ruby
-    ps -awwx | grep mysql
-    
+```
+
+ps aux | grep ruby
+ps -awwx | grep mysql
+```
 
 ## find running app on port number
 
-    
-    ps aux | grep 12005
-    
+```
+
+ps aux | grep 12005
+```
 
 ## kill process, first number listed follow above result
 
-    
-    kill XXXXX
-    
+```
+
+kill XXXXX
+```

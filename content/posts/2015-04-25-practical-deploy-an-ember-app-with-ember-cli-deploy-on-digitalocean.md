@@ -30,12 +30,16 @@ Below is the documentation and includes a diagram of the approach:
 
 [How to use]…
 
-    ember deploy --environment production
-    ember deploy:list --environment production
+```
+ember deploy --environment production
+ember deploy:list --environment production
+```
 
 Pick a version to deploy
 
-    ember deploy:activate --revision chat-app:XXXXXX --environment production
+```
+ember deploy:activate --revision chat-app:XXXXXX --environment production
+```
 
 You can preview a version using the `index_key` parameter, like so
 <http://chat.pixelhandler.com/?index_key=cde6f62> where the parameter represents a
@@ -59,17 +63,19 @@ Then your app will have a real-time backend. In your [app config] use your accou
 In your Firebase Application Dashboard, setup the rules for your data. The collection
 that the application uses is `messages`.
 
-    {
-      "rules": {
-        ".read": true,
-        ".write":false,
-        "messages":{
-          ".read": true,
-          ".write": true,
-          ".indexOn": "timestamp"
-        }
-      }
+```
+{
+  "rules": {
+    ".read": true,
+    ".write":false,
+    "messages":{
+      ".read": true,
+      ".write": true,
+      ".indexOn": "timestamp"
     }
+  }
+}
+```
 
 ## Setup an Ubuntu box with DigitalOcean
 
@@ -100,16 +106,22 @@ You may need to edit your [nginx] config file or perhaps view the logs…
 
 ### Config
 
-    sudo vim /etc/nginx/nginx.conf
+```bash
+sudo vim /etc/nginx/nginx.conf
+```
 
 ### Logs
 
-    tail -f /var/log/nginx/access.log
-    sudo tail -f /var/log/nginx/error.log
+```bash
+tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/nginx/error.log
+```
 
 ### Restart
 
-    sudo service nginx restart
+```bash
+sudo service nginx restart
+```
 
 
 ## Install Redis
@@ -124,8 +136,10 @@ See the [Redis] downloads page for the current version:
 
 Setup your redis server with a script…
 
-    cd /usr/local/src/redis-3.0.0/utils
-    sudo ./install_server.sh
+```bash
+cd /usr/local/src/redis-3.0.0/utils
+sudo ./install_server.sh
+```
 
 I used port 6379 which setups up a config file at /etc/redis/6379.conf
 
@@ -133,10 +147,12 @@ I used port 6379 which setups up a config file at /etc/redis/6379.conf
 
 Bind your IP address for the server your app runs on, mine is on `107.170.232.223`.
 
-    vim /etc/redis/6379.conf
+```
+vim /etc/redis/6379.conf
 
-    bind 107.170.232.223 127.0.0.1
-    requirepass yoursecretkeyshouldbeverylongyouknowredisisfastright
+bind 107.170.232.223 127.0.0.1
+requirepass yoursecretkeyshouldbeverylongyouknowredisisfastright
+```
 
 Notice in the config file that you are encouraged to use a long passwords
 
@@ -144,24 +160,32 @@ Notice in the config file that you are encouraged to use a long passwords
 
 I'm using an environment variable for my redis password
 
-    redis-cli -h pixelhandler.com -p 6379 -a $REDIS_SECRET
+```
+redis-cli -h pixelhandler.com -p 6379 -a $REDIS_SECRET
+```
 
 Or locally on the Ubuntu box:
 
-    redis-cli -h 127.0.0.1 -p 6379
+```
+redis-cli -h 127.0.0.1 -p 6379
+```
 
 Then enter the `AUTH` command followed by your secret key
 
 ### Start/Stop
 
-    sudo service redis_6379 start
-    sudo service redis_6379 stop
+```bash
+sudo service redis_6379 start
+sudo service redis_6379 stop
+```
 
 ### Show the keys
 
 Once you deploy a version you can connect then list the keys that are stored:
 
-    keys *
+```
+keys *
+```
 
 ### Install Git
 
@@ -183,22 +207,24 @@ I created a bucket named `chat-app` to host the application assets: the `app` JS
 I used the policy generator tool in AWS to setup a bucket policy for any
 Web visitor to read the assets in the bucket for the chat-app:
 
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
     {
-      "Version": "2012-10-17",
-      "Statement": [
-        {
-          "Sid": "AllowPublicRead",
-          "Action": [
-            "s3:GetObject"
-          ],
-          "Effect": "Allow",
-          "Resource": "arn:aws:s3:::chat-app/*",
-          "Principal": {
-            "AWS": "*"
-          }
-        }
-      ]
+      "Sid": "AllowPublicRead",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::chat-app/*",
+      "Principal": {
+        "AWS": "*"
+      }
     }
+  ]
+}
+```
 
 I tested an upload of a simple index.html file to be sure the setup works, which will
 get clobbered by the deployment anyway. The index.html file that gets pushed to the
@@ -223,18 +249,20 @@ config for pushing assets to your S3 bucket.
 User's *Inline Policy* for the bucket, notice that the bucket name is the same as
 my app name:
 
+```
+{
+  "Statement": [
     {
-      "Statement": [
-        {
-          "Action": "s3:*",
-          "Effect": "Allow",
-          "Resource": [
-            "arn:aws:s3:::chat-app",
-            "arn:aws:s3:::chat-app/*"
-          ]
-        }
+      "Action": "s3:*",
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::chat-app",
+        "arn:aws:s3:::chat-app/*"
       ]
     }
+  ]
+}
+```
 
 ### Environment Variables
 
@@ -261,10 +289,12 @@ Client app is using environment variables in the config/deploy.js file, I create
 
 Clone the example app and install the dependencies:
 
-    git clone git@github.com:Ember-SC/ember-cli-screencast.git ./chat-app-client
-    cd chat-app-client
-    npm install
-    bower install
+```bash
+git clone git@github.com:Ember-SC/ember-cli-screencast.git ./chat-app-client
+cd chat-app-client
+npm install
+bower install
+```
 
 Try out `ember server` locally and visit <http://localhost:4200>
 
@@ -285,9 +315,11 @@ Using nginx I setup a proxy to the port that the node application will run on.
 I used Amazon's Route 53 product for my DNS. So I added a subdomain on
 my hosted zone:
 
-    chat.pixelhandler.com.
-    A
-    107.170.232.223
+```
+chat.pixelhandler.com.
+A
+107.170.232.223
+```
 
 #### Serve up the Index.html page
 
@@ -304,18 +336,22 @@ query parameter to get the version of the index.html to send back to the browser
 
 See: [ember-lightning][ember-lightning fork]
 
-    cd ~/www/
-    git clone https://github.com/Ember-SC/ember-lightning ./chat-app-server
-    cd ./chat-app-server
+```bash
+cd ~/www/
+git clone https://github.com/Ember-SC/ember-lightning ./chat-app-server
+cd ./chat-app-server
+```
 
 [ember-lightning fork]: https://github.com/Ember-SC/ember-lightning
 [index.js]: https://github.com/Ember-SC/ember-lightning/blob/master/index.js
 
 Run with forever…
 
-    nvm use 0.12.2
-    npm install
-    forever start -c "node --harmony" -o ~/www/chat-app-server/out.log -e ~/www/chat-app-server/err.log --spinSleepTime 10000 --minUptime 10000 ~/www/chat-app-server/index.js >> ~/www/chat-app-server/out.log 2>&1
+```bash
+nvm use 0.12.2
+npm install
+forever start -c "node --harmony" -o ~/www/chat-app-server/out.log -e ~/www/chat-app-server/err.log --spinSleepTime 10000 --minUptime 10000 ~/www/chat-app-server/index.js >> ~/www/chat-app-server/out.log 2>&1
+```
 
 #### Nginx config for the chat-app
 
@@ -324,24 +360,28 @@ Create a conf file for your vhost, e.g. `/etc/nginx/conf.d/chat.pixelhandler.com
 This uses a proxy pass to the IP and port that the node.js app runs on. I'm running
 on port 8787.
 
-    server {
-      listen 80;
+```nginx
+server {
+  listen 80;
 
-      server_name chat.pixelhandler.com;
+  server_name chat.pixelhandler.com;
 
-      location / {
-        proxy_pass http://107.170.232.223:8787;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-      }
-    }
+  location / {
+    proxy_pass http://107.170.232.223:8787;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+  }
+}
+```
 
 Restart nginx
 
-    sudo service nginx restart
+```bash
+sudo service nginx restart
+```
 
 
 ## Recap

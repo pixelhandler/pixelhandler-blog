@@ -148,19 +148,21 @@ A Resource (or 'model') can resemble the structure of an object as defined by th
 
 It would be used like so:
 
-    export default Resource.extend({
-      type: 'post',
-      service: Ember.inject.service('posts'),
+```javascript
+export default Resource.extend({
+  type: 'post',
+  service: Ember.inject.service('posts'),
 
-      title: attr(),
-      date: attr(),
-      excerpt: attr(),
-      body: attr(),
-      slug: attr(),
+  title: attr(),
+  date: attr(),
+  excerpt: attr(),
+  body: attr(),
+  slug: attr(),
 
-      author: hasOne('author'),
-      comments: hasMany('comments')
-    });
+  author: hasOne('author'),
+  comments: hasMany('comments')
+});
+```
 
 I want helpers to `get` and `set` the `attributes`, I'll use an `attr()` helper method to set that up. That method can track changes as properties are set and manage the current/previous attributes so I can know whether the instance has changed attributes. And by injecting a service I can emit events like `attributeChanged` so the service can persist the change in as close to real time as possible.
 
@@ -175,30 +177,34 @@ The resource can have an `isCacheExpired` property so that if the service keeps 
 
 And using the `attributes` hash of the `resource` instance I can compute properties from it for using in my templates that are read-only like so:
 
-    export default Resource.extend({
-      type: 'comment',
-      service: Ember.inject.service('comments'),
+```javascript
+export default Resource.extend({
+  type: 'comment',
+  service: Ember.inject.service('comments'),
 
-      body: attr(),
+  body: attr(),
 
-      date: Ember.computed('attributes', {
-        get() {
-          return this.get('attributes.created-at');
-        }
-      }).readOnly(),
+  date: Ember.computed('attributes', {
+    get() {
+      return this.get('attributes.created-at');
+    }
+  }).readOnly(),
 
-      commenter: hasOne('commenter'),
-      post: hasOne('post')
-    });
+  commenter: hasOne('commenter'),
+  post: hasOne('post')
+});
+```
 
 A new resource may be generated in a route model hook like so:
 
-    model() {
-      return this.container.lookup('model:posts').create({
-        isNew: true,
-        attributes: { date: new Date() }
-      });
-    }
+```javascript
+model() {
+  return this.container.lookup('model:posts').create({
+    isNew: true,
+    attributes: { date: new Date() }
+  });
+}
+```
 
 Notice that the `attributes` hash is used to set initial properties. The computed properties created with the `attr()` helper are used as accessors to get/set rather than to create. That's how the resource was represented in JSON from the server anyway, resource attributes belong to the `attributes` object, I'll just keep it like that for the sake of simplicity.
 
@@ -213,23 +219,25 @@ Given that an Ember.js app may be hosted as a stand-alone client application and
 
 Imagine I have a `ApplicationAdapter` that is already setup to work with my JSON API server, I could use something like this:
 
-    import ApplicationAdapter from './application';
-    import config from '../config/environment';
+```javascript
+import ApplicationAdapter from './application';
+import config from '../config/environment';
 
-    export default ApplicationAdapter.extend({
-      type: 'post',
+export default ApplicationAdapter.extend({
+  type: 'post',
 
-      url: config.APP.API_PATH + '/posts',
+  url: config.APP.API_PATH + '/posts',
 
-      fetchUrl: function(url) {
-        const proxy = config.APP.API_HOST_PROXY;
-        const host = config.APP.API_HOST;
-        if (proxy && host) {
-          url = url.replace(proxy, host);
-        }
-        return url;
-      }
-    });
+  fetchUrl: function(url) {
+    const proxy = config.APP.API_HOST_PROXY;
+    const host = config.APP.API_HOST;
+    if (proxy && host) {
+      url = url.replace(proxy, host);
+    }
+    return url;
+  }
+});
+```
 
 Well I need to define at least one URL for the service, from there I can use the relationships' links' objects.
 
@@ -247,26 +255,28 @@ Perhaps the interface will include methods to: `deserialize`, `deserializeInclud
 
 I may use a private method for how the resources are created perhaps like:
 
-    /**
-      Create a Resource from a JSON API Resource Object
-      See <http://jsonapi.org/format/#document-resource-objects>
-      @private
-      @method _createResourceInstance
-      @param {Object} json
-      @return {Resource} instance
-    */
-    _createResourceInstance(json) {
-      const factoryName = 'model:' + json.type;
-      json.meta = json.meta || {};
-      return this.container.lookupFactory(factoryName).create({
-        'type': json.type,
-        'id': json.id,
-        'attributes': json.attributes,
-        'relationships': json.relationships,
-        'links': json.links,
-        'meta': json.meta
-      });
-    }
+```javascript
+/**
+  Create a Resource from a JSON API Resource Object
+  See <http://jsonapi.org/format/#document-resource-objects>
+  @private
+  @method _createResourceInstance
+  @param {Object} json
+  @return {Resource} instance
+*/
+_createResourceInstance(json) {
+  const factoryName = 'model:' + json.type;
+  json.meta = json.meta || {};
+  return this.container.lookupFactory(factoryName).create({
+    'type': json.type,
+    'id': json.id,
+    'attributes': json.attributes,
+    'relationships': json.relationships,
+    'links': json.links,
+    'meta': json.meta
+  });
+}
+```
 
 Like I said earlier the `Resource` should closely resemble the specification. No need to change it around and confuse things for developers. 
 
@@ -310,12 +320,14 @@ That would be a good way for the collaboraters, the fantastic four (adapter, ser
 
 A `PostsService` object may be as simple as this:
 
-    import Adapter from '../adapters/post';
-    import ServiceCache from '../mixins/service-cache';
+```javascript
+import Adapter from '../adapters/post';
+import ServiceCache from '../mixins/service-cache';
 
-    Adapter.reopenClass({ isServiceFactory: true });
+Adapter.reopenClass({ isServiceFactory: true });
 
-    export default Adapter.extend(ServiceCache);
+export default Adapter.extend(ServiceCache);
+```
 
 With the injection of this service into the `Resource` instances there is an event bus for these collaborators to work.
 
@@ -332,32 +344,34 @@ The `resource` blueprint is a generator for an initializer, a resource, an adapt
 
 So here is what the initializer can look like to set all these objects into motion:
 
-    import Service from '../services/posts';
-    import Model from '../models/post';
-    import Adapter from '../adapters/post';
-    import Serializer from '../serializers/post';
+```javascript
+import Service from '../services/posts';
+import Model from '../models/post';
+import Adapter from '../adapters/post';
+import Serializer from '../serializers/post';
 
-    export function initialize(container, application) {
-      const adapter = 'service:posts-adapter';
-      const serializer = 'service:posts-serializer';
-      const service = 'service:posts';
-      const model = 'model:posts';
+export function initialize(container, application) {
+  const adapter = 'service:posts-adapter';
+  const serializer = 'service:posts-serializer';
+  const service = 'service:posts';
+  const model = 'model:posts';
 
-      application.register(model, Model, { instantiate: false });
-      application.register(service, Service);
-      application.register(adapter, Adapter);
-      application.register(serializer, Serializer);
+  application.register(model, Model, { instantiate: false });
+  application.register(service, Service);
+  application.register(adapter, Adapter);
+  application.register(serializer, Serializer);
 
-      application.inject(model, 'service', service);
-      application.inject('service:store', 'posts', service);
-      application.inject(service, 'serializer', serializer);
-    }
+  application.inject(model, 'service', service);
+  application.inject('service:store', 'posts', service);
+  application.inject(service, 'serializer', serializer);
+}
 
-    export default {
-      name: 'posts-service',
-      after: 'store',
-      initialize: initialize
-    };
+export default {
+  name: 'posts-service',
+  after: 'store',
+  initialize: initialize
+};
+```
 
 Did you notice that, this initializer executes after the `store` initializer, but I did not create a store yet. Oops, I sould do that. Developers like having a `store`. 
 
@@ -374,13 +388,15 @@ The interface for a `store` service can be a simple facade for the services crea
 
 An example `route` hook to find all post resources from the `posts` service:
 
-    import Ember from 'ember';
+```javascript
+import Ember from 'ember';
 
-    export default Ember.Route.extend({
-      model() {
-        return this.store.find('post');
-      }
-    });
+export default Ember.Route.extend({
+  model() {
+    return this.store.find('post');
+  }
+});
+```
 
 This `Store` object is a facade to the various other `Service` objects in the application. Each service will be injected into the to store service. So it can be a service of services. One interface for all my persistance needs.
 

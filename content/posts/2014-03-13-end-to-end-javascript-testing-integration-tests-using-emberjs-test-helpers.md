@@ -32,11 +32,11 @@ This video runs about 20 minutes and covers the Ember.js blog application this
 website is built with, [pixelhandler/blog]. Basically it's a walkthrough of my
 integration tests for this blog. The content may be a bit rough, I was a bit tired :)
 
-<video poster="https://s3.amazonaws.com/cdn.pixelhandler.com/uploads/blog-app-integration-tests.png" width="640" height="400" controls>
-  <source src="https://s3.amazonaws.com/cdn.pixelhandler.com/uploads/blog-app-integration-tests.mp4" type='video/mp4' />
+<video poster="/media/blog-app-integration-tests.png" width="640" height="400" controls>
+  <source src="/media/blog-app-integration-tests.mp4" type='video/mp4' />
 </video>
 
-* [Video File](https://s3.amazonaws.com/cdn.pixelhandler.com/uploads/blog-app-integration-tests.mp4)
+* [Video File](/media/blog-app-integration-tests.mp4)
 
 ## My Testing Strategy
 

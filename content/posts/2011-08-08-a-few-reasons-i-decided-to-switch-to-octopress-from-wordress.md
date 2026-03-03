@@ -10,7 +10,6 @@ meta_description: |-
   developer who doesn'...
 ---
 
-
   * Ruby gems like capistrano for deployment,
   * Git (SCM) to manage both the code to generate my site and generated code,
   * local development using Ruby to build my now Jekyll powered website,

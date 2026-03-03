@@ -19,31 +19,38 @@ meta_description: |-
 1)  Create the api application with rails
 
 
-    rails new journal -d postgresql
-    cd journal
+```bash
+rails new journal -d postgresql
+cd journal
+```
 
 
 2)  Create a migration for `Entry`
 
 
-    rails g migration create_entries name:string
+```bash
+rails g migration create_entries name:string
+```
 
 ...
 
-    class CreateEntries < ActiveRecord::Migration
-      def change
-        create_table :entries do |t|
-          t.string :name
-        end
-      end
+```ruby
+class CreateEntries < ActiveRecord::Migration
+  def change
+    create_table :entries do |t|
+      t.string :name
     end
-    
+  end
+end
+```
 
 3)  Configure db
 
 
-    rake db:create
-    rake db:migrate
+```bash
+rake db:create
+rake db:migrate
+```
 
 
 4)  Create a model
@@ -51,27 +58,35 @@ meta_description: |-
 In app/models/entry.rb
 
 
-    class Entry < ActiveRecord::Base
-    end
+```ruby
+class Entry < ActiveRecord::Base
+end
+```
 
 
 5)  Add a record
 
 
-    rails console
-    Entry.create name: "First entry in my journal app"
-    Entry.all
-    exit
+```bash
+rails console
+Entry.create name: "First entry in my journal app"
+Entry.all
+exit
+```
 
 
 Could have used seeds as well, see db/seeds.rb
 
 
-    Entry.create([{ name: 'Using rails as an api' }, { name: 'Using Ember-data for persistence' }])
+```
+Entry.create([{ name: 'Using rails as an api' }, { name: 'Using Ember-data for persistence' }])
+```
 
 ...
 
-    rake db:seed
+```bash
+rake db:seed
+```
 
 
 6)  Create a Serializer
@@ -79,113 +94,137 @@ Could have used seeds as well, see db/seeds.rb
 In app/serializers/entry_serializer.rb
 
 
-    class EntrySerializer < ActiveModel::Serializer
-      attributes :id, :name
-    end
+```ruby
+class EntrySerializer < ActiveModel::Serializer
+  attributes :id, :name
+end
+```
 
 
 7)  Update Gemfile
 
 Remove `gem 'turbolinks'`, add:
 
-    gem 'ember-rails'
+```
+gem 'ember-rails'
+```
 
 
 8)  Remove turbolinks from application layout
 
 In app/views/layouts/application.html.erb
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Journal</title>
-      <%= stylesheet_link_tag "application", media: "all" %>
-      <%= javascript_include_tag "application" %>
-      <%= csrf_meta_tags %>
-    </head>
-    <body>
+```
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Journal</title>
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+```
 
 
 9)  Update configs
 
 In environments/production.rb
 
-    config.ember.variant = :production
+```
+config.ember.variant = :production
+```
 
 
 In environments/development.rb
 
-    config.ember.variant = :development
+```
+config.ember.variant = :development
+```
 
 
 In environments/test.rb
 
-    config.ember.variant = :development
+```
+config.ember.variant = :development
+```
 
 
 10) Create controllers
 
 In app/controllers/home_controller.rb
 
-    class HomeController < ApplicationController
-    end
+```ruby
+class HomeController < ApplicationController
+end
+```
 
 
 In app/controllers/api/v1/entries_controller.rb
 
-    class Api::V1::EntriesController < ApplicationController
-      respond_to :json
-    
-      def index
-        respond_with Entry.all
-      end
-    
-      def show
-        respond_with Entry.find(params[:id])
-      end
-    
-      private
-    
-      def entry_params
-        params.require(:entry).permit(:name)
-      end
-    end
+```ruby
+class Api::V1::EntriesController < ApplicationController
+  respond_to :json
+
+  def index
+    respond_with Entry.all
+  end
+
+  def show
+    respond_with Entry.find(params[:id])
+  end
+
+  private
+
+  def entry_params
+    params.require(:entry).permit(:name)
+  end
+end
+```
 
 
 11) Setup a namespace in routes.rb
 
 In config/routes.rb
 
-    Journal::Application.routes.draw do
-      root to: 'home#index'
-    
-      namespace :api do
-        namespace :v1 do
-          resources :entries, only: [:index, :show]
-        end
-      end
+```ruby
+Journal::Application.routes.draw do
+  root to: 'home#index'
+
+  namespace :api do
+    namespace :v1 do
+      resources :entries, only: [:index, :show]
     end
+  end
+end
+```
 
 
 12) Add main `outlet` for ember content in `home#index` template
 
 In app/views/home/index.erb
 
-    <script type="text/x-handlebars">{{ outlet }}</script>
+```
+<script type="text/x-handlebars">{{ outlet }}</script>
+```
 
 ## Setup Front-end
 
 1)  Generate the Ember app code using CoffeeScript
 
-    rails g ember:bootstrap -g --javascript-engine coffee -n App
+```bash
+rails g ember:bootstrap -g --javascript-engine coffee -n App
+```
 
 
 2)  Download Canary version of ember into `vendor` directory
 
 See [ember canary builds].
 
-    vendor/assets/javascripts/ember-data-canary.js
-    vendor/assets/javascripts/ember-canary.js
+```
+vendor/media/javascripts/ember-data-canary.js
+vendor/media/javascripts/ember-canary.js
+```
 
 
 [ember canary builds]: http://emberjs.com/builds/#/canary/latest
@@ -199,34 +238,40 @@ Just grab from [emberjs/starter-kit]
 4)  Update application.js for using Sprockets
 
 
-    //= require jquery-1.9.1
-    //= require jquery_ujs
-    //= require handlebars-1.0.0
-    //= require ember-canary
-    //= require ember-data-canary
-    //= require_self
-    //= require app
-    
-    // for more details see: http://emberjs.com/guides/application/
-    App = Ember.Application.create();
-    
-    //= require_tree .
+```
+//= require jquery-1.9.1
+//= require jquery_ujs
+//= require handlebars-1.0.0
+//= require ember-canary
+//= require ember-data-canary
+//= require_self
+//= require app
+
+// for more details see: http://emberjs.com/guides/application/
+App = Ember.Application.create();
+
+//= require_tree .
+```
 
 
 5)  Create the Entry model
 
-In app/assets/javascripts/models/entry.js.coffee
+In app/media/javascripts/models/entry.js.coffee
 
-    App.Entry = DS.Model.extend
-      name: DS.attr('string')
+```coffeescript
+App.Entry = DS.Model.extend
+  name: DS.attr('string')
+```
 
 
 6)  Create a router
 
-In app/assets/javascripts/router.js.coffee
+In app/media/javascripts/router.js.coffee
 
-    App.Router.map ()->
-      @resource('entries')
+```
+App.Router.map ()->
+  @resource('entries')
+```
 
 
 See: [routing] guide
@@ -235,20 +280,24 @@ See: [routing] guide
 
 7)  Create the Entry route
 
-In app/assets/javascripts/routes/entries.js.coffee
+In app/media/javascripts/routes/entries.js.coffee
 
-    App.EntriesRoute = Ember.Route.extend
-      model: ->
-        @get('store').findAll 'entry'
+```
+App.EntriesRoute = Ember.Route.extend
+  model: ->
+    @get('store').findAll 'entry'
+```
 
 
 8)  Setup the Store (persistence w/ ember-data)
 
-In app/assets/javascripts/store.js.coffee
+In app/media/javascripts/store.js.coffee
 
-    App.ApplicationAdapter = DS.RESTAdapter.extend
-      namespace: 'api/v1'
-      #configure: 'plurals', entry: 'entries'
+```coffeescript
+App.ApplicationAdapter = DS.RESTAdapter.extend
+  namespace: 'api/v1'
+  #configure: 'plurals', entry: 'entries'
+```
 
 
 See [defining-a-store] guide.
@@ -257,22 +306,28 @@ See [defining-a-store] guide.
 
 9)  Create a couple handlebars templates
 
-In app/assets/javascripts/templates/entries.handlebars
+In app/media/javascripts/templates/entries.handlebars
 
-    <h1>Entries...</h1>
-    {{#each entry in controller}}
-      {{render "entry" entry}}
-    {{/each}}    
+```
+<h1>Entries...</h1>
+{{#each entry in controller}}
+  {{render "entry" entry}}
+{{/each}}    
+```
 
-In app/assets/javascripts/templates/entry.handlebars
+In app/media/javascripts/templates/entry.handlebars
 
-    <h2>{{name}}</h2>
+```
+<h2>{{name}}</h2>
+```
 
 ## Fire up the app
 
 Command to start server
 
-    rails server
+```bash
+rails server
+```
 
 
 Try it out in your browser, visit:  

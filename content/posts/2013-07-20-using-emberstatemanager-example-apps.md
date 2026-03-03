@@ -39,134 +39,140 @@ Example Turnstile application built with Ember see in working at [jsbin][4], sou
 
 **templates/application**
 
-    <script type="text/x-handlebars">
-      {{outlet}}
-    </script>
+```
+<script type="text/x-handlebars">
+  {{outlet}}
+</script>
+```
 
 **templates/index**
 
-    <script type="text/x-handlebars" data-template-name="index">
-      <button {{ action 'coin' controller }}>Coin</button>
-      <button {{ action 'push' controller }}>Push</button>
-      <h3>{{ display }}</h3>
-      <p>
-        Turnstile is: {{ currentState }}<br/>
-        Total Coins: {{ totalCoins }}
-      </p>
-    </script>    
+```
+<script type="text/x-handlebars" data-template-name="index">
+  <button {{ action 'coin' controller }}>Coin</button>
+  <button {{ action 'push' controller }}>Push</button>
+  <h3>{{ display }}</h3>
+  <p>
+    Turnstile is: {{ currentState }}<br/>
+    Total Coins: {{ totalCoins }}
+  </p>
+</script>    
+```
 
 ### Application
 
 **javascript/app.js**
 
-    var App = Ember.Application.create({
-      ready: function(){
-        App.turnstileManager = App.TurnstileManager.create({
-          enableLogging: true
-        });
-      }
+```javascript
+var App = Ember.Application.create({
+  ready: function(){
+    App.turnstileManager = App.TurnstileManager.create({
+      enableLogging: true
     });
-    
-    App.IndexRoute = Ember.Route.extend({
-      setupController: function( controller ){
-        var manager = App.turnstileManager;
-        manager.set( 'controller', controller );
-        controller.send( 'state', manager.get( 'currentState.name' ) );
-      },
-    
-      events: {
-        coin: function( controller ){
-          App.turnstileManager.send( 'coin', controller );
-        },
-    
-        push: function( controller ){
-          App.turnstileManager.send( 'push', controller );
-        }
-      }
-    });
-    
-    App.IndexController = Ember.Controller.extend({
-      totalCoins: 0,
-    
-      display: 'Please insert coin.',
-    
-      onCoin: function( display, isAccepted ){
-        this.set( 'display', display );
-        if( isAccepted ){
-          this.incrementProperty( 'totalCoins' );
-        }
-      },
-    
-      onPush: function( display ){
-        this.set( 'display', display );
-      },
-    
-      onSetup: function( display ){
-        this.set( 'display', display );
-      },
-    
-      state: function( name ){
-        this.set( 'currentState', name );
-      }
-    });
-    
-    App.BaseState = Ember.State.extend({
-      unhandledEvent: function( manager, eventName ) {
-        console.log( manager.toString() + ': unhandledEvent with name ' + eventName );
-      },
-    
-      enter: function( /*manager*/ ){},
-    
+  }
+});
+
+App.IndexRoute = Ember.Route.extend({
+  setupController: function( controller ){
+    var manager = App.turnstileManager;
+    manager.set( 'controller', controller );
+    controller.send( 'state', manager.get( 'currentState.name' ) );
+  },
+
+  events: {
+    coin: function( controller ){
+      App.turnstileManager.send( 'coin', controller );
+    },
+
+    push: function( controller ){
+      App.turnstileManager.send( 'push', controller );
+    }
+  }
+});
+
+App.IndexController = Ember.Controller.extend({
+  totalCoins: 0,
+
+  display: 'Please insert coin.',
+
+  onCoin: function( display, isAccepted ){
+    this.set( 'display', display );
+    if( isAccepted ){
+      this.incrementProperty( 'totalCoins' );
+    }
+  },
+
+  onPush: function( display ){
+    this.set( 'display', display );
+  },
+
+  onSetup: function( display ){
+    this.set( 'display', display );
+  },
+
+  state: function( name ){
+    this.set( 'currentState', name );
+  }
+});
+
+App.BaseState = Ember.State.extend({
+  unhandledEvent: function( manager, eventName ) {
+    console.log( manager.toString() + ': unhandledEvent with name ' + eventName );
+  },
+
+  enter: function( /*manager*/ ){},
+
+  setup: function( manager, context ){
+    var controller = ( context ) ? context : manager.get('controller');
+    if( controller ){
+      controller.send( 'state', manager.get('currentState.name') );
+      controller.send( 'onSetup', 'Please insert coin.' );
+    }
+  },
+
+  exit: function( /*manager*/ ){}
+});
+
+App.TurnstileManager =  Ember.StateManager.extend({
+  initialState: 'locked',
+
+  locked: App.BaseState.extend({
+    coin: function( manager, context ){
+      context.send( 'onCoin', 'Payment accepted.', true );
+      manager.transitionTo( 'unlocked', context );
+    },
+
+    push: function( manager, context ){
+      context.send( 'onPush', 'Coin required, please insert coin.');
+    }
+  }),
+
+  unlocked: App.BaseState.extend({
+    setup: function( manager, context ){
+      context.send( 'state', manager.get( 'currentState.name' ) );
+      context.send( 'onSetup', 'Please proceed.');
+    },
+
+    coin: function( manager, context ){
+      context.send( 'onCoin', 'No coin needed. Try pushing.', false );
+    },
+
+    push: function( manager, context ){
+      manager.transitionTo( 'inUse', context );
+    },
+
+    inUse: App.BaseState.extend({
       setup: function( manager, context ){
-        var controller = ( context ) ? context : manager.get('controller');
-        if( controller ){
-          controller.send( 'state', manager.get('currentState.name') );
-          controller.send( 'onSetup', 'Please insert coin.' );
-        }
-      },
-    
-      exit: function( /*manager*/ ){}
-    });
-    
-    App.TurnstileManager =  Ember.StateManager.extend({
-      initialState: 'locked',
-    
-      locked: App.BaseState.extend({
-        coin: function( manager, context ){
-          context.send( 'onCoin', 'Payment accepted.', true );
-          manager.transitionTo( 'unlocked', context );
-        },
-    
-        push: function( manager, context ){
-          context.send( 'onPush', 'Coin required, please insert coin.');
-        }
-      }),
-    
-      unlocked: App.BaseState.extend({
-        setup: function( manager, context ){
-          context.send( 'state', manager.get( 'currentState.name' ) );
-          context.send( 'onSetup', 'Please proceed.');
-        },
-    
-        coin: function( manager, context ){
-          context.send( 'onCoin', 'No coin needed. Try pushing.', false );
-        },
-    
-        push: function( manager, context ){
-          manager.transitionTo( 'inUse', context );
-        },
-    
-        inUse: App.BaseState.extend({
-          setup: function( manager, context ){
-            context.send( 'state', manager.get( 'currentState.name' ) );
-            context.send( 'onSetup', 'Please wait.');
-            Ember.run.later(function(){
-              manager.transitionTo( 'locked', context );
-            }, 1500);
-          }
-        })
-      })
-    });
+        context.send( 'state', manager.get( 'currentState.name' ) );
+        context.send( 'onSetup', 'Please wait.');
+        Ember.run.later(function(){
+          manager.transitionTo( 'locked', context );
+        }, 1500);
+      }
+    })
+  })
+});
+```
 
 ## Slide Deck as an Ember application
 
@@ -180,189 +186,199 @@ In the sample `fixtures.js` file the slides in the two sections automatically pl
 
 **templates/application**
 
-    <script type="text/x-handlebars">
-      {{outlet}}
-    </script>
+```
+<script type="text/x-handlebars">
+  {{outlet}}
+</script>
+```
 
 **templates/slide-deck/slide.html**
 
-    <script type="text/x-handlebars" id="slide">
-      <img {{bindAttr src="model.filename"}}>
-      <input type="text" value="">
-    </script>    
+```
+<script type="text/x-handlebars" id="slide">
+  <img {{bindAttr src="model.filename"}}>
+  <input type="text" value="">
+</script>    
+```
 
 **templates/slide-deck/slides.html**
 
-    <script type="text/x-handlebars" id="slides">
-      {{#each model}}
-        {{#linkTo 'slide' this}}
-          <img {{bindAttr src="filename"}}>
-        {{/linkTo}}
-      {{/each}}
-    </script>
+```
+<script type="text/x-handlebars" id="slides">
+  {{#each model}}
+    {{#linkTo 'slide' this}}
+      <img {{bindAttr src="filename"}}>
+    {{/linkTo}}
+  {{/each}}
+</script>
+```
 
 
 ### Application
 
 **javascript/slide-deck/app.js**
 
-    // Application
-    App = Ember.Application.create({
-      ready: function(){
-        App.stateMachine = App.StateMachine.create({
-          //enableLogging: true
-        });
+```javascript
+// Application
+App = Ember.Application.create({
+  ready: function(){
+    App.stateMachine = App.StateMachine.create({
+      //enableLogging: true
+    });
+  }
+});
+
+// Model
+App.Store = DS.Store.extend({
+  revision: 12,
+  adapter: 'DS.FixtureAdapter'
+});
+
+App.Slide = DS.Model.extend({
+  filename: DS.attr('string'),
+  milliseconds: DS.attr('number')
+});
+
+// States
+App.StateMachine = Ember.StateManager.extend({
+  initialState: 'idling',
+  idling: Ember.State.extend({
+    next: function (manager, context) {
+      var milliseconds = context.get('currentModel.milliseconds');
+      if (milliseconds && milliseconds !== 0) {
+        manager.transitionTo('playing', context);
+      } else {
+        var id = '' + (+context.get('currentModel.id') + 1);
+        window.document.location = '#/slides/' + id;
       }
-    });
-    
-    // Model
-    App.Store = DS.Store.extend({
-      revision: 12,
-      adapter: 'DS.FixtureAdapter'
-    });
-    
-    App.Slide = DS.Model.extend({
-      filename: DS.attr('string'),
-      milliseconds: DS.attr('number')
-    });
-    
-    // States
-    App.StateMachine = Ember.StateManager.extend({
-      initialState: 'idling',
-      idling: Ember.State.extend({
-        next: function (manager, context) {
-          var milliseconds = context.get('currentModel.milliseconds');
-          if (milliseconds && milliseconds !== 0) {
-            manager.transitionTo('playing', context);
-          } else {
-            var id = '' + (+context.get('currentModel.id') + 1);
-            window.document.location = '#/slides/' + id;
-          }
-        }
-      }),
-      playing: Ember.State.extend({
-        setup: function (manager, context) {
-          this.next(manager, context);
-        },
-        next: function (manager, context) {
-          var id = '' + (+context.get('currentModel.id') + 1);
-          window.document.location = '#/slides/' + id;
-          this.play(manager, context);
-        },
-        play: function (manager, context) {
-          var milliseconds = context.get('currentModel.milliseconds');
-          if (milliseconds && milliseconds !== 0) {
-            this.startInterval(context, milliseconds);
-          } else {
-            this.stopInterval();
-            manager.transitionTo('idling', context);
-          }
-        },
-        startInterval: function (context, milliseconds) {
-          var id = '' + (+context.get('currentModel.id') + 1);
-          this.timeoutId = Ember.run.later(function(){
-            window.document.location = '#/slides/' + id;
-            App.stateMachine.send('play', context);
-          }, milliseconds);
-        },
-        stopInterval: function () {
-          if (this._timeoutId) {
-            Ember.run.cancel(this._timeoutId);
-            delete this._timeoutId;
-          }
-        }
-      })
-    });
-    
-    App.Router.map(function() {
-      this.resource('/');
-      this.resource('slides');
-      this.resource('slide', { path: '/slides/:slide_id' });
-    });
-    
-    App.IndexRoute = Ember.Route.extend({
-      redirect: function() {
-        this.transitionTo('slides');
+    }
+  }),
+  playing: Ember.State.extend({
+    setup: function (manager, context) {
+      this.next(manager, context);
+    },
+    next: function (manager, context) {
+      var id = '' + (+context.get('currentModel.id') + 1);
+      window.document.location = '#/slides/' + id;
+      this.play(manager, context);
+    },
+    play: function (manager, context) {
+      var milliseconds = context.get('currentModel.milliseconds');
+      if (milliseconds && milliseconds !== 0) {
+        this.startInterval(context, milliseconds);
+      } else {
+        this.stopInterval();
+        manager.transitionTo('idling', context);
       }
-    });
-    
-    App.SlidesRoute = Ember.Route.extend({
-      model: function() {
-        return App.Slide.find();
+    },
+    startInterval: function (context, milliseconds) {
+      var id = '' + (+context.get('currentModel.id') + 1);
+      this.timeoutId = Ember.run.later(function(){
+        window.document.location = '#/slides/' + id;
+        App.stateMachine.send('play', context);
+      }, milliseconds);
+    },
+    stopInterval: function () {
+      if (this._timeoutId) {
+        Ember.run.cancel(this._timeoutId);
+        delete this._timeoutId;
       }
-    });
-    
-    App.SlideRoute = Ember.Route.extend({
-      model: function(params) {
-        return App.Slide.find(params.slide_id);
-      },
-      events: {
-        previous: function () {
-          var id = '' + (+this.get('currentModel.id') - 1);
-          window.document.location = '#/slides/' + id;
-        },
-        next: function () {
-          App.stateMachine.send('next', this);
-        },
-        first: function () {
-          window.document.location = '#/slides/' + 0;
-        }
-      }
-    });
-    
-    // Controllers
-    App.SlidesController = Ember.ArrayController.extend({
-      sortProperties: ['id']
-    });
-    
-    App.SlideController = Ember.Controller.extend({
-      // left = 37, up = 38, right = 39, down = 40
-      updateKey: function (code) {
-        if (code === 37) {
-          this.get('target').send('previous');
-        } else if (code === 39) {
-          this.get('target').send('next');
-        } else if (code === 38) {
-          this.get('target').send('first');
-        } else if (code === 40) {
-          this.get('target').send('last');
-        }
-      }
-    });
-    
-    // Views
-    App.SlidesView = Ember.View.extend({
-      classNames: ['slides']
-    });
-    
-    App.SlideView = Ember.View.extend({
-      classNames: ['slide'],
-      keyDown: function(e) {
-        this.get('controller').send('updateKey', e.keyCode);
-      },
-      didInsertElement: function() {
-        $('head title').text(
-            ['Using Ember.StateManager', this.get('context.model.filename')].join(' | ')
-        );
-        return this.$('input').focus();
-      },
-    });
+    }
+  })
+});
+
+App.Router.map(function() {
+  this.resource('/');
+  this.resource('slides');
+  this.resource('slide', { path: '/slides/:slide_id' });
+});
+
+App.IndexRoute = Ember.Route.extend({
+  redirect: function() {
+    this.transitionTo('slides');
+  }
+});
+
+App.SlidesRoute = Ember.Route.extend({
+  model: function() {
+    return App.Slide.find();
+  }
+});
+
+App.SlideRoute = Ember.Route.extend({
+  model: function(params) {
+    return App.Slide.find(params.slide_id);
+  },
+  events: {
+    previous: function () {
+      var id = '' + (+this.get('currentModel.id') - 1);
+      window.document.location = '#/slides/' + id;
+    },
+    next: function () {
+      App.stateMachine.send('next', this);
+    },
+    first: function () {
+      window.document.location = '#/slides/' + 0;
+    }
+  }
+});
+
+// Controllers
+App.SlidesController = Ember.ArrayController.extend({
+  sortProperties: ['id']
+});
+
+App.SlideController = Ember.Controller.extend({
+  // left = 37, up = 38, right = 39, down = 40
+  updateKey: function (code) {
+    if (code === 37) {
+      this.get('target').send('previous');
+    } else if (code === 39) {
+      this.get('target').send('next');
+    } else if (code === 38) {
+      this.get('target').send('first');
+    } else if (code === 40) {
+      this.get('target').send('last');
+    }
+  }
+});
+
+// Views
+App.SlidesView = Ember.View.extend({
+  classNames: ['slides']
+});
+
+App.SlideView = Ember.View.extend({
+  classNames: ['slide'],
+  keyDown: function(e) {
+    this.get('controller').send('updateKey', e.keyCode);
+  },
+  didInsertElement: function() {
+    $('head title').text(
+        ['Using Ember.StateManager', this.get('context.model.filename')].join(' | ')
+    );
+    return this.$('input').focus();
+  },
+});
+```
 
 
 **javascript/slide-deck/fixtures.js**
 
-    App.Slide.FIXTURES = [
-      { id: '0', filename: 'http://fpoimg.com/800x600?text=Title'},
-      { id: '1', filename: 'http://fpoimg.com/800x600?text=Section-A', milliseconds: 1000 },
-      { id: '2', filename: 'http://fpoimg.com/800x600?text=Slide-A1', milliseconds: 500 },
-      { id: '3', filename: 'http://fpoimg.com/800x600?text=Slide-A2', milliseconds: 250 },
-      { id: '4', filename: 'http://fpoimg.com/800x600?text=Slide-A3' },
-      { id: '5', filename: 'http://fpoimg.com/800x600?text=Section-B', milliseconds: 300 },
-      { id: '6', filename: 'http://fpoimg.com/800x600?text=Slide-B1', milliseconds: 300 },
-      { id: '7', filename: 'http://fpoimg.com/800x600?text=Slide-B2', milliseconds: 300 },
-      { id: '8', filename: 'http://fpoimg.com/800x600?text=Slide-B3' },
-      { id: '9', filename: 'http://fpoimg.com/800x600?text=The End'}
-    ];    
+```
+App.Slide.FIXTURES = [
+  { id: '0', filename: 'http://fpoimg.com/800x600?text=Title'},
+  { id: '1', filename: 'http://fpoimg.com/800x600?text=Section-A', milliseconds: 1000 },
+  { id: '2', filename: 'http://fpoimg.com/800x600?text=Slide-A1', milliseconds: 500 },
+  { id: '3', filename: 'http://fpoimg.com/800x600?text=Slide-A2', milliseconds: 250 },
+  { id: '4', filename: 'http://fpoimg.com/800x600?text=Slide-A3' },
+  { id: '5', filename: 'http://fpoimg.com/800x600?text=Section-B', milliseconds: 300 },
+  { id: '6', filename: 'http://fpoimg.com/800x600?text=Slide-B1', milliseconds: 300 },
+  { id: '7', filename: 'http://fpoimg.com/800x600?text=Slide-B2', milliseconds: 300 },
+  { id: '8', filename: 'http://fpoimg.com/800x600?text=Slide-B3' },
+  { id: '9', filename: 'http://fpoimg.com/800x600?text=The End'}
+];    
+```
 
 
 ### Styles
@@ -370,36 +386,38 @@ In the sample `fixtures.js` file the slides in the two sections automatically pl
 **css/style.css**
 
 
-    html, body {
-        margin: 0;
-        padding: 0;
-        text-align: left;
-    }
-    .slides img {
-        max-width: 102px;
-        max-height: 77px;
-        float: left;
-        display: inline-block;
-    }
-    .slide {
-        text-align: center;
-        position: relative;
-        top: 0;
-        margin: 0;
-        border: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
-    }
-    .slide input {
-        position: absolute;
-        display: block;
-        left: -999em;
-    }
-    .slide img {
-        height: 100%;
-        border-style: none;
-    }
+```css
+html, body {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+.slides img {
+    max-width: 102px;
+    max-height: 77px;
+    float: left;
+    display: inline-block;
+}
+.slide {
+    text-align: center;
+    position: relative;
+    top: 0;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+.slide input {
+    position: absolute;
+    display: block;
+    left: -999em;
+}
+.slide img {
+    height: 100%;
+    border-style: none;
+}
+```
 
 
 ## Observations on using Ember.StateManager

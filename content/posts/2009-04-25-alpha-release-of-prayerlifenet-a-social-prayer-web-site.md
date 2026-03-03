@@ -15,4 +15,4 @@ proof of concept_. [Visit the about page here](http://prayerlife.net/about). I
 am looking for people to test the concept, who would like to use the internet
 to connect and pray for others. 
 
-![prayerlife-net](http://pixelhandler.com/wp-content/uploads/2009/04/prayerlife-net.jpg)
+![prayerlife-net](/media/prayerlife-net.jpg)
