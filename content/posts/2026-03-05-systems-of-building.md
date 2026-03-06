@@ -4,11 +4,11 @@ slug: systems-of-building
 published_at: '2026-03-05'
 author: pixelhandler
 tags:
-- workflow
-- ai
-- quality
-- tdd
-- developer-experience
+- Workflow
+- AI
+- Quality
+- TDD
+- Developer Experience
 meta_description: The craft evolved from what I build to how I build it. On containment,
   outside-in TDD, browser automation for quality assurance, and the introspective practice
   of designing a development workflow in the age of AI.
