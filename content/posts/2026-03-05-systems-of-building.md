@@ -4,11 +4,10 @@ slug: systems-of-building
 published_at: '2026-03-05'
 author: pixelhandler
 tags:
-- Workflow
 - AI
 - Quality
-- TDD
-- Developer Experience
+- Testing
+- Work
 meta_description: The craft evolved from what I build to how I build it. On containment,
   outside-in TDD, browser automation for quality assurance, and the introspective practice
   of designing a development workflow in the age of AI.
@@ -46,11 +45,11 @@ The key insight: conventions that live where the AI can apply them are conventio
 
 *The second dimension is focus.* Creating room for deep work on a single problem, without context-switching contamination.
 
-I set up isolated environments per issue — a fresh clone, unique ports, a separate database. The skill file scopes the session to *this* ticket, *this* plan, *this* branch. Everything outside that boundary disappears. It's the personal-scale version of Stripe's devbox philosophy: cattle, not pets. Spin up an environment, do the work, tear it down.
+I set up isolated environments per issue — a fresh clone, unique ports, a separate database. The skill file scopes the session to *this* ticket, *this* plan, *this* branch. Everything outside that boundary disappears. Spin up an environment, do the work, tear it down.
 
 This isn't about delegating work to AI. It's about creating the conditions where you — with AI — can do focused, uninterrupted work on one thing. The isolation removes the temptation to check on other branches, fix that unrelated bug, or chase a tangent.
 
-Creating room for focus is a deliberate engineering practice, not an accident. You have to build it.
+Creating room for focus is a deliberate engineering practice, not an accident. **You have to build it.**
 
 ### Containing Risk
 
@@ -58,7 +57,23 @@ Creating room for focus is a deliberate engineering practice, not an accident. Y
 
 I picked up browser automation recently, learning Playwright as a new skill. The motivation wasn't testing for testing's sake. It was a desire to tip the balance of AI-assisted development toward delivering quality solutions. When code gets generated quickly, the risk shifts from "can I build this?" to "does this actually work the way users expect?" A passing test suite isn't enough to answer that question. *You need evidence* — screenshots that show the before and after, recordings that walk through the behavior, assertions that verify specific claims about what the user sees. The goal is a body of proof that you can point to and say: this works, and here's how I know.
 
-Outside-in test-driven development became the discipline. Start from what the user sees. Write a failing test that asserts the behavior you want. Implement until it passes. Then verify with evidence — not just green checkmarks, but proof.
+Outside-in test-driven development became the discipline. The idea is simple: instead of starting with the smallest unit and building up, you start from the outermost layer — what the user actually sees — and work inward. As Harry Percival describes in *Test-Driven Development with Python*:
+
+> Working outside-in enables you to use each layer to imagine the most convenient API you could want from the layer beneath it.
+
+Percival also makes the connection to AI-assisted development:
+
+> The best way to work with AI, you'll find that it performs best when working in small, well-defined contexts, with frequent checks for correctness.
+
+And the classic TDD cycle — red, green, refactor — takes on new weight. As Percival puts it, you need:
+
+> The "refactor" step to try and improve the often-terrible code that the AI produced.
+
+Working with generated code means more refactoring, not less. Automated PR reviews surface issues early, which leads to another round of cleanup. The cycle tightens: test, implement, refactor, review, refactor again. It's more work on the quality side, but that's exactly where the work belongs.
+
+There's something else I didn't expect. Using Playwright to drive the browser — watching it click through flows, fill forms, verify results — is a refreshing break from console-based REPL (read–eval–print loop) cycles. After spending so much time in the terminal, seeing the browser do the work is wonderful. It reminded me why I got into this craft in the first place: building things people can see and interact with.
+
+Write a failing test that asserts the behavior you want from the user's perspective. Implement until it passes. Then verify with evidence — not just green checkmarks, but proof.
 
 Learning browser automation gave me new skills I didn't have before — screenshot comparison across branches, scripted demo recordings, and automated smoke testing. These aren't just testing techniques. They're tools for building evidence. Three layers of evidence changed how I think about quality:
 
