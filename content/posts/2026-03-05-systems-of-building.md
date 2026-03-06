@@ -110,7 +110,7 @@ Outside-In TDD variant (for UI changes):
   → Commit → PR → Review
 ```
 
-Adding browser automation to my AI workflow gave me abilities grounded in industry QA practices. These are the problems I was solving and the solutions I landed on:
+Browser automation brought these QA practices into my AI workflow — each one solving a real problem:
 
 | Problem | Solution |
 |---------|----------|
@@ -121,15 +121,9 @@ Adding browser automation to my AI workflow gave me abilities grounded in indust
 | No outside-in acceptance gate | Write a failing Playwright test before implementation, then make it pass |
 | Cross-branch comparison is manual | Run dev servers on different ports per clone and compare side-by-side |
 
-Outside-in TDD has always mattered to me. Start from the user's perspective, work inward. But with modern tooling — where AI can generate implementation code rapidly — it matters even more. The outside-in discipline is what keeps the speed honest. Without it, you're shipping fast but blind.
+With modern tooling — where AI can generate implementation code rapidly — outside-in discipline matters even more. It's what keeps the speed honest. Without it, you're shipping fast but blind. I can point AI agents at my running application and let them drive the browser — clicking through flows, capturing screenshots, hunting for regressions. During bug hunting, I reproduce issues systematically and verify fixes visually. During feature development, I have proof artifacts before I ever open a pull request.
 
-Here's what the workflow actually looks like. I identify a problem — a bug, a missing feature, a behavior that doesn't match what users expect. Before writing any implementation code, I write a test that describes what the solution should look like from the outside. What should the user see? What should change on the screen? That test fails, because the solution doesn't exist yet.
-
-Then I build. The AI helps — drafting implementation, suggesting approaches, iterating quickly. But the failing test is the anchor. It doesn't matter how elegant the generated code is if the test still fails. And when it passes, I don't just trust the green checkmark. I capture screenshots, compare them against the baseline, record a walkthrough. The evidence tells me whether the solution actually solved the problem.
-
-Adding browser automation to my workflow changed the game. I can point AI agents at my running application and let them drive the browser — clicking through flows, capturing screenshots, hunting for regressions. During bug hunting, this means I can reproduce issues systematically and verify fixes visually. During feature development, it means I have proof artifacts before I ever open a pull request.
-
-The practical conclusion is this: the iteration of writing scratchpads — markdown files where I journal the problem, sketch the approach, document what I tried, record what I learned — that iteration *is* the system. Each scratchpad becomes a reference. Each reference shapes the next session. The workflow isn't a fixed process I follow. It's a living practice that evolves every time I sit down to work. I expect it will keep evolving.
+The iteration of writing scratchpads — markdown files where I journal the problem, sketch the approach, document what I tried, record what I learned — that iteration *is* the system. Each scratchpad becomes a reference. Each reference shapes the next session. The workflow isn't a fixed process I follow. It's a living practice that evolves every time I sit down to work. I expect it will keep evolving.
 
 ## The Practice
 
