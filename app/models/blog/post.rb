@@ -180,7 +180,7 @@ module Blog
     class RougeRenderer < Redcarpet::Render::HTML
       def block_code(code, language)
         language = language&.strip&.downcase
-        language = nil if language&.empty?
+        language = nil if language == ""
 
         lexer = Rouge::Lexer.find(language) || Rouge::Lexers::PlainText.new
         formatter = Rouge::Formatters::HTML.new
