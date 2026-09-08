@@ -41,7 +41,7 @@ Gnarli Budget keeps that line-by-line visibility and explicit tagging you love. 
 
 ## The Story Behind the Code
 
-Gnarli Budget started as a Rails 8 prototype to scratch my own itch. After years of spreadsheet budgeting — and a stretch where my net worth was negative — I wanted the same clarity without the monthly grind. The features I was missing in sheets became the product:
+Gnarli Budget started as a prototype to scratch my own itch. After years of spreadsheet budgeting — and a stretch where my net worth was negative — I wanted the same clarity without the monthly grind. The features I was missing in sheets became the product:
 
 **Guided setup** that mirrors the spreadsheet work you already do — add accounts, map CSV columns, define categorization rules, schedule recurring bills, set a payroll-aligned budget period, then import your first batch. Eight steps, none of them mandatory. Skip any of them, or skip onboarding entirely.
 
