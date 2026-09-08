@@ -33,7 +33,7 @@ The spreadsheet gave me control, but it extracted a tax: my time, every single m
 
 ## What If You Could Keep the Control and Ditch the Chores?
 
-That question led me to build [Gnarli Budget](https://budget.gnar.li) — the app at [budget.gnar.li](https://budget.gnar.li), from [Gnar.li](https://gnar.li) (the business; an LLC is on the way). It lives inside the same mental model spreadsheet users already have, and it automates the repetitive plumbing that never changes.
+That question led me to build [Gnarli Budget](https://budget.gnar.li) — the app at [budget.gnar.li](https://budget.gnar.li). It lives inside the same mental model spreadsheet users already have, and it automates the repetitive plumbing that never changes.
 
 The philosophy is simple: **you decide; the software calculates.** Every dollar gets a job. Capture, setup, review — a habit loop that keeps you in control of your money, not the other way around.
 
