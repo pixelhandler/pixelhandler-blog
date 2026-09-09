@@ -7,31 +7,32 @@
 <% end %>
 
 <% content_for :structured_data do %>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": "<%= j @post.title %>",
-      "datePublished": "<%= @post.published_at.iso8601 %>",
-      "dateModified": "<%= @post.published_at.iso8601 %>",
-      "author": {
-        "@type": "Person",
-        "name": "<%= j @post.author_model&.name || 'Billy Heaton' %>"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "pixelhandler.dev",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "<%= root_url %>icon.png"
-        }
-      },
-      "description": "<%= j(@post.meta_description || @post.excerpt) %>",
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "<%= post_url(@post) %>"
+  <% structured_data = {
+    "@context" => "https://schema.org",
+    "@type" => "BlogPosting",
+    "headline" => @post.title,
+    "datePublished" => @post.published_at.iso8601,
+    "dateModified" => @post.published_at.iso8601,
+    "author" => {
+      "@type" => "Person",
+      "name" => @post.author_model&.name || "Billy Heaton"
+    },
+    "publisher" => {
+      "@type" => "Organization",
+      "name" => "pixelhandler.dev",
+      "logo" => {
+        "@type" => "ImageObject",
+        "url" => "#{root_url}icon.png"
       }
+    },
+    "description" => @post.meta_description || @post.excerpt,
+    "mainEntityOfPage" => {
+      "@type" => "WebPage",
+      "@id" => post_url(@post)
     }
+  } %>
+  <script type="application/ld+json">
+    <%= raw structured_data.to_json %>
   </script>
 <% end %>
 
