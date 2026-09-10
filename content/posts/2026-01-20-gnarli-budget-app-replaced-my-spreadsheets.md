@@ -45,7 +45,7 @@ Gnarli Budget started as a prototype to scratch my own itch. After years of spre
 
 **Guided setup** that mirrors the spreadsheet work you already do — add accounts, map CSV columns, define categorization rules, schedule recurring bills, set a payroll-aligned budget period, then import your first batch. Eight steps, none of them mandatory. Skip any of them, or skip onboarding entirely.
 
-**TagMatcher engine** with default categorization rules you can edit, extend, or replace (contains, equals, regex, priority order). They work like your custom IF statements, but you write them once and they apply forever. Sixty-three-plus default spending tags sit in seven groups (Income, Bills, Giving, Savings, Debt, Flexible Expenses, and Transfers).
+**TagMatcher engine** with default categorization rules you can edit, extend, or replace (contains, equals, priority order). They work like your custom IF statements, but you write them once and they apply forever. Sixty-three-plus default spending tags sit in seven groups (Income, Bills, Giving, Savings, Debt, Flexible Expenses, and Transfers).
 
 **Automatic transfer matching** — the double-entry bookkeeping you manually enforce in a sheet now happens behind the scenes, keeping assets and liabilities balanced without extra rows. Split a grocery trip that included household supplies in two clicks.
 
