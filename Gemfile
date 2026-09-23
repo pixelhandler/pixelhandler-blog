@@ -13,7 +13,7 @@ gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
-gem "tailwindcss-rails"
+gem "tailwindcss-rails", "4.4.0" # 4.6.0+ ships a broken tailwindcss-ruby standalone CLI (missing dist/babel.cjs) when using JS @plugin directives
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
