@@ -1,19 +1,19 @@
 ---
 title: Turning Your Spreadsheet Budget into a High-Performance Gearbox
-slug: gnarli-budget-app-replaced-my-spreadsheets
+slug: gnarly-budget-app-replaced-my-spreadsheets
 published_at: '2026-01-20'
 author: pixelhandler
 tags:
 - Rails
 - Budgeting
 meta_description: Built for spreadsheet users who love line-by-line visibility but
-  hate the monthly copy-paste ritual. Gnarli Budget, from Gnar.li, keeps the control
+  hate the monthly copy-paste ritual. Gnarly Budget, from Gnar.li, keeps the control
   and drops the chores.
 ---
 
 ## Turning Your Spreadsheet Budget into a High-Performance Gearbox
 
-**How Gnarli Budget lets DIY budgeters keep total control while ditching the copy-paste grind**
+**How Gnarly Budget lets DIY budgeters keep total control while ditching the copy-paste grind**
 
 There is a particular kind of satisfaction that comes from a well-organized spreadsheet. Every dollar mapped to a row. Every formula aligned. The numbers reconcile, and for a moment, you feel completely in command of your finances.
 
@@ -33,15 +33,15 @@ The spreadsheet gave me control, but it extracted a tax: my time, every single m
 
 ## What If You Could Keep the Control and Ditch the Chores?
 
-That question led me to build [Gnarli Budget](https://budget.gnar.li) — the app at [budget.gnar.li](https://budget.gnar.li). It lives inside the same mental model spreadsheet users already have, and it automates the repetitive plumbing that never changes.
+That question led me to build [Gnarly Budget](https://gnarlybudget.com) — the app at [gnarlybudget.com](https://gnarlybudget.com). It lives inside the same mental model spreadsheet users already have, and it automates the repetitive plumbing that never changes.
 
 The philosophy is simple: **you decide; the software calculates.** Every dollar gets a job. Capture, setup, review — a habit loop that keeps you in control of your money, not the other way around.
 
-Gnarli Budget keeps that line-by-line visibility and explicit tagging you love. It just removes the copy-paste ceremony that makes budgeting feel like a chore.
+Gnarly Budget keeps that line-by-line visibility and explicit tagging you love. It just removes the copy-paste ceremony that makes budgeting feel like a chore.
 
 ## The Story Behind the Code
 
-Gnarli Budget started as a prototype to scratch my own itch. After years of spreadsheet budgeting — and a stretch where my net worth was negative — I wanted the same clarity without the monthly grind. The features I was missing in sheets became the product:
+Gnarly Budget started as a prototype to scratch my own itch. After years of spreadsheet budgeting — and a stretch where my net worth was negative — I wanted the same clarity without the monthly grind. The features I was missing in sheets became the product:
 
 **Guided setup** that mirrors the spreadsheet work you already do — add accounts, map CSV columns, define categorization rules, schedule recurring bills, set a payroll-aligned budget period, then import your first batch. Eight steps, none of them mandatory. Skip any of them, or skip onboarding entirely.
 
@@ -59,7 +59,7 @@ Gnarli Budget started as a prototype to scratch my own itch. After years of spre
 
 Every piece is opt-in. If you prefer to hand-code a rule, you can. If you want the app to suggest a tag, it does so without overwriting your choice. The result is a privacy-first environment that never reaches out to Plaid or any third-party aggregator. You import CSV, paste TSV from a spreadsheet, or drop an OFX file. Your bank credentials are never shared.
 
-## Feature-by-Feature: Spreadsheet to Gnarli Budget
+## Feature-by-Feature: Spreadsheet to Gnarly Budget
 
 Here's how each feature maps to the workflow you already know:
 
@@ -102,17 +102,17 @@ All of this happens without losing the audit trail. Every transaction still live
 
 ## The Gearbox Metaphor
 
-Think of Gnarli Budget as adding a high-performance gearbox to the car you already built.
+Think of Gnarly Budget as adding a high-performance gearbox to the car you already built.
 
 The **engine** — your spreadsheet mindset, your line-by-line control, your explicit tagging — stays exactly the same. You still decide every gear change.
 
-The **gearbox** — Gnarli Budget — handles the clutch work: imports, auto-matching transfers, projecting cash flow, reconciling statements, projecting FI, surfacing insights. All while keeping the driver firmly in control.
+The **gearbox** — Gnarly Budget — handles the clutch work: imports, auto-matching transfers, projecting cash flow, reconciling statements, projecting FI, surfacing insights. All while keeping the driver firmly in control.
 
 You're not handing over the wheel to an algorithm that decides where your money goes. You're offloading the repetitive plumbing so you can spend more time analyzing, optimizing, and iterating on your budget strategy.
 
 ## Learn the System: The "Every Dollar's Job" Course
 
-If you want a guided walkthrough, the free **[Every Dollar's Job](https://budget.gnar.li/courses/every-dollars-job)** course is eleven modules built for spreadsheet people and anyone who tried an auto-sync app and walked away:
+If you want a guided walkthrough, the free **[Every Dollar's Job](https://gnarlybudget.com/courses/every-dollars-job)** course is eleven modules built for spreadsheet people and anyone who tried an auto-sync app and walked away:
 
 1. **Welcome & Philosophy** — You decide, we calculate
 2. **Prepare Your Inputs** — Four real numbers, on paper
@@ -130,7 +130,7 @@ Each module is short. Complete them at your own pace. By the end, you'll have a 
 
 ## Pricing and the Beta
 
-Gnarli Budget is in **beta**. Join at [budget.gnar.li/beta](https://budget.gnar.li/beta). Expect rough edges; what you can count on is that your data stays yours and the fundamentals keep working.
+Gnarly Budget is in **beta**. Join at [gnarlybudget.com/beta](https://gnarlybudget.com/beta). Expect rough edges; what you can count on is that your data stays yours and the fundamentals keep working.
 
 - **Free** — up to 2 accounts (including the default Cash account), full zero-based budgeting, FI tools, insights
 - **$2/month** — unlimited accounts, cancel anytime; sharing a household usually needs this so checking, credit, and savings all fit
@@ -139,20 +139,20 @@ No ads. No data selling. Export or delete everything whenever you want. Gnar.li 
 
 ## Getting Started
 
-1. **Join the beta** at [budget.gnar.li/beta](https://budget.gnar.li/beta)
+1. **Join the beta** at [gnarlybudget.com/beta](https://gnarlybudget.com/beta)
 2. **Walk setup** — accounts, import maps, tag matchers, scheduled transactions, payroll schedule, budget, import — or skip it
 3. **Generate demo data** — three months of sample transactions to explore before importing your own
-4. **Take the course** — [Every Dollar's Job](https://budget.gnar.li/courses/every-dollars-job)
+4. **Take the course** — [Every Dollar's Job](https://gnarlybudget.com/courses/every-dollars-job)
 
 ## TL;DR
 
 You already know how to track every dollar. You've built the spreadsheets. You've written the formulas. You've done the work.
 
-[Gnarli Budget](https://budget.gnar.li) — from [Gnar.li](https://gnar.li) — keeps that control: line-by-line visibility, explicit tags, an audit trail. It adds file import (CSV, paste, OFX), rule-based categorization, transfer matching, scheduled transactions, cash flow forecasting, statement reconciliation, FI planning, and household sharing. No bank login. No Plaid.
+[Gnarly Budget](https://gnarlybudget.com) — from [Gnar.li](https://gnar.li) — keeps that control: line-by-line visibility, explicit tags, an audit trail. It adds file import (CSV, paste, OFX), rule-based categorization, transfer matching, scheduled transactions, cash flow forecasting, statement reconciliation, FI planning, and household sharing. No bank login. No Plaid.
 
 Stop copy-pasting. Start analyzing.
 
-Give it a spin during the [beta](https://budget.gnar.li/beta), clone your first budget, and see how many minutes you shave off the monthly grind. The spreadsheet you love stays intact; the app just makes it run faster.
+Give it a spin during the [beta](https://gnarlybudget.com/beta), clone your first budget, and see how many minutes you shave off the monthly grind. The spreadsheet you love stays intact; the app just makes it run faster.
 
 Happy budgeting!
 
@@ -160,6 +160,6 @@ Happy budgeting!
 
 ## Next Steps
 
-- **Join the beta** — [budget.gnar.li/beta](https://budget.gnar.li/beta)
+- **Join the beta** — [gnarlybudget.com/beta](https://gnarlybudget.com/beta)
 - **Share feedback** — input from DIY budgeters shapes the next iteration
-- **Read more** on [Gnarli Budget Insights](https://budget.gnar.li/insights)
+- **Read more** on [Gnarly Budget Insights](https://gnarlybudget.com/insights)

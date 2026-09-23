@@ -4,6 +4,14 @@ Rails.application.routes.draw do
 
   # Posts
   get "/posts", to: "blog/posts#index", as: :posts
+
+  # Legacy slug redirects (fix earlier typos/renames)
+  {
+    "gnarli-budget-app-replaced-my-spreadsheets" => "gnarly-budget-app-replaced-my-spreadsheets"
+  }.each do |old_slug, new_slug|
+    get "/posts/#{old_slug}", to: redirect("/posts/#{new_slug}", status: 301)
+  end
+
   get "/posts/:slug", to: "blog/posts#show", as: :post
 
   # Tags
