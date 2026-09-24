@@ -16,7 +16,7 @@ gem "stimulus-rails"
 # Pinned: tailwindcss-ruby 4.2.x/4.3.x ship a broken standalone CLI (missing
 # dist/babel.cjs) when resolving JS @plugin directives. Do not `bundle update`
 # past these versions until upstream fixes it.
-gem "tailwindcss-rails", "4.4.0"
+gem "tailwindcss-rails", "4.6.0"
 gem "tailwindcss-ruby", "4.1.18"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
