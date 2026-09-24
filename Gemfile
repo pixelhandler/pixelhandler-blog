@@ -17,7 +17,7 @@ gem "stimulus-rails"
 # dist/babel.cjs) when resolving JS @plugin directives. Do not `bundle update`
 # past these versions until upstream fixes it.
 gem "tailwindcss-rails", "4.4.0"
-gem "tailwindcss-ruby", "4.1.18"
+gem "tailwindcss-ruby", "4.3.3"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
