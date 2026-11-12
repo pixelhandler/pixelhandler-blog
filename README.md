@@ -1,25 +1,9 @@
-# pixelhandler-blog
+# pixelhandler archive
 
-```bash
-bin/setup         # Install dependencies
-bin/dev           # Start development server (Rails + Tailwind watcher)
-```
+This repository now serves a static archive page. The root page is the former
+Rails `404.html` page, copied to `public/index.html`; requests for missing files
+also use `public/404.html`.
 
-This project uses `mise` for version management. Versions are defined in `.tool-versions`:
-
-```bash
-mise install      # Install correct Ruby/Node versions
-```
-
-Uses Standard Ruby for consistent code formatting:
-
-```bash
-bin/standardrb       # Run linter
-bin/standardrb --fix # Auto-fix violations
-```
-
-```bash
-bin/rails test                    # Run all tests
-bin/rails test test/models/       # Run model tests
-bin/rails test:system             # Run system tests
-```
+The site is served by Nginx from `public/` in the Docker image. There is no
+Rails runtime or build step. Historical Markdown posts in `content/` remain in
+the repository as source archives and are not part of the deployed image.

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>End of life</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        align-items: center;
+        background: #fff;
+        color: #261b23;
+        display: flex;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(1.5rem, 5vw, 3rem);
+        justify-content: center;
+        margin: 0;
+        min-height: 100vh;
+        overflow: hidden;
+        position: relative;
+        isolation: isolate;
+      }
+      body::before {
+        color: #f0eff0;
+        content: "410";
+        font-size: clamp(16rem, 55vw, 40rem);
+        font-weight: 800;
+        letter-spacing: -0.08em;
+        line-height: 1;
+        position: absolute;
+        z-index: -1;
+      }
+      main {
+        max-width: 42rem;
+        padding: 2rem;
+        text-align: center;
+      }
+      h1 { margin: 0 0 1rem; }
+      p { font-size: 1rem; }
+      blockquote {
+        font-size: 1.125rem;
+        font-style: italic;
+        margin: 2rem 0 0;
+      }
+      @media (prefers-color-scheme: dark) {
+        body { background: #101010; color: #e0e0e0; }
+        body::before { color: #2c2c2c; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>End of life</h1>
+      <p>This marks the sunset of this blog.</p>
+      <blockquote>“Sunsets are daily reminders that endings can be breathtaking”</blockquote>
+    </main>
+  </body>
+</html>
